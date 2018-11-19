@@ -1,0 +1,414 @@
+############# 2-5 events #############
+######################################
+## 0-2 of these will fire to determine Temperament at age 5. 
+
+## Child is scared of sleeping alone. Always father or mother
+## Fires for the Child. Just so we can track all the variables and flags
+## Each other 2-5 event for the kid follows this event's structure
+character_event = {
+	id = CE.20000
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 2
+	max_age = 5 ## Fires between ages 2 and 5. 
+	prisoner = no
+	
+	trigger = {
+		NOT = { has_character_flag = sleep_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone1 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = sleep_event 
+		change_variable = { which = 2to5events value = 1 }
+		character_event = CE.20001 ## Fire the event for the parent/guardian (in this case parent)
+		
+		}
+		
+}
+	
+## Child is scared of sleeping alone
+character_event = {
+	id = CE.20001
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_ZE_8100 ## ALL OF THESE ARE JUST PLACEHOLDERS. We'll fix these at the end. So no worries.
+
+	prisoner = no
+
+	is_triggered_only = yes
+
+	option = { ## Send him back
+		trigger = {
+			NOT = {
+				trait = wroth
+				trait = cruel
+			}
+		}
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 5
+				OR = {
+					trait = patient
+				}
+			}
+		}
+		name = EVTOPTA
+		FROM = {
+			set_character_flag = sleep_d1 ## Track the decision being made.
+		}
+	}
+	
+	option = { ## Beat him up
+		trigger = {
+				NOT = {
+					trait = kind
+				}
+			}
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 10
+				OR = {
+					trait = wroth
+					trait = cruel
+				}
+			}
+		}
+		name = EVTOPTA
+		FROM = {
+			set_character_flag = sleep_d2
+		}
+	}
+	
+	option = { ## Let him sleep
+		trigger = {
+			NOT = {
+				trait = wroth
+				trait = cruel
+			}
+		}
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 10
+				OR = {
+					trait = kind
+				}
+			}
+		}
+		name = EVTOPTC
+		hidden_tooltip = {
+			set_character_flag = sleep_d3
+		}
+	}
+}
+
+## Child is scared of ghosts.
+character_event = {
+	id = CE.20010
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 2
+	max_age = 5 ## Fires between ages 2 and 5. 
+	prisoner = no
+	
+	trigger = {
+		NOT = { has_character_flag = ghost_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone1 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = ghost_event 
+		change_variable = { which = 2to5events value = 1 }
+		father = {
+			character_event = CE.20020 ## Fire the event for the parent/guardian (will add guardian later)
+		}
+		}
+}
+
+## Child is scared of ghosts. Could fire for parent or guardian
+character_event = {
+	id = CE.20011
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_ZE_8100
+
+	hide_from = yes
+
+	prisoner = no
+
+	is_triggered_only = yes
+
+	option = { 
+	## Option 1: No such thing as ghosts
+		trigger = {
+			NOT = {
+				trait = zealous
+			}
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+				trait = cynical
+			}
+		}
+		name = EVTOPTA_marriage_ceremony_100 
+		FROM = {
+			set_character_flag = ghosts_d1
+		}
+	}
+	
+	option = { ## Ghosts only harm good kids
+		trigger = {
+				NOT = {
+					trait = cynical
+				}
+			}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 3
+					trait = deceitful
+			}
+		}
+		name = EVTOPTA_marriage_ceremony_100 
+		FROM = {
+			set_character_flag = sleep_d2
+		}
+	}
+	
+	option = { ## Ghosts only harm those who don't pray to God
+		trigger = {
+				NOT = {
+					trait = cynical
+				}
+			}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+					trait = zealous
+			}
+		}
+		name = EVTOPTA_marriage_ceremony_100 
+		FROM = {
+			set_character_flag = sleep_d3
+		}
+	}
+	
+	option = { ## What should I do about it?
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				OR = {
+					trait = arbitrary
+				}
+			}
+		}
+		name = EVTOPTA_marriage_ceremony_100 
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = sleep_d4
+			}
+		}
+	}
+}
+
+## 3-5 Child refuses to share toys with fellow courtier kid/sibling.
+character_event = {
+	id = CE.20020
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 2
+	max_age = 5 ## Fires between ages 2 and 5. 
+	prisoner = no
+	
+	trigger = {
+		NOT = { has_character_flag = sharing_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone1 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	immediate = {
+		
+		## SHOULD SET COURTIER KID AS EVENT TARGET HERE
+		
+		set_character_flag = sharing_event 
+		change_variable = { which = 2to5events value = 1 }
+		father = {
+			character_event = CE.20020 ## Fire the event for the parent/guardian (will add guardian later)
+		}
+		
+		}
+}
+
+
+## 3-5 Child refuses to share toys with fellow courtier kid/sibling. Fires for guardian or father
+character_event = {
+	id = CE.20011
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_ZE_8100
+
+	hide_from = yes
+
+	prisoner = no
+
+	is_triggered_only = yes
+
+	option = { 
+	## Option 1: Share with your friend
+		trigger = {
+			NOT = {
+				trait = proud
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTA_marriage_ceremony_100 
+		FROM = {
+			set_character_flag = share_d1
+		}
+	}
+	
+	option = { ## Take toys away
+		trigger = {
+				NOT = {
+					trait = kind
+					trait = honest
+				}
+			}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTA_marriage_ceremony_100 
+		FROM = {
+			set_character_flag = sharing_d2
+		}
+	}
+	
+	option = { ## Approve
+		trigger = {
+				trait = proud
+			}
+		ai_chance = {
+			factor = 30
+		}
+		name = EVTOPTA_marriage_ceremony_100 
+		FROM = {
+			set_character_flag = sharing_d3
+		}
+	}
+	
+	option = { ## Bribe Child. 
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				OR = {
+					trait = arbitrary
+				}
+			}
+		}
+		name = EVTOPTA_marriage_ceremony_100 
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = sharing_d4
+			}
+		}
+	}
+}
+
+####### 5 YEAR KEYSTONE EVENT
+## Decides temperament
+## Based on 0-2 from 5 childhood events
+## Doesn't fire for anyone
+## Might fire a notification on the small side window
+
+character_event = {
+	id = CE.20000
+	
+	hide_window = yes
+
+	
+	trigger = {
+		age = 5
+		father = {
+			war = no
+		}
+		NOT = { has_character_flag = keystone1 }
+	}
+	
+	immediate = {
+	
+		set_character_flag = keystone1
+		set_variable = { which = 2to5events value = 0 }
+		
+		## Three Random lists
+		## The traits that are generated are RANDOM, WEIGHTED by your decisions!
+		## Perhaps also weighted by genetics!
+		
+		random_list = {
+			#haughty - x5 sharing_d2. x3 sharing_d0. 
+			#affectionate - x5 sharing_d1. x5 sleep_d3
+			#playful x0.5 ghosts_d2
+			#brooding x3 sleep d2. x2 sleep_d1. x1.5 ghosts_d1. x2 ghosts d2
+			#rowdy - x3 sharing_d0. x2 sleep_d2. x0.5 ghosts_d2
+			#indolent x1.5 ghosts d2
+			#fussy
+			#conscientious. x2 sleep_d1. x2 ghosts_d2
+			#willful x0.5 ghosts d2
+			#curious x1.5 ghosts d1
+			#idolizer x2 sleep_d1. x4 ghosts_d3. x2 ghosts d3. x0.5 ghosts d1
+			#timid x3 sleep_d3. x3 sleep_d2. x2 ghosts_d2
+		}
+		random_list = {
+			#haughty - x5 sharing_d2. x3 sharing_d0. 
+			#affectionate - x5 sharing_d1. x5 sleep_d3
+			#playful x0.5 ghosts_d2
+			#brooding x3 sleep d2. x2 sleep_d1. x1.5 ghosts_d1
+			#rowdy - x3 sharing_d0. x2 sleep_d2. x0.5 ghosts_d2
+			#indolent x1.5 ghosts d2
+			#fussy
+			#conscientious. x2 sleep_d1. x2 ghosts_d2
+			#willful x0.5 ghosts d2
+			#curious x1.5 ghosts d1
+			#idolizer x2 sleep_d1. x4 ghosts_d2. x2 ghosts d3. x0.5 ghosts d1
+			#timid x3 sleep_d3. x3 sleep_d2. x2 ghosts_d2
+			## nothing x0.5
+		}
+		random_list = {
+			#haughty - x5 sharing_d2. x3 sharing_d0. 
+			#affectionate - x5 sharing_d1. x5 sleep_d3
+			#playful x0.5 ghosts_d2
+			#brooding x3 sleep d2. x2 sleep_d1. x1.5 ghosts_d1
+			#rowdy - x3 sharing_d0. x2 sleep_d2. x0.5 ghosts_d2
+			#indolent x1.5 ghosts d2
+			#fussy
+			#conscientious. x2 sleep_d1. x2 ghosts_d2
+			#willful x0.5 ghosts d2
+			#curious x1.5 ghosts d1
+			#idolizer x2 sleep_d1. x4 ghosts_d2. x2 ghosts d3. x0.5 ghosts d1
+			#timid x3 sleep_d3. x3 sleep_d2. x2 ghosts_d2
+			## nothing x6
+		}
+		
+}
