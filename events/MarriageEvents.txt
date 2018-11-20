@@ -1,0 +1,3481 @@
+## May need to be broken up into separate files
+
+## Timeline for marriage
+## Initialization Event For Groom or Grooms father
+## Dowry Event for Spouse's Father - determine dowry
+## Pre-marriage
+## Ceremony
+## Feast
+
+namespace = MM
+
+##Great Initialization Event - MOstly complete. May need future editing for future events
+character_event = {
+	id = MM.10000
+	desc = EVTDESC_MAR100
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+
+	trigger = {
+	
+		new_character = {
+			NOR = {
+				has_character_modifier = jd_prince
+				has_character_modifier = jd_princess
+			}
+		}
+		
+		higher_tier_than = BARON
+		is_female = no
+		NOT = { 
+			has_character_flag = planning_marriage
+		}
+		OR = {
+			FROM = { character = ROOT }
+			AND = {
+				FROM = {
+					dynasty = ROOT
+					is_female = no
+				}
+				new_character = {
+					NOT = { character = ROOT }
+				}
+			}
+		}
+	}
+	
+	immediate = {
+	
+	## check if it is your wedding
+	if = {
+		limit = {
+			FROM = { character = ROOT }
+			}
+		set_character_flag = My_Wedding
+	}
+	
+	##check if wedding is of the primary heir
+	else_if = {
+		limit = {
+			FROM = {
+				is_primary_heir = ROOT
+			}
+		}
+		set_character_flag = My_Heirs_Wedding
+	}
+	else = {
+	#### Flag as your other sons wedding
+	set_character_flag = My_Sons_Wedding
+	}
+	
+	## Check Wife's prior relationship with the groom
+	new_character = {
+		if = {
+			limit = {
+				OR = {
+				is_lover = FROM
+				is_former_lover = FROM
+				}
+			}
+			set_character_flag = Former_Lover
+		}
+		else_if={
+			limit = {
+				OR = {
+					same_realm = FROM ##might be pointless, need to check
+					##could also check distance, might also be pointless
+					is_friend = FROM
+					father_even_if_dead = {
+						same_realm = FROM
+					}
+				}
+			}
+			#### Tag as possibly known
+			set_character_flag = Acquaintance
+		}
+		else = {
+			#### Tag as likely unknown
+			set_character_flag = Stranger
+		}
+	}
+		
+	## Tag former lovers of groom and bride
+	FROM = {
+		any_lover = {
+		reverse_opinion = { who = ROOT modifier = grooms_lover months = 30}
+				opinion = { who = ROOT modifier = grooms_lover months = 30}
+		}
+	}
+	
+	new_character = {
+		any_lover = {
+		reverse_opinion = { who = FROM modifier = brides_lover months = 30}
+				opinion = { who = FROM modifier = brides_lover months = 30}
+		}
+	}
+	
+	## Tag All of your Wives Family Members
+	
+	new_character = {
+		any_close_relative = {
+		reverse_opinion = { who = ROOT modifier = spouse_family months = 30}
+				opinion = { who = ROOT modifier = spouse_family months = 30}
+				}
+				}
+	
+	## Check relationship between father and bride
+	new_character = {
+		father = {
+			if = {
+				limit = {
+				opinion = {
+					who = PREV
+					value = 75
+				}
+				}
+				#### Tag as father really loves daughter
+				reverse_opinion = { who = ROOT modifier = loves_daughter months = 30}
+				opinion = { who = ROOT modifier = loves_daughter months = 30}
+			}
+		}
+	}
+			
+	## If groom is your son, check relationship with son	
+	FROM = {
+		if = {
+			limit = {
+			NOT = { character = ROOT }
+			AND = {	reverse_opinion = {
+					who = ROOT
+					value = 75
+				}
+				}
+			}
+				reverse_opinion = { who = ROOT modifier = loves_son months = 30}
+				opinion = { who = ROOT modifier = loves_son months = 30}
+		}
+	}
+
+	
+	## Check potential relationship of bride and groom (similarities) -- maybe not necessary, actually, probably necessary
+	
+	## Check difference in cultures and language
+	new_character = {
+		if = {
+			limit = {
+				not = {
+					culture_group = ROOT
+				}
+				father_even_if_dead = {
+					top_liege = {
+						NOT = {
+							distance = { 
+								who = ROOT 
+								value = 300 
+							}
+						}
+					}
+				}
+			}
+		#### Very different Culture
+		reverse_opinion = { who = ROOT modifier = alien_culture months = 30}
+		opinion = { who = ROOT modifier = alien_culture months = 30}
+		}
+		else_if = {
+			limit = {
+				not = {
+					culture_group = ROOT
+				}
+			}
+			#### Flag as different culture
+			reverse_opinion = { who = ROOT modifier = strange_culture months = 30}
+			opinion = { who = ROOT modifier = strange_culture months = 30}
+		}
+		else = {
+			break = yes
+		}
+	}
+	
+	## Check status of brides family
+	if = {
+		limit = {
+			new_character = {
+				is_lowborn = yes
+			}
+		}
+	set_character_flag = lowborn_spouse
+	}
+	else_if = {
+		limit = {
+			new_character = {
+				father_even_if_dead = {
+					tier = COUNT
+				}
+			}
+		}
+	set_character_flag = countborn_spouse
+	}
+	else_if = {
+		limit = {
+			new_character = {
+				father_even_if_dead = {
+					tier = DUKE
+				}
+			}
+		}
+	set_character_flag = dukeborn_spouse
+	}
+	else_if = {
+		limit = {
+			new_character = {
+				father_even_if_dead = {
+					tier = KING
+				}
+			}
+		}
+	set_character_flag = kingborn_spouse
+	}
+	else_if = {
+		limit = {
+			new_character = {
+				father_even_if_dead = {
+					tier = EMPEROR
+				}
+			}
+		}
+	set_character_flag = purple_spouse
+	}
+	else = {
+	set_character_flag = noble_spouse
+	}
+	
+	##Check Age Difference
+	new_character = {
+		if = {
+		limit = {
+			OR = {
+				AND = {
+					age = 16
+					AND = {
+					NOT = {
+					age = 27
+					}
+					}
+					age_diff = {
+						who = FROM
+						years = 20
+						}
+					}
+				AND = {
+					age = 27
+					AND = {
+					NOT = {
+					age = 40
+					}
+					}
+					age_diff = {
+						who = FROM
+						years = 30
+						}
+					}
+				}
+				}
+			reverse_opinion = { who = ROOT modifier = large_age_difference months = 30}
+			opinion = { who = ROOT modifier = large_age_difference months = 30}
+			}
+		else_if = {
+		limit = {
+			OR = {
+				AND = {
+					age = 16
+					AND = {
+					NOT = {
+					age = 25
+					}
+					}
+					age_diff = {
+						who = FROM
+						years = 10
+					}
+				}
+				AND = {
+					age = 25
+					AND = {
+					NOT = {
+					age = 40
+					}
+					}
+					age_diff = {
+						who = FROM
+						years = 18
+					}
+					NOT = {
+					is_older_than = FROM
+					}
+				}
+			}
+			}
+			reverse_opinion = { who = ROOT modifier = medium_age_difference months = 30}
+			opinion = { who = ROOT modifier = medium_age_difference months = 30}
+		}
+		else_if = {
+		limit = {
+			is_older_than = FROM
+			AND = {
+				age_diff = {
+				who = FROM
+				years = 10
+				}
+			}
+			}
+			reverse_opinion = { who = ROOT modifier = groom_younger months = 30}
+			opinion = { who = ROOT modifier = groom_younger months = 30}
+		}
+		else = {
+			reverse_opinion = { who = ROOT modifier = similar_age months = 30}
+			opinion = { who = ROOT modifier = similar_age months = 30}
+		}
+	}
+	
+	## Check beauty of bride
+	if = {
+	limit = {
+	new_character = {
+	trait = fair
+	}
+	}
+	set_character_flag = beautiful_bride
+	}
+	if = {
+	limit = {
+	new_character = {
+	OR = {
+	trait = inbred
+	trait = ugly
+	trait = hunchback
+	trait = dwarf
+	trait = Gluttonous
+	}
+	}
+	}
+	set_character_flag = ugly_bride
+	}
+	}
+	
+	##Proceed
+	
+	## My marriage
+	option = {
+	name = EVTOPTA_MAR100
+	trigger = {
+			war = no
+			FROM = { character = ROOT }
+		}
+		 
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10010
+			}
+		}
+	}
+	
+	option = {
+	name = EVTOPTD_MAR100 ## Let my father organize it
+	trigger = {
+			war = no
+			FROM = { character = ROOT }
+			father = {
+			is_alive = yes
+			is_prisoner = no
+			higher_tier_than = ROOT
+			}
+		}
+		hidden_tooltip = {
+		father = {
+			character_event = {
+				id = MM.10015 ## Father receives request
+			}
+			}
+		}
+	}
+	
+	## My heirs marriage
+	option = {
+	name = EVTOPTA_MAR100
+	trigger = {
+			war = no
+			FROM = { 
+			is_primary_heir = ROOT
+			is_child_of = ROOT
+			is_female = no}
+		}
+		
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10020
+			}
+		}
+	}
+	
+	## My non-heirs marriage
+	option = {
+	name = EVTOPTA_MAR100 
+	trigger = {
+			
+			war = no
+			FROM = { 
+			NOT = {
+			is_primary_heir = ROOT }
+			is_child_of = ROOT
+			is_female = no
+			
+			}
+		}
+		
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10030
+			}
+		}
+	}
+	
+	## Just a quick Ceremony
+	option = {
+	name = EVTOPTE_MAR100
+	trigger = {
+			war = no
+			}
+		
+		if = {
+			limit = {
+				has_character_flag = My_Wedding
+			}
+				treasury = -20
+				if {
+				limit = {
+				tier = COUNT
+				}
+				prestige = -150
+				}
+				if {
+				limit = {
+				tier = DUKE
+				}
+				prestige = -300
+				}
+				if {
+				limit = {
+				tier = KING
+				}
+				prestige = -600
+				}
+				if {
+				limit = {
+				tier = EMPEROR
+				}
+				prestige = -1000
+				}
+			hidden_tooltip = {
+				character_event = {
+					id = MM.10001
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = My_Heirs_Wedding
+			}
+				treasury = -20
+				if {
+				limit = {
+				tier = COUNT
+				}
+				prestige = -150
+				}
+				if {
+				limit = {
+				tier = DUKE
+				}
+				prestige = -300
+				}
+				if {
+				limit = {
+				tier = KING
+				}
+				prestige = -600
+				}
+				if {
+				limit = {
+				tier = EMPEROR
+				}
+				prestige = -1000
+				}
+			hidden_tooltip = {
+				character_event = {
+					id = MM.10002
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = My_Heirs_Wedding
+			}
+				treasury = -20
+				if {
+				limit = {
+				tier = COUNT
+				}
+				prestige = -50
+				}
+				if {
+				limit = {
+				tier = DUKE
+				}
+				prestige = -150
+				}
+				if {
+				limit = {
+				tier = KING
+				}
+				prestige = -300
+				}
+				if {
+				limit = {
+				tier = EMPEROR
+				}
+				prestige = -500
+				}
+			hidden_tooltip = {
+				character_event = {
+					id = MM.10003
+				}
+			}
+		}
+	}
+	
+	############################
+	## At war, postpone ceremony
+	option = {
+	name = EVTOPTB_MAR100 
+	trigger = {
+			
+			war = yes
+		}
+		treasury = -20
+		if {
+		limit = {
+		tier = COUNT
+		}
+		prestige = -50
+		}
+		if {
+		limit = {
+		tier = DUKE
+		}
+		prestige = -150
+		}
+		if {
+		limit = {
+		tier = KING
+		}
+		prestige = -300
+		}
+		if {
+		limit = {
+		tier = EMPEROR
+		}
+		prestige = -600
+		}
+		hidden_tooltip = {
+		set_character_flag = postponed_marriage
+			character_event = {
+				id = MM.10040 ## Check if war is over
+				days = 60
+			}
+		}
+	}
+	## At war, quick ceremony for me
+	option = {
+	name = EVTOPTC_MAR100 
+	trigger = {
+	FROM = { character = ROOT }
+			war = yes
+		}
+		treasury = -20
+		if {
+		limit = {
+		tier = COUNT
+		}
+		prestige = -50
+		}
+		if {
+		limit = {
+		tier = DUKE
+		}
+		prestige = -150
+		}
+		if {
+		limit = {
+		tier = KING
+		}
+		prestige = -300
+		}
+		if {
+		limit = {
+		tier = EMPEROR
+		}
+		prestige = -600
+		}
+		
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10050
+			}
+		}
+	}
+	## At war, quick ceremony for heir
+	option = {
+	name = EVTOPTC_MAR100 
+	trigger = {
+		FROM = { is_primary_heir = ROOT }
+			war = yes
+		}
+		treasury = -20
+		if {
+		limit = {
+		tier = COUNT
+		}
+		prestige = -50
+		}
+		if {
+		limit = {
+		tier = DUKE
+		}
+		prestige = -150
+		}
+		if {
+		limit = {
+		tier = KING
+		}
+		prestige = -300
+		}
+		if {
+		limit = {
+		tier = EMPEROR
+		}
+		prestige = -600
+		}
+		
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10050
+			}
+		}
+	}
+	## At war, quick ceremony for son
+	option = {
+	name = EVTOPTC_MAR100 
+	trigger = {
+			war = yes
+			FROM = { 
+			NOT = {
+			is_primary_heir = ROOT }
+			is_child_of = ROOT
+			is_female = no}
+		}
+		treasury = -20
+		if {
+		limit = {
+		tier = COUNT
+		}
+		prestige = -20
+		}
+		if {
+		limit = {
+		tier = DUKE
+		}
+		prestige = -50
+		}
+		if {
+		limit = {
+		tier = KING
+		}
+		prestige = -100
+		}
+		if {
+		limit = {
+		tier = EMPEROR
+		}
+		prestige = -200
+		}
+		
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10050
+			}
+		}
+	}
+}
+	
+##Great Initialization Event , Already busy with a wedding catch, NOT COMPLETE
+character_event = {
+id = MM.10005
+	desc = 
+	picture = GFX_evt_marriage
+	EVTDESC_MAR99
+	is_triggered_only = yes
+
+	trigger = {
+	
+		new_character = {
+			NOR = {
+				has_character_modifier = jd_prince
+				has_character_modifier = jd_princess
+			}
+		}
+		has_character_flag = planning_marriage
+		OR = {
+			FROM = { character = ROOT }
+			AND = {
+				FROM = {
+					dynasty = ROOT
+					is_female = no
+				}
+				new_character = {
+					NOT = { character = ROOT }
+				}
+			}
+		}
+	}
+	
+	immediate = {
+	
+		## check if it is your wedding
+		if = {
+			limit = {
+				FROM = { character = ROOT }
+				}
+			set_character_flag = My_Wedding
+		}
+		
+		##check if wedding is of the primary heir
+		else_if = {
+			limit = {
+				FROM = {
+					is_primary_heir = ROOT
+				}
+			}
+			set_character_flag = My_Heirs_Wedding
+		}
+		else = {
+		#### Flag as your other sons wedding
+		set_character_flag = My_Sons_Wedding
+		FROM = {
+		set_character_flag = My_Wedding
+		}
+		}
+		
+		
+		
+		## Check Wife's prior relationship with the groom
+		new_character = {
+			if = {
+				limit = {
+					OR = {
+					is_lover = FROM
+					is_former_lover = FROM
+					}
+				}
+				set_character_flag = Former_Lover
+			}
+			else_if={
+				limit = {
+					OR = {
+						same_realm = FROM ##might be pointless, need to check
+						##could also check distance, might also be pointless
+						is_friend = FROM
+						father_even_if_dead = {
+							same_realm = FROM
+						}
+					}
+				}
+				#### Tag as possibly known
+				set_character_flag = Acquaintance
+			}
+			else = {
+				#### Tag as likely unknown
+				set_character_flag = Stranger
+			}
+		}
+			
+		## Tag former lovers of groom and bride
+		FROM = {
+			any_lover = {
+			reverse_opinion = { who = ROOT modifier = grooms_lover months = 30}
+					opinion = { who = ROOT modifier = grooms_lover months = 30}
+			}
+		}
+		
+		new_character = {
+			any_lover = {
+			reverse_opinion = { who = FROM modifier = brides_lover months = 30}
+					opinion = { who = FROM modifier = brides_lover months = 30}
+			}
+		}
+		
+		## Tag All of your Wives Family Members
+		
+		new_character = {
+			any_close_relative = {
+			reverse_opinion = { who = ROOT modifier = spouse_family months = 30}
+					opinion = { who = ROOT modifier = spouse_family months = 30}
+					}
+					}
+		
+		## Check relationship between father and bride
+		new_character = {
+			father = {
+				if = {
+					limit = {
+					opinion = {
+						who = PREV
+						value = 75
+					}
+					}
+					#### Tag as father really loves daughter
+					reverse_opinion = { who = ROOT modifier = loves_daughter months = 30}
+					opinion = { who = ROOT modifier = loves_daughter months = 30}
+				}
+			}
+		}
+				
+		## If groom is your son, check relationship with son	
+		FROM = {
+			if = {
+				limit = {
+				NOT = { character = ROOT }
+				AND = {	reverse_opinion = {
+						who = ROOT
+						value = 75
+					}
+					}
+				}
+					reverse_opinion = { who = ROOT modifier = loves_son months = 30}
+					opinion = { who = ROOT modifier = loves_son months = 30}
+			}
+		}
+
+		
+		## Check potential relationship of bride and groom (similarities) -- maybe not necessary, actually, probably necessary
+		
+		## Check difference in cultures and language
+		new_character = {
+			if = {
+				limit = {
+					not = {
+						culture_group = ROOT
+					}
+					father_even_if_dead = {
+						top_liege = {
+							NOT = {
+								distance = { 
+									who = ROOT 
+									value = 300 
+								}
+							}
+						}
+					}
+				}
+			#### Very different Culture
+			reverse_opinion = { who = ROOT modifier = alien_culture months = 30}
+			opinion = { who = ROOT modifier = alien_culture months = 30}
+			}
+			else_if = {
+				limit = {
+					not = {
+						culture_group = ROOT
+					}
+				}
+				#### Flag as different culture
+				reverse_opinion = { who = ROOT modifier = strange_culture months = 30}
+				opinion = { who = ROOT modifier = strange_culture months = 30}
+			}
+			else = {
+				break = yes
+			}
+		}
+		
+		## Check status of brides family
+		if = {
+			limit = {
+				new_character = {
+					is_lowborn = yes
+				}
+			}
+		set_character_flag = lowborn_spouse
+		}
+		else_if = {
+			limit = {
+				new_character = {
+					father_even_if_dead = {
+						tier = COUNT
+					}
+				}
+			}
+		set_character_flag = countborn_spouse
+		}
+		else_if = {
+			limit = {
+				new_character = {
+					father_even_if_dead = {
+						tier = DUKE
+					}
+				}
+			}
+		set_character_flag = dukeborn_spouse
+		}
+		else_if = {
+			limit = {
+				new_character = {
+					father_even_if_dead = {
+						tier = KING
+					}
+				}
+			}
+		set_character_flag = kingborn_spouse
+		}
+		else_if = {
+			limit = {
+				new_character = {
+					father_even_if_dead = {
+						tier = EMPEROR
+					}
+				}
+			}
+		set_character_flag = purple_spouse
+		}
+		else = {
+		set_character_flag = noble_spouse
+		}
+		
+		##Check Age Difference
+		new_character = {
+			if = {
+			limit = {
+				OR = {
+					AND = {
+						age = 16
+						AND = {
+						NOT = {
+						age = 27
+						}
+						}
+						age_diff = {
+							who = FROM
+							years = 20
+							}
+						}
+					AND = {
+						age = 27
+						AND = {
+						NOT = {
+						age = 40
+						}
+						}
+						age_diff = {
+							who = FROM
+							years = 30
+							}
+						}
+					}
+					}
+				reverse_opinion = { who = ROOT modifier = large_age_difference months = 30}
+				opinion = { who = ROOT modifier = large_age_difference months = 30}
+				}
+			else_if = {
+			limit = {
+				OR = {
+					AND = {
+						age = 16
+						AND = {
+						NOT = {
+						age = 25
+						}
+						}
+						age_diff = {
+							who = FROM
+							years = 10
+						}
+					}
+					AND = {
+						age = 25
+						AND = {
+						NOT = {
+						age = 40
+						}
+						}
+						age_diff = {
+							who = FROM
+							years = 18
+						}
+						NOT = {
+						is_older_than = FROM
+						}
+					}
+				}
+				}
+				reverse_opinion = { who = ROOT modifier = medium_age_difference months = 30}
+				opinion = { who = ROOT modifier = medium_age_difference months = 30}
+			}
+			else_if = {
+			limit = {
+				is_older_than = FROM
+				AND = {
+					age_diff = {
+					who = FROM
+					years = 10
+					}
+				}
+				}
+				reverse_opinion = { who = ROOT modifier = groom_younger months = 30}
+				opinion = { who = ROOT modifier = groom_younger months = 30}
+			}
+			else = {
+				reverse_opinion = { who = ROOT modifier = similar_age months = 30}
+				opinion = { who = ROOT modifier = similar_age months = 30}
+			}
+		}
+		
+	## Check beauty of bride
+		if = {
+			limit = {
+			new_character = {
+			trait = fair
+			}
+			}
+			set_character_flag = beautiful_bride
+		}
+		if = {
+			limit = {
+				new_character = {
+					OR = {
+						trait = inbred
+						trait = ugly
+						trait = hunchback
+						trait = dwarf
+						trait = Gluttonous
+					}
+				}
+			}
+			set_character_flag = ugly_bride
+		}
+	}
+	
+	## We are already planning a marriage ceremony, postpone this
+	option = {
+	name = EVTOPTA_MAR100
+	trigger = {
+		war = no
+			}
+		
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10001
+				days = 45
+			}
+		}
+	}
+	
+	## We are already planning a marriage ceremony, just have a quick ceremony
+	option = {
+	name = EVTOPTA_MAR100
+	trigger = {
+		war = no
+			}
+		
+	}
+	
+	## We are at war, postpone this
+	option = {
+	name = EVTOPTA_MAR100
+	trigger = {
+		war = yes
+			}
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10001
+				days = 45
+			}
+		}
+	}
+	
+	## We are at war, have a quick ceremony
+	option = {
+	name = EVTOPTA_MAR100
+	trigger = {
+		war = yes
+			}
+		
+	}
+	}
+
+## Not already planning marriage check, NOT COMPLETE
+character_event = {
+	
+	id = MM.10006
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	
+	## Proceed
+		if = {
+			limit = {
+				war = no
+				NOT = {
+				has_character_flag = planning_marriage
+				has_character_flag = at_marriage_ceremony
+				}
+			}
+			character_event = {
+				id = MM.10002
+			}
+		}
+		
+	## Still not done..
+		if = {
+			limit = {
+					war = no
+					has_character_flag = planning_marriage
+					has_character_flag = at_marriage_ceremony
+				}
+			character_event = {
+				id = MM.10001
+				months = 2
+			}
+		}
+		if = {
+			limit = {
+					war = yes
+					had_character_flag = { flag = postponed_marriage days = 365 }
+				}
+			character_event = {
+				id = MM.10002
+			}
+		}
+	}
+}
+
+## Postponed Sons Wedding now needs to be planned, NOT COMPLETE
+
+## War Check - COMPLETE, UNTESTED
+character_event = {
+	
+	id = MM.10040
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	
+		if = {
+			limit = {
+				war = no
+			}
+			character_event = {
+				id = MM.10041
+			}
+		}
+		
+		if = {
+			limit = {
+					war = yes
+					NOT = {
+					had_character_flag = { flag = postponed_marriage days = 365 }
+					}
+				}
+			character_event = {
+				id = MM.10040
+				months = 2
+			}
+		}
+		if = {
+			limit = {
+					war = yes
+					had_character_flag = { flag = postponed_marriage days = 365 }
+				}
+			character_event = {
+				id = MM.10042
+			}
+		}
+	}
+}
+
+## After War Event - COMPLETE, UNTESTED
+character_event = {
+	id = MM.10041
+	desc = EVTDESC_MAR1111
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_MAR100
+		hidden_tooltip = {
+			if = {
+				limit = {
+					has_character_flag = My_Wedding
+				}
+				
+				character_event = {
+				id = MM.10010
+				}
+				
+			}
+			if = {
+				limit = {
+					has_character_flag = My_Heirs_Wedding
+				}
+				character_event = {
+				id = MM.10020
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = My_Sons_Wedding
+				}
+				character_event = {
+				id = MM.10030
+				}
+			}
+		}
+	}
+}
+
+## Still at war, just have a quick ceremony - COMPLETE, UNTESTED
+character_event = {
+	id = MM.10042
+	desc = EVTDESC_MAR142
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_MAR142
+		hidden_tooltip = {
+			if = {
+				limit = {
+					FROM = { 
+						NOT = {
+						is_primary_heir = ROOT }
+						is_child_of = ROOT
+						is_female = no
+					}
+				}
+				treasury = -20
+				if {
+					limit = {
+						tier = COUNT
+					}
+					prestige = -25
+				}
+				if {
+					limit = {
+						tier = DUKE
+					}
+					prestige = -75
+				}
+					if {
+					limit = {
+						tier = KING
+					}
+					prestige = -150
+				}
+				if {
+					limit = {
+						tier = EMPEROR
+					}
+					prestige = -300
+				}
+			}
+			if = {
+				limit = {
+					FROM = { 
+						is_primary_heir = ROOT 
+						is_child_of = ROOT
+						is_female = no
+					}
+				}
+				treasury = -20
+				if {
+					limit = {
+						tier = COUNT
+					}
+					prestige = -25
+				}
+				if {
+					limit = {
+						tier = DUKE
+					}
+					prestige = -75
+				}
+					if {
+					limit = {
+						tier = KING
+					}
+					prestige = -150
+				}
+				if {
+					limit = {
+						tier = EMPEROR
+					}
+					prestige = -300
+				}
+			}
+			if = {
+				limit = {
+					FROM = { 
+						NOT = {
+						is_primary_heir = ROOT }
+						is_child_of = ROOT
+						is_female = no
+					}
+				}
+				treasury = -20
+				if {
+					limit = {
+						tier = COUNT
+					}
+					prestige = -5
+				}
+				if {
+					limit = {
+						tier = DUKE
+					}
+					prestige = -25
+				}
+					if {
+					limit = {
+						tier = KING
+					}
+					prestige = -50
+				}
+				if {
+					limit = {
+						tier = EMPEROR
+					}
+					prestige = -100
+				}
+			}
+		}
+	}
+}
+	
+	
+# Your Son Asks you to organize his wedding - COMPLETE. UNTESTED
+character_event = {
+	id = MM.10015
+	desc = EVTDESC_MAR1111
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_MAR1111 ## Accept heirs request
+		trigger = {
+		FROM = {
+		is_primary_heir = yes
+		}
+		}
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10020
+			}
+			FROM = {
+			character_event = {
+				id = MM.10016
+			}
+		}
+		}
+	}
+	
+	option = {
+		name = EVTOPTA_MAR1111 ## Accept sons request
+		trigger = { 
+		FROM = {
+		is_primary_heir = no
+		}
+		}
+		hidden_tooltip = {
+		character_event = {
+				id = MM.10030
+			}
+		FROM = {
+			character_event = {
+				id = MM.10016
+			}
+		}
+	}
+	}
+	
+	option = {
+		name = EVTOPTB_MAR1111 ## Reject sons request
+
+		hidden_tooltip = {
+			FROM = {
+				character_event = {
+					id = MM.10017
+				}
+			}
+		}
+	}
+	
+	
+}
+
+# Father Rejects Marriage Request - COMPLETE
+character_event = {
+	id = MM.10017
+	desc = EVTDESC_MAR1112
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	## Opinion modifier, rejected my request
+	opinion = { who = FROM modifier = refused_my_request years = 30 }
+	}
+	
+	option = {
+	name = EVTOPTA_MAR1112 ## We'll do it ourselves
+	hidden_tooltip = {
+			character_event = {
+				id = MM.10010
+			}
+		}
+	}
+}
+
+# Father Accepts Marriage Request - COMPLETE
+character_event = {
+	id = MM.10018
+	desc = EVTDESC_MAR1113
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	## Opinion modifier, accepted my request
+	opinion = { who = FROM modifier = accepted_my_request years = 30 }
+	}
+	option = {
+	name = EVTOPTA_MAR1113 ## Excellent
+	}
+}
+
+
+# Determine Marriage Ceremony - COMPLETE
+character_event = {
+	id = MM.10010
+	desc = EVTDESC_MAR110
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = {
+			has_character_flag = Colossal_ceremony
+		}
+		NOT = {
+			has_character_flag = Large_ceremony
+		}
+		NOT = {
+			has_character_flag = Medium_ceremony
+		}
+		NOT = {
+			has_character_flag = Small_ceremony
+		}
+	
+		new_character = {
+			NOR = {
+				has_character_modifier = jd_prince
+				has_character_modifier = jd_princess
+			}
+		}
+		NOR = { 
+			has_character_flag = planning_marriage
+		}
+		OR = {
+			FROM = { character = ROOT }
+			AND = {
+				FROM = {
+					dynasty = ROOT
+					is_primary_heir = ROOT
+				}
+				new_character = {
+					NOT = { character = ROOT }
+				}
+			}
+		}
+	}	
+	
+	immediate = {
+		set_character_flag = planning_marriage
+		}
+		
+	option = {
+		name = EVTOPTA_MAR110 ## Colossal Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10110
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_MAR110 ## Massive Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10120
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_MAR110 ## Medium Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10120
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_MAR110 ## Very Small Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10130
+			}
+		}
+	}
+}
+
+# Determine Marriage Ceremony - Heir - COMPLETE
+character_event = {
+	id = MM.10020
+	desc = EVTDESC_MAR111
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = {
+			has_character_flag = Colossal_ceremony
+		}
+		NOT = {
+			has_character_flag = Large_ceremony
+		}
+		NOT = {
+			has_character_flag = Medium_ceremony
+		}
+		NOT = {
+			has_character_flag = Small_ceremony
+		}
+	
+		new_character = {
+			NOR = {
+				has_character_modifier = jd_prince
+				has_character_modifier = jd_princess
+			}
+		}
+		NOR = { 
+			has_character_flag = planning_marriage
+		}
+		OR = {
+			FROM = { character = ROOT }
+			AND = {
+				FROM = {
+					dynasty = ROOT
+					is_primary_heir = ROOT
+				}
+				new_character = {
+					NOT = { character = ROOT }
+				}
+			}
+		}
+	}	
+	
+	immediate = {
+		set_character_flag = planning_marriage
+		}
+		
+	option = {
+		name = EVTOPTA_MAR110 ## Colossal Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10110
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_MAR110 ## Massive Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10120
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_MAR110 ## Medium Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10130
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_MAR110 ## Very Small Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10140
+			}
+		}
+	}
+}
+
+# Determine Marriage Ceremony - Son - COMPLETE
+character_event = {
+	id = MM.10030
+	desc = EVTDESC_MAR112
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = {
+			has_character_flag = Colossal_ceremony
+		}
+		NOT = {
+			has_character_flag = Large_ceremony
+		}
+		NOT = {
+			has_character_flag = Medium_ceremony
+		}
+		NOT = {
+			has_character_flag = Small_ceremony
+		}
+	
+		new_character = {
+			NOR = {
+				has_character_modifier = jd_prince
+				has_character_modifier = jd_princess
+			}
+		}
+		NOR = { 
+			has_character_flag = planning_marriage
+		}
+		OR = {
+			FROM = { character = ROOT }
+			AND = {
+				FROM = {
+					dynasty = ROOT
+					is_primary_heir = ROOT
+				}
+				new_character = {
+					NOT = { character = ROOT }
+				}
+			}
+		}
+	}	
+	
+	immediate = {
+		set_character_flag = planning_marriage
+		}
+		
+	option = {
+		name = EVTOPTA_MAR110 ## Colossal Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10110
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_MAR110 ## Massive Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10120
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_MAR110 ## Medium Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10130
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_MAR110 ## Very Small Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10140
+			}
+		}
+	}
+}
+
+# Colossal Marriage, how to finance? - COMPLETE
+character_event = {
+	id = MM.10110
+	desc = EVTDESC_MAR113
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = {
+			has_character_flag = Colossal_ceremony
+		}
+		NOT = {
+			has_character_flag = Large_ceremony
+		}
+		NOT = {
+			has_character_flag = Medium_ceremony
+		}
+		NOT = {
+			has_character_flag = Small_ceremony
+		}
+	
+	}
+	
+	option = {
+		name = EVTOPTA_MAR113 ## We will finance it ourselves!
+		trigger = {
+		wealth = -1200
+		}
+		wealth = -1200
+		set_character_flag = Colossal_ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10200
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_MAR113 ## Borrow From Italian Bankers
+		trigger = { 
+		primary_title = { higher_tier_than = COUNT }
+		year = 1240
+		wealth = 200
+		}
+		wealth = -200
+		set_character_flag = Colossal_ceremony
+		set_character_flag = borrowed_huge_sum_from_bankers
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10200
+			}
+	}
+	}
+	option = {
+		name = EVTOPTA_MAR113
+		trigger = { 
+		wealth = 600
+		primary_title = { higher_tier_than = COUNT }
+		}
+		wealth = -600
+		set_character_flag = Colossal_ceremony
+		set_character_flag = borrowed_huge_sum_from_jewish_merchants
+	hidden_tooltip = {
+			character_event = {
+				id = MM.10200
+			}
+	}
+	}
+	option = {
+		name = EVTOPTD_MAR113 ## We can't afford this
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10150
+			}
+		}
+	}
+}
+
+# Large Marriage, how to finance? - COMPLETE
+character_event = {
+	id = MM.10120
+	desc = EVTDESC_MAR114
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = {
+			has_character_flag = Colossal_ceremony
+		}
+		NOT = {
+			has_character_flag = Large_ceremony
+		}
+		NOT = {
+			has_character_flag = Medium_ceremony
+		}
+		NOT = {
+			has_character_flag = Small_ceremony
+		}
+	
+	}
+	
+	option = {
+		name = EVTOPTA_MAR113 ## We will finance it ourselves!
+		trigger = { wealth = 600}
+		wealth = -600
+		set_character_flag = Massive_ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10200
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_MAR114 ## Borrow From Italian Bankers
+		trigger = { 
+		year = 1240
+		wealth = 100
+		primary_title = { higher_tier_than = COUNT }
+		}
+		wealth = -100
+		set_character_flag = Massive_ceremony
+		set_character_flag = borrowed_sum_from_bankers
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10200
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_MAR114 ## Borrow from Jewish Merchants
+		trigger = { 
+		wealth = 300
+		primary_title = { higher_tier_than = COUNT }
+		}
+		wealth = -300
+		set_character_flag = Massive_ceremony
+		set_character_flag = borrowed_sum_from_jewish_merchants
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10200
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_MAR113 ## We can't afford this
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10150
+			}
+		}
+	}
+}
+
+# Medium Marriage - COMPLETE
+character_event = {
+	id = MM.10130
+	desc = EVTDESC_MAR115
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = {
+			has_character_flag = Colossal_ceremony
+		}
+		NOT = {
+			has_character_flag = Large_ceremony
+		}
+		NOT = {
+			has_character_flag = Medium_ceremony
+		}
+		NOT = {
+			has_character_flag = Small_ceremony
+		}
+	
+	}
+	
+	option = {
+		name = EVTOPTA_MAR113 ## We will finance it ourselves!
+		trigger = { wealth = 200}
+		treasury = -200
+		set_character_flag = Medium_ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10210
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_MAR115 ## Borrow from Jewish Merchants
+		set_character_flag = Medium_ceremony
+		set_character_flag = borrowed_small_sum_from_jewish_merchants
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10210
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_MAR115 ## I changed my mind 
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10150
+			}
+		}
+	}
+}
+
+# Small Marriage - COMPLETE
+character_event = {
+	id = MM.10140
+	desc = EVTDESC_MAR116
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = {
+			has_character_flag = Colossal_ceremony
+		}
+		NOT = {
+			has_character_flag = Large_ceremony
+		}
+		NOT = {
+			has_character_flag = Medium_ceremony
+		}
+		NOT = {
+			has_character_flag = Small_ceremony
+		}
+	
+	}
+	
+	option = {
+		name = EVTOPTA_MAR113 ## We will finance it ourselves!
+		trigger = { wealth = 50}
+		treasury = -50
+		set_character_flag = Small_ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10220
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_MAR116 ## Borrow from Jewish Merchants
+		set_character_flag = Small_ceremony
+		set_character_flag = borrowed_very_small_sum_from_jewish_merchants
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10220
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_MAR115 ## Changed my mind
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10150
+			}
+		}
+	}
+}
+
+# Determine Marriage Ceremony - COMPLETE
+character_event = {
+	id = MM.10150
+	desc = EVTDESC_MAR117
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = {
+			has_character_flag = Colossal_ceremony
+		}
+		NOT = {
+			has_character_flag = Large_ceremony
+		}
+		NOT = {
+			has_character_flag = Medium_ceremony
+		}
+		NOT = {
+			has_character_flag = Small_ceremony
+		}
+	}
+	option = {
+		name = EVTOPTA_MAR110 ## Colossal Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10110
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_MAR110 ## Massive Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10120
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_MAR110 ## Medium Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10130
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_MAR110 ## Very Small Ceremony
+		hidden_tooltip = {
+			character_event = {
+				id = MM.10140
+			}
+		}
+	}
+}
+		
+
+# Send out Invitations! Massive, Large, Medium 
+### Guest Lists
+### Massive or Large: Close Family, Dynasty, Courtier, In Laws, Vassals, Lieges, Friends, Allied characters, NAP characters
+### Medium: Close Family, Dynasty, Courtier, In Laws, Vassals, Friends
+### Small: Close Family, In Laws, Friends
+
+
+## COMPLETE
+character_event = {
+	id = MM.10200
+	desc = EVTDESC_MAR161
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_MAR161
+		hidden_tooltip = {
+			set_character_flag = sent_wedding_invitations
+			
+			any_opinion_modifier_target = {
+			limit = { 
+				reverse_has_opinion_modifier = { who = ROOT modifier = spouse_family }
+				NOT = {
+				is_incapable = yes
+				is_adult = no
+					prisoner = yes
+				}}
+			letter_event = { 
+			id = MM.10250
+			days = 3
+			random = 2
+			}
+			set_character_flag = invitation_received
+			}
+			
+			any_courtier = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			
+			letter_event = { 
+			id = MM.10250
+			days = 3
+			random = 2			}
+			set_character_flag = invitation_received
+			}
+			any_vassal = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2
+			}
+			set_character_flag = invitation_received
+			}
+			any_realm_lord = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			
+			any_liege = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			any_close_relative = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			any_friend = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			
+			any_dynasty_member = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			
+			any_allied_character = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					higher_tier_than = BARON
+					independent = yes
+					any_realm_province = {
+								ROOT = {
+									any_realm_province = {
+										NOT = { distance = { where = PREVPREV value = 125 } }
+									}
+								}
+							}
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			
+			any_non_aggression_pact_character = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					higher_tier_than = BARON
+					independent = yes
+					any_realm_province = {
+								ROOT = {
+									any_realm_province = {
+										NOT = { distance = { where = PREVPREV value = 125 } }
+									}
+								}
+							}
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			
+		}
+		character_event = {
+		id = MM.10300
+			days = 10 }
+		}
+}
+## Medium Marriage
+character_event = {
+	id = MM.10210
+	desc = EVTDESC_MAR161
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	 
+	
+	
+	option = {
+		name = EVTOPTA_MAR161
+		hidden_tooltip = {
+			set_character_flag = sent_wedding_invitations
+			
+			any_opinion_modifier_target = {
+			limit = { 
+				reverse_has_opinion_modifier = { who = ROOT modifier = spouse_family }
+				NOT = {
+				is_incapable = yes
+				is_adult = no
+					prisoner = yes
+				}}
+			letter_event = { id = MM.10250 }
+			set_character_flag = invitation_received
+			}
+			any_courtier = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			
+			letter_event = { id = MM.10250 }
+			set_character_flag = invitation_received
+		}
+			any_vassal = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			any_realm_lord = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			any_close_relative = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			any_friend = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			
+			any_dynasty_member = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			
+		}
+		}
+}
+
+## Might be unnecessary
+character_event = {
+	id = MM.10220
+	desc = EVTDESC_MAR161
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	
+	
+	option = {
+		name = EVTOPTA_MAR161
+		hidden_tooltip = {
+			set_character_flag = sent_wedding_invitations
+			
+			any_opinion_modifier_target = {
+			limit = { 
+				reverse_has_opinion_modifier = { who = ROOT modifier = spouse_family }
+				NOT = {
+				is_incapable = yes
+				is_adult = no
+					prisoner = yes
+				}}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			any_close_relative = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			any_friend = {
+			limit = {
+				NOT = {
+					is_adult = no
+					prisoner = yes
+					is_incapable = yes
+					has_character_flag = invitation_received
+					}
+				}
+			letter_event = { id = MM.10250
+			days = 3
+			random = 2 }
+			set_character_flag = invitation_received
+			}
+			
+			
+		}
+		}
+}
+
+
+# Invitation to the marriage
+letter_event = {
+	id = MM.10250
+	desc = EVTDESC_MAR162
+
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_MAR162 # I will attend
+		trigger = {
+			NOT = {has_character_flag = attending_marriage}
+			war = no
+		}
+		ai_chance = {
+			factor = 60
+			modifier = {
+				factor = 0
+				OR = {
+					is_ill = yes
+				}
+			}
+			modifier = {
+				factor = 0.5
+				trait = paranoid
+			}
+			modifier = {
+				factor = 0.6
+				trait = shy
+			}
+			modifier = {
+				factor = 0.8
+				trait = cynical
+			}
+			modifier = {
+				factor = 0.6
+				trait = slothful
+			}
+			
+			modifier = {
+				factor = 1.3
+				AND = {
+				vassal_of = ROOT
+				trait = diligent
+				}
+			}
+			modifier = {
+				factor = 1.2
+				trait = zealous
+			}
+			modifier = {
+				factor = 5
+				is_friend = FROM
+			}
+			modifier = {
+				factor = 1.7
+				trait = gregarious
+			}
+			modifier = {
+				factor = 0.25
+				higher_real_tier_than = FROM
+			}
+			modifier = {
+				factor = 1.2
+				FROM = {
+				higher_real_tier_than = ROOT
+				}
+			}
+			modifier = {
+				factor = 1.1
+				FROM = {
+				higher_real_tier_than = COUNT
+				}
+			}
+			modifier = {
+				factor = 1.25
+				FROM = {
+				higher_real_tier_than = DUKE
+				}
+			}
+			
+			
+			modifier = {
+				factor = 1.4
+				FROM = {
+				higher_real_tier_than = KING
+				}
+			}
+			modifier = {
+				factor = 1.3
+				FROM = {
+				has_character_flag = My_Wedding
+				}
+			}
+			modifier = {
+				factor = 1.00
+				FROM = {
+				has_character_flag = My_Heirs_Wedding
+				}
+			}
+			modifier = {
+				factor = 0.7
+				FROM = {
+				has_character_flag = My_Sons_Wedding
+				}
+			}
+			modifier = {
+				factor = 2.0
+				FROM = {
+				has_character_flag = Colossal_Wedding
+				}
+			}
+			modifier = {
+				factor = 1.2
+				FROM = {
+				has_character_flag = Large_Wedding
+				}
+			}
+			modifier = {
+				factor = 0.7
+				FROM = {
+				has_character_flag = Medium_Wedding
+				}
+			}
+			modifier = {
+				factor = 0.6
+				FROM = {
+				has_character_flag = Small_Wedding
+				}
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					dynasty = FROM
+					is_allied_with = FROM
+					has_non_aggression_pact_with = FROM
+					is_theocracy = yes
+				}
+			}
+			modifier = {
+				factor = 1.25
+				opinion = { who = FROM value = 25 }
+			}
+			modifier = {
+				factor = 1.25
+				opinion = { who = FROM value = 50 }
+			}
+			modifier = {
+				factor = 1.25
+				opinion = { who = FROM value = 75 }
+			}
+			
+			modifier = {
+				factor = 0.75
+				NOT = { opinion = { who = FROM value = 0 } }
+			}
+			modifier = {
+				factor = 0.75
+				NOT = { opinion = { who = FROM value = -25 } }
+			}
+			modifier = {
+				factor = 0.5
+				NOT = { opinion = { who = FROM value = -50 } }
+			}
+			modifier = {
+				factor = 0.25
+				NOT = { opinion = { who = FROM value = -75 } }
+			}
+		}
+		FROM = { custom_tooltip = { text = accept_invitation } }
+		hidden_tooltip = {
+				if = {
+				limit = { NOT = { has_opinion_modifier = { who = FROM modifier = attending_marriage } } }
+				reverse_opinion = { who = FROM modifier = attending_marriage months = 2 }
+				opinion = { who = FROM modifier = attending_marriage months = 2 }
+				set_character_flag = attending_marriage
+			}
+			any_spouse = {
+				limit = {
+					is_ill = no
+					is_pregnant = no
+					is_ruler = no
+					war = no
+					NOT = { has_opinion_modifier = { who = FROM modifier = attending_marriage } }
+				}
+				set_character_flag = attending_marriage
+				reverse_opinion = { who = FROM modifier = attending_marriage months = 2}
+				opinion = { who = FROM modifier = attending_marriage months = 2}
+			}
+			any_child = {
+				limit = {
+					is_ill = no
+					is_adult = yes
+					is_married = no
+					is_ruler = no
+					war = no
+					NOT = { has_opinion_modifier = { who = FROM modifier = attending_marriage } }
+				}
+				set_character_flag = attending_marriage
+				reverse_opinion = { who = FROM modifier = attending_marriage months = 2}
+				opinion = { who = FROM modifier = attending_marriage months = 2}
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTB_emf_coronation_1201 # I will not attend
+		trigger = {
+			war = no
+			NOT = {has_character_flag = attending_marriage}
+			}
+		
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0
+				has_opinion_modifier = { who = FROM  modifier = spouse_family }
+			}
+			modifier = {
+				factor = 0
+				is_close_relative = FROM
+			}
+			
+		}
+		FROM = {
+		letter_event = { id = MM.10260 }
+		}
+		reverse_opinion = { who = FROM modifier = declined_marriage months = 90 }
+		FROM = { custom_tooltip = { text = decline_invitation } }
+	}
+	option = {
+		name = EVTOPTB_emf_coronation_1201 # Screw it
+		trigger = {
+			war = no
+			NOT = {has_character_flag = attending_marriage}
+			}
+		
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0
+				has_opinion_modifier = { who = FROM  modifier = spouse_family }
+			}
+			modifier = {
+				factor = 0
+				is_close_relative = FROM
+			}
+			
+		}
+		FROM = {
+		letter_event = { id = MM.10270 }
+		}
+		reverse_opinion = { who = FROM modifier = decline_marriage months = 120 }
+		FROM = { custom_tooltip = { text = decline_invitation } }
+	}
+	option = {
+		name = EVTOPTC_emf_coronation_1201 # Send an envoy in my stead
+		trigger = {
+			war = no
+			NOT = { same_realm = FROM }
+			NOT = {has_character_flag = attending_marriage}
+			is_ruler = yes
+		}
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 0
+				has_opinion_modifier = { who = FROM  modifier = spouse_family }
+			}
+			modifier = {
+				factor = 0
+				is_close_relative = FROM
+			}
+		}
+		reverse_opinion = { who = FROM modifier = sent_envoy months = 60 }
+		FROM = { custom_tooltip = { text = decline_invitation } }
+	}
+	option = {
+		name = EVTOPTD_emf_coronation_1201 # I am at war
+		trigger = {
+			war = yes
+		}
+		FROM = { custom_tooltip = { text = decline_invitation } }
+	}
+	option = {
+		name = EVTOPTE_emf_coronation_1201 # I am too busy
+		trigger = {
+			has_character_flag = is_busy
+		}
+		
+		reverse_opinion = { who = FROM modifier = declined_marriage months = 60 }
+		FROM = { custom_tooltip = { text = decline_invitation } }
+	}
+}
+
+#Vassal refused to come to the feast
+letter_event = {
+	id = MM.10260
+	desc = EVTDESC_MAR160
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA72012"
+		opinion = {
+			modifier = opinion_dislike
+			who = FROM
+			years = 10
+		}
+	}
+}
+
+#Vassal refused to come to the feast
+letter_event = {
+	id = MM.10270
+	desc = "EVTDESC72012"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA72012"
+		opinion = {
+			modifier = opinion_dislike
+			who = FROM
+			years = 10
+		}
+	}
+}
+
+#### Pre-Marriage Events ####
+
+## Host for Pre Marriage Events
+character_event = {
+	id = MM.10300
+	desc = EVTDESC_MAR161
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	clr_character_flag = planning_marriage
+	set_character_flag = at_marriage_ceremony
+	
+	## If someone really hates you and has a lot of money, CAN fire assassination plans
+	## Assassination foreign. 2 versions. 1 generic and 1 hashashin
+	## First fires an event FOR YOU
+	## This only fires if you are human
+	## It finds a character near you who may pay to have you, and others, assassinated
+	## The Hashashin version is more bloody, and less likely to be traced
+	
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+	
+	## Preparations complete, wait for Bride
+	## The effects happen here. As the major event only fires if it's your wedding, in order to reduce fatigue. But the effects should happen anyway.
+	if = {
+		limit = {
+		has_character_flag = collossal_wedding
+		}
+		random_list = {
+		33 = {
+		character_event = {
+			id = MM.10310
+			days = 1
+		}
+		## Setprovincemodifier t
+		## Prestige = 60
+		}
+		
+		33 = {
+		character_event = {
+			id = MM.10311
+			days = 1
+		}
+		## Prestige = 100
+		}
+		33 = {
+		character_event = {
+			id = MM.10312
+			days = 1
+		}
+		## Prestige = 40
+		## Set modifier happy populace
+		}
+		}
+		}
+	else_if = {
+		limit = {
+		has_character_flag = large_wedding
+		}
+		random_list = {
+		33 = {
+		character_event = {
+			id = MM.10310
+			days = 1
+		}
+		## prestige 20
+		}
+		33 = {
+		character_event = {
+			id = MM.10313
+			days = 1
+		}
+		##prestige 20
+		}
+		33 = {
+		##prestige 20
+		character_event = {
+			id = MM.10314
+			days = 1
+		}
+		}
+		}
+		}
+	else = {
+	character_event = {
+			id = MM.10315
+			days = 1
+		}
+		}
+	
+	
+	## IF Bride is a foreigner: Bride Arrives Event. 
+	## Islamic, 1C, 2C, 3C, 4L, 5L, 6M, 7S
+	## Christian 1C, 2C, 3C, 4L, 5L, 6M, 7S
+	## Generic 1C, 2L, 3M, 4S
+	## Nomad 1C, 2L, 3M, 4S
+	if = {
+		limit = {
+			culture_group = arabic
+			culture_group = iranian
+			any_spouse = {
+			has_character_flag = collossal_dowry
+			}
+			}
+		character_event = {
+			id = MM.10320
+			days = 1
+		}
+		}
+	else_if = {
+		limit = {
+			is_nomadic = yes
+			any_spouse = {
+			has_character_flag = collossal_dowry
+			}
+			}
+		character_event = {
+			id = MM.10321
+			days = 1
+		}
+		}
+	else_if = {
+		limit = {
+			any_spouse = {
+			has_character_flag = collossal_dowry
+			}
+			}
+		character_event = {
+			id = MM.10322
+			days = 1
+		}
+	}
+	else_if = {
+		limit = {
+			any_spouse = {
+			has_character_flag = large_dowry
+			}
+			}
+		character_event = {
+			id = MM.10323
+			days = 1
+		}
+	}
+	else = {
+	character_event = {
+			id = MM.10324
+			days = 1
+		}
+	}
+	
+	
+	
+	## Robbery Event
+	## Low chance
+	## Chance adjusts if the dowry is large and the wedding cost isnt a lot
+	## Chance adjusts if prosperity of city is low (idk how to check that)
+	## Can be a major robbery or a mild one
+	random_list = {
+	4 = {
+	character_event = {
+			id = MM.10330
+			days = 1
+		}
+	}
+	1 = {
+	character_event = {
+			id = MM.10331
+			days = 1
+		}
+	}
+	95 = {
+	}
+	}
+		
+	## Strictly for Groom Events (If Host is father, Target the actual groom!!)
+	##############
+	## Possible Ceremonial Outfit Event ???
+	character_event = {
+			id = MM.10341
+			days = 3
+		}
+		
+	## Possible Go out drinking with friends? Can lead to hangover. 
+	character_event = {
+			id = MM.10342
+			days = 2
+		}
+		
+	## Possible Before Wedding, drink?
+	character_event = {
+			id = MM.10343
+			days = 3
+		}
+	
+	## Possible Jealous lover, not invited to wedding
+	character_event = {
+			id = MM.10344
+			days = 1
+		}
+	
+	## Possible Receive Letter about wives previous liasons - check if applicable!
+	character_event = {
+			id = MM.10345
+			days = 1
+		}
+		
+	# Possible Event, Rainy Day, could lead to bad mood
+	character_event = {
+			id = MM.10346
+			days = 3
+		}
+	## First Exchanges with In Laws Family, if applicable (foreigner)
+	character_event = {
+			id = MM.10347
+			days = 1
+		}
+	## Exchanges with in laws family (acquaintance)
+	character_event = {
+			id = MM.10348
+			days = 1
+		}
+	
+	## Very Rare Event, Assassination Offer
+	character_event = {
+			id = MM.10349
+			days = 1
+		}
+	#######
+	## If father is not Groom, following events
+	#######
+	## First Exchanges with In Laws Family, if applicable (foreigner)
+	character_event = {
+			id = MM.10350
+			days = 1
+		}
+	## Exchanges with in laws family (acquaintance)
+	character_event = {
+			id = MM.10351
+			days = 1
+		}
+	## Priest Asks About helping poor
+	character_event = {
+			id = MM.10352
+			days = 1
+		}	
+	## Very Rare Event, Assassination Offer
+	character_event = {
+			id = MM.10353
+			days = 1
+		}
+		
+	## Wandering Entertainers. 3 different versions.
+	character_event = {
+			id = MM.10354
+			days = 1
+		}
+		
+	## Wandering Entertainers. 3 different versions. Assassination version
+	character_event = {
+			id = MM.10355
+			days = 1
+		}
+		
+	######
+	## Father In Law 
+	######
+	## Event with daughter, if foreigners
+	## Daughter scared of marriage
+	character_event = {
+			id = MM.10361
+			days = 1
+		}
+		
+	## Greeting event in city
+	## Find it impressive
+	character_event = {
+			id = MM.10361
+			days = 1
+		}
+	## Unimpressed
+	character_event = {
+			id = MM.10361
+			days = 1
+		}
+	
+	
+	##### Only for guests
+	
+	## Select size of gift
+	any_opinion_modifier_target = {
+		limit = { reverse_has_opinion_modifier = { who = ROOT modifier = attending_coronation } }
+		character_event = {
+			id = MM.10371
+			days = 1
+		}
+		}
+	
+	
+	######
+		
+	## Next Phase, Ceremony
+	character_event = {
+			id = MM.10391
+			days = 4
+		}
+		
+	option = {
+		name = EVTOPTA_MAR161
+		hidden_tooltip = {
+			
+			
+
+			
+			
+		}
+		}
+}
+
+
+### Ceremony Events ###
+## Host
+
+character_event = {
+	id = MM.11000
+	desc = EVTDESC_MAR161
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	clr_character_flag = planning_marriage
+	set_character_flag = at_marriage_ceremony
+	
+	### GROOM EVENTS
+	## See Bride for First Time (if applicable)
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+		
+	## See Bride (acquaintance, lover)
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+		
+	## People Like your look
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+	
+	## Possible Confront Wife about virginity
+	character_event = {
+			id = MM.10130
+			days = 2
+		}
+	
+	### MAJOR EVENTS
+	
+	## Possible Interruption in Ceremony
+	character_event = {
+			id = MM.10130
+			days = 2
+		}
+		
+	## Priest/Imam/Tribe Leader Performs Ceremony (remember Viking sword event)
+	## Different events for each culture
+	character_event = {
+			id = MM.10130
+			days = 3
+		}
+		
+	
+		
+	## Next Phase, Feast
+	character_event = {
+			id = MM.10130
+			days = 4
+		}
+	
+	option = {
+		name = EVTOPTA_MAR161
+		hidden_tooltip = {
+		
+		
+			
+
+			
+			
+		}
+		}
+}
+
+### Feast Events ###
+
+## Host
+character_event = {
+	id = MM.12000
+	desc = EVTDESC_MAR161
+	picture = GFX_evt_marriage
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	clr_character_flag = planning_marriage
+	set_character_flag = at_marriage_ceremony
+	
+	
+	## GROOM EVENTS - Make sure these fire for Groom! Might be better to have a separate host for groom!
+	
+	## VERY MAJOR EVENT CHAINS - VERY RARE
+	
+	## Assassination Event ## day 0
+	## This event overrides everything else
+	## This event 
+	character_event = {
+			id = MM.12010
+		}
+	
+	## Foreign Assassination
+	character_event = {
+			id = MM.12020
+		}
+	
+	## Feeling Ill ## day 0
+	## This doesnt override everything but it leads to less events
+	character_event = {
+			id = MM.12030
+			days = 1
+		}
+		
+	## Poisoning Event Chain ## day 0
+	## This doesnt override everything but it leads to less events
+	character_event = {
+			id = MM.12040
+			days = 1
+		}
+		
+	## Fire at the Marriage!
+	## Occurs on the 8th day of marriage
+	## Overrides every other event afterwards
+	character_event = {
+			id = MM.12050
+			days = 1
+		}
+	
+	################################
+		
+	## Sword Event
+	## For Vikings
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+		
+	## I don't know about these, they would get tiresome over time
+	
+	
+	## Greet Spouse, first time.
+	## Different events. If foreigner of a different language, always awkward, but 2 different events. If same language, also 2 events. 1 of 4. day 1
+	## FIRES FOR GROOM - SPOUSE - GROOM
+	character_event = {
+			id = MM.12100
+			days = 1
+		}
+		
+	## Talk to father in law
+	## Could be hostile, condescending, neutral, or genial. 1 of 4. day 1
+	## FIL - GROOM - FIL
+	## Fires for Father In Law
+	character_event = {
+			id = MM.12110
+			days = 1
+			## Asks Father In Law whether to go meet son in Law, and how to greet him. Options: 1. Congratulate and embrace 2. formally congratulate 3. intimidate 4. Do nothing
+			## 1. 1. Thank formally. 2. Thank and compliment his daughter (your wife) 3. Coldly rebuff
+			## 2. 1. Thank formally. 2. Thank and compliment his daughter (your wife) 3. Coldly rebuff
+			## 3. 1. Remain calm and formal 2. Diplomatically reassure him 3. Intimidate back - set opinion dislike each other
+			## 4. 1. Approach father in law 2. Ignore it
+		}
+	
+	## Talk to father in law
+	## Could be hostile, condescending, neutral, or genial. 1 of 4. day 1
+	## FIL - FATHER - FIL (IF APPLICABLE. ONLY IF HEIR OR SONS WEDDING)
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+	
+		
+	## Talk to brother in law
+	## Could be hostile, condescending, neutral, or genial. 1 of 4, day 2
+	## BIL - GROOM - BIL
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+	
+	## Talk to mother in law
+	## Could be hostile, condescending, neutral, or genial. 1 of 4, day 3
+	## MIL - GROOM - MIL
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+		
+	## Talk to mother in law
+	## Could be hostile, condescending, neutral, or genial. 1 of 4, day 3
+	## MIL - FATHER - MIL (IF APPLICABLE. ONLY IF HEIR OR SONS WEDDING)
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+		
+	## Dowry Event
+	## Could be less, same or more than expected. day 4
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+	
+	## Random LIst ##
+	## Confront Wife about rumors, day 5. POSSIBLE. RARE. CHAIN.
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+	
+	## Confront Father in Law of rumors. POSSIBLE. RARE. CHAIN. day 5
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+		
+	## Toast. day 5
+	character_event = {
+			id = MM.10130
+			days = 1
+		}
+		
+	##
+	
+	
+	#### GROOM RANDOM EVENTS
+	
+	## Lover meets spouse
+	## Fires for lover first, in order to get the name
+	character_event = {
+			id = MM.12200
+			days = 1
+		}
+	
+	
+	
+	## Former Lover approaches you
+	
+	
+	
+	## Drink too much
+	
+	
+	
+	## Discussion with FIL
+	
+	## People commenting on attractive bride
+	
+	## People commenting on you attractive
+	
+	## Wife lower class, lack of etiquette 
+	
+	## Strike conversation with spouse
+	
+	## Discuss with BIL
+	
+	## Confront father if upset about spouse
+	
+	## Decide to walk around event chain
+	## 
+	
+	## 
+	
+	#### Father Events (can fire for groom too, if its your wedding)
+	
+	## Priest questions spending too much money
+	
+	## Leftovers event
+	
+	## Notice someone doesn't give gifts
+	
+	## Wife humiliates you
+	
+	## Son humiliates you
+	
+	## Daughter humiliates you
+	
+	## Daughter flirting
+	
+	## Son drunk
+	
+	#### FIL Events
+	
+	## IF groom is lower class, be condescending
+	
+	## Daughter upset with the match
+	
+	######################################################
+	#################### Guest Events ####################
+	######################################################
+	
+	## Meet Bride and Groom
+	
+	## If Bride is lower class, be condescending
+	
+	## Flirt with Bride
+	
+	## Observe and Compliment something about the marriage
+	
+	## Voice disapproval of marriage
+	
+	####### Romantic stuff #########
+	
+	## Chooose a girl to flirt with
+	## Event chain if you have seduction focus
+	
+	## Ask a girl for a dance
+	
+	## While dancing, kiss woman
+	
+	## Woman may reject you
+	
+	## If woman is taken, husband confronts you
+	
+	## Duel husband
+	
+	## Husbands wife approaches you later
+	
+	## A Woman approaches you
+	
+	## You hit it off, bed the woman later
+	
+	## Gets pregnant
+
+	
+	###### Insults and Duels ######
+	
+	## Someone mocks you
+	
+	## Enemy mocks you
+	
+	## Enemy challenges you
+	
+	## Insult someone
+
+	
+	
+	##### Discussions and debates #####
+	
+	## Group of Learned Men discuss the Papacy
+	
+	## Group of Learned Men discuss an idea in their Religion
+	
+	## Group of Learned Men discuss another religion
+	
+	## Group of Learned Men discuss a heresy
+	
+	## Group of Learned Men discuss history
+	
+	## Group of Learned Men discuss the Plague
+	
+	## Group of Martial Men discuss Warfare
+	
+	## Group of Martial Men discuss recent war
+	
+	## Group of Martial Men discuss the Mongols
+	
+	## Group of Martial Men discuss the Vikings
+	
+	## Group of Martial Men discuss the Crusades
+	
+	## Group of Martial Men discuss dueling
+	
+	## Group of Sociable Men discuss another country
+	
+	## Group of Sociable Men discuss women
+	
+	## Group of Sociable Men discuss food
+	
+	## If Bride is a foreigner, discuss with a foreigner about their country
+	
+	##### Random Meetings #####
+	
+	## Have a conversation with a powerful Lord
+	
+	## Introverts meet event
+	
+	
+	###### Random Guest Events ######
+	
+	## Drink too much
+	
+	## Eat too much
+	
+	## Introvert panic, leave
+	
+	## 
+	
+	##### Random Major Events ######
+	
+	## Numerous drunk characters go on hooliganism
+	
+	## 
+	
+	## 
+	
+	
+		
+	
+	option = {
+		name = EVTOPTA_MAR161
+		hidden_tooltip = {
+		
+		
+			
+
+			
+			
+		}
+		}
+}
