@@ -134,7 +134,7 @@ character_event = {
 		set_character_flag = ghost_event 
 		change_variable = { which = 2to5events value = 1 }
 		father = {
-			character_event = CE.20020 ## Fire the event for the parent/guardian (will add guardian later)
+			character_event = CE.20011 ## Fire the event for the parent/guardian (will add guardian later)
 		}
 		}
 }
@@ -263,7 +263,7 @@ character_event = {
 
 ## 3-5 Child refuses to share toys with fellow courtier kid/sibling. Fires for guardian or father
 character_event = {
-	id = CE.20011
+	id = CE.20021
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
 	desc = EVTDESC_ZE_8100
@@ -345,7 +345,7 @@ character_event = {
 ## Might fire a notification on the small side window
 
 character_event = {
-	id = CE.20000
+	id = CE.20030
 	
 	hide_window = yes
 
