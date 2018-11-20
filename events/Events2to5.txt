@@ -7,7 +7,7 @@
 ## Fires for the Child. Just so we can track all the variables and flags
 ## Each other 2-5 event for the kid follows this event's structure
 character_event = {
-	id = CE.20000
+	id = CE.10000
 	
 	hide_window = yes ## Is a hidden event
 	
@@ -27,7 +27,7 @@ character_event = {
 	
 		set_character_flag = sleep_event 
 		change_variable = { which = 2to5events value = 1 }
-		character_event = CE.20001 ## Fire the event for the parent/guardian (in this case parent)
+		character_event = CE.10001 ## Fire the event for the parent/guardian (in this case parent)
 		
 		}
 		
@@ -35,10 +35,10 @@ character_event = {
 	
 ## Child is scared of sleeping alone
 character_event = {
-	id = CE.20001
+	id = CE.10001
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_ZE_8100 ## ALL OF THESE ARE JUST PLACEHOLDERS. We'll fix these at the end. So no worries.
+	desc = EVTDESC_CE_10001 ## ALL OF THESE ARE JUST PLACEHOLDERS. We'll fix these at the end. So no worries.
 
 	prisoner = no
 
@@ -60,7 +60,7 @@ character_event = {
 				}
 			}
 		}
-		name = EVTOPTA
+		name = EVTOPTA_CE_10001
 		FROM = {
 			set_character_flag = sleep_d1 ## Track the decision being made.
 		}
@@ -82,7 +82,7 @@ character_event = {
 				}
 			}
 		}
-		name = EVTOPTA
+		name = EVTOPTB_CE_10001
 		FROM = {
 			set_character_flag = sleep_d2
 		}
@@ -104,7 +104,7 @@ character_event = {
 				}
 			}
 		}
-		name = EVTOPTC
+		name = EVTOPTC_CE_10001
 		hidden_tooltip = {
 			set_character_flag = sleep_d3
 		}
@@ -113,7 +113,7 @@ character_event = {
 
 ## Child is scared of ghosts.
 character_event = {
-	id = CE.20010
+	id = CE.10010
 	
 	hide_window = yes ## Is a hidden event
 	
@@ -134,17 +134,17 @@ character_event = {
 		set_character_flag = ghost_event 
 		change_variable = { which = 2to5events value = 1 }
 		father = {
-			character_event = CE.20011 ## Fire the event for the parent/guardian (will add guardian later)
+			character_event = CE.10011 ## Fire the event for the parent/guardian (will add guardian later)
 		}
 		}
 }
 
 ## Child is scared of ghosts. Could fire for parent or guardian
 character_event = {
-	id = CE.20011
+	id = CE.10011
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_ZE_8100
+	desc = EVTDESC_CE_10011
 
 	hide_from = yes
 
@@ -166,7 +166,7 @@ character_event = {
 				trait = cynical
 			}
 		}
-		name = EVTOPTA_marriage_ceremony_100 
+		name = EVTOPTA_CE_10011 
 		FROM = {
 			set_character_flag = ghosts_d1
 		}
@@ -185,7 +185,7 @@ character_event = {
 					trait = deceitful
 			}
 		}
-		name = EVTOPTA_marriage_ceremony_100 
+		name = EVTOPTB_CE_10011 
 		FROM = {
 			set_character_flag = sleep_d2
 		}
@@ -204,7 +204,7 @@ character_event = {
 					trait = zealous
 			}
 		}
-		name = EVTOPTA_marriage_ceremony_100 
+		name = EVTOPTC_CE_10011 
 		FROM = {
 			set_character_flag = sleep_d3
 		}
@@ -220,7 +220,7 @@ character_event = {
 				}
 			}
 		}
-		name = EVTOPTA_marriage_ceremony_100 
+		name = EVTOPTD_CE_10011 
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = sleep_d4
@@ -231,7 +231,7 @@ character_event = {
 
 ## 3-5 Child refuses to share toys with fellow courtier kid/sibling.
 character_event = {
-	id = CE.20020
+	id = CE.10020
 	
 	hide_window = yes ## Is a hidden event
 	
@@ -254,7 +254,7 @@ character_event = {
 		set_character_flag = sharing_event 
 		change_variable = { which = 2to5events value = 1 }
 		father = {
-			character_event = CE.20020 ## Fire the event for the parent/guardian (will add guardian later)
+			character_event = CE.10021 ## Fire the event for the parent/guardian (will add guardian later)
 		}
 		
 		}
@@ -263,10 +263,10 @@ character_event = {
 
 ## 3-5 Child refuses to share toys with fellow courtier kid/sibling. Fires for guardian or father
 character_event = {
-	id = CE.20021
+	id = CE.10021
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_ZE_8100
+	desc = EVTDESC_CE_10021
 
 	hide_from = yes
 
@@ -284,7 +284,7 @@ character_event = {
 		ai_chance = {
 			factor = 10
 		}
-		name = EVTOPTA_marriage_ceremony_100 
+		name = EVTOPTA_CE_10021 
 		FROM = {
 			set_character_flag = share_d1
 		}
@@ -300,7 +300,7 @@ character_event = {
 		ai_chance = {
 			factor = 10
 		}
-		name = EVTOPTA_marriage_ceremony_100 
+		name = EVTOPTB_CE_10021 
 		FROM = {
 			set_character_flag = sharing_d2
 		}
@@ -313,7 +313,7 @@ character_event = {
 		ai_chance = {
 			factor = 30
 		}
-		name = EVTOPTA_marriage_ceremony_100 
+		name = EVTOPTC_CE_10021 
 		FROM = {
 			set_character_flag = sharing_d3
 		}
@@ -329,7 +329,7 @@ character_event = {
 				}
 			}
 		}
-		name = EVTOPTA_marriage_ceremony_100 
+		name = EVTOPTD_CE_10021 
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = sharing_d4
@@ -345,7 +345,7 @@ character_event = {
 ## Might fire a notification on the small side window
 
 character_event = {
-	id = CE.20030
+	id = CE.19001
 	
 	hide_window = yes
 
