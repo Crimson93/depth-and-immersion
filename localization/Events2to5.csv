@@ -1,15 +1,23 @@
 #CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+# Child is scared of sleeping alone;;;;;;;;;;;;;;
 EVTDESC_CE_10001;;;;;;;;;;;;;;x
 EVTOPTA_CE_10001;;;;;;;;;;;;;;x
 EVTOPTB_CE_10001;;;;;;;;;;;;;;x
 EVTOPTC_CE_10001;;;;;;;;;;;;;;x
+# Child is scared of ghosts.;;;;;;;;;;;;;;
 EVTDESC_CE_10011;;;;;;;;;;;;;;x
 EVTOPTA_CE_10011;;;;;;;;;;;;;;x
 EVTOPTB_CE_10011;;;;;;;;;;;;;;x
 EVTOPTC_CE_10011;;;;;;;;;;;;;;x
 EVTOPTD_CE_10011;;;;;;;;;;;;;;x
+# 3-5 Child refuses to share toys with fellow courtier kid/sibling.;;;;;;;;;;;;;;
 EVTDESC_CE_10021;;;;;;;;;;;;;;x
 EVTOPTA_CE_10021;;;;;;;;;;;;;;x
 EVTOPTB_CE_10021;;;;;;;;;;;;;;x
 EVTOPTC_CE_10021;;;;;;;;;;;;;;x
 EVTOPTD_CE_10021;;;;;;;;;;;;;;x
+# 2-5 Child breaks something while playing with toys;;;;;;;;;;;;;;
+EVTDESC_CE_10031;;;;;;;;;;;;;;
+EVTOPTA_CE_10031;;;;;;;;;;;;;;
+EVTOPTB_CE_10031;;;;;;;;;;;;;;
+EVTOPTD_CE_10021;;;;;;;;;;;;;;
