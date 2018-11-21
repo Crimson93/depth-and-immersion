@@ -454,6 +454,10 @@ character_event = {
 		name = EVTOPTA_CE_10031 
 		FROM = {
 			set_character_flag = break_d1
+			random = {
+				chance = 20
+				opinion = { who = ROOT modifier = took_my_toys months = 120 }
+			}
 		}
 	}
 	
@@ -476,6 +480,10 @@ character_event = {
 		name = EVTOPTB_CE_10031 
 		FROM = {
 			set_character_flag = break_d2
+			random = {
+				chance = 30
+				opinion = { who = ROOT modifier = scolded_me months = 120 }
+			}
 		}
 	}
 	
@@ -525,11 +533,11 @@ character_event = {
 		## haughty
 			10 = {
 				modifier = {
-					factor = 5
+					factor = 4
 					has_character_flag = sharing_d3
 				}
 				modifier = {
-					factor = 2
+					factor = 5
 					has_character_flag = sharing_d4
 				}
 				modifier = {
@@ -628,7 +636,7 @@ character_event = {
 					factor = 0.75
 					has_character_flag = break_d1
 				}
-				trait = rowdy
+				add_trait = rowdy
 			}
 			#indolent
 			10 = {
@@ -644,11 +652,11 @@ character_event = {
 					factor = 3
 					has_character_flag = sleep_d2
 				}
-				trait = indolent
+				add_trait = indolent
 			}
 			#fussy
 			10 = {
-				trait = fussy
+				add_trait = fussy
 				}
 			
 			#conscientious 
@@ -669,15 +677,78 @@ character_event = {
 					factor = 2
 					has_character_flag = break_d1
 				}
-				trait = conscientious 
+				add_trait = conscientious 
 			}
-			#willful x0.5 ghosts d2
-			#curious x1.5 ghosts d1
-			#idolizer x2 sleep_d1. x4 ghosts_d3. x2 ghosts d3. x0.5 ghosts d1
-			#timid x3 sleep_d3. x3 sleep_d2. x2 ghosts_d2
+			## Willful
+			10 = {
+				modifier = {
+					factor = 0.75
+					has_character_flag = ghosts_d2
+				}
+				modifier = {
+					factor = 2
+					has_character_flag = break_d3
+				}
+				modifier = {
+					factor = 1.5
+					has_character_flag = break_d4
+					}
+				add_trait = willful
+			## Curious
+			10 = {
+				modifier = {
+					factor = 2
+					has_character_flag = ghosts_d1
+				}
+				modifier = {
+					factor = 0.5
+					has_character_flag = ghosts_d3
+				}
+				add_trait = curious
+			## idolizer
+			10 = {
+				modifier = {
+					factor = 1.5
+					has_character_flag = sleep_d1
+				}
+				modifier = {
+					factor = 4
+					has_character_flag = ghosts_d3
+				}
+				modifier = {
+					factor = 0.5
+					has_character_flag = ghosts_d1
+				}
+				modifier = {
+					factor = 0.5
+					has_character_flag = ghosts_d3
+				}
+			## timid
+			10 = {
+				modifier = {
+					factor = 4
+					has_character_flag = sleep_d3
+				}
+				modifier = {
+					factor = 3
+					has_character_flag = sleep_d2
+				}
+				modifier = {
+					factor = 2
+					has_character_flag = ghosts_d2
+				}
+				modifier = {
+					factor = 3
+					has_character_flag = break_d2
+				}
+			## nothing
+			50 = {
+			}
 		}
 		random_list = {
-			#haughty - x5 sharing_d2. x3 sharing_d0. 
+		
+		## Will copy paste here later once the numbers are decdided
+		 
 			#affectionate - x5 sharing_d1. x5 sleep_d3
 			#playful x0.5 ghosts_d2
 			#brooding x3 sleep d2. x2 sleep_d1. x1.5 ghosts_d1
