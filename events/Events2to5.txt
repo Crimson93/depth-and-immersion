@@ -1,4 +1,3 @@
-
 ############# 2-5 events #############
 ######################################
 ## 0-2 of these will fire to determine 
@@ -61,8 +60,14 @@ character_event = {
 			}
 		}
 		name = EVTOPTA_CE_10001
-		FROM = {
-			set_character_flag = sleep_d1 ## Track the decision being made.
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = sleep_d1 ## Track the decision being made.
+				random = {
+					chance = 10
+					opinion = { who = ROOT modifier = was_sent_back months = 120 }
+				}
+			}
 		}
 	}
 	
@@ -83,8 +88,14 @@ character_event = {
 			}
 		}
 		name = EVTOPTB_CE_10001
-		FROM = {
-			set_character_flag = sleep_d2
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = sleep_d2
+				random = {
+					chance = 60 ## chance to dislike the parent for this reason
+					opinion = { who = ROOT modifier = was_beaten_sleep months = 120 }
+				}
+			}
 		}
 	}
 	
@@ -106,7 +117,13 @@ character_event = {
 		}
 		name = EVTOPTC_CE_10001
 		hidden_tooltip = {
+			FROM = {
 			set_character_flag = sleep_d3
+			random = {
+					chance = 50
+					opinion = { who = ROOT modifier = slept_with_parents months = 120 }
+				}
+			}
 		}
 	}
 }
@@ -133,10 +150,19 @@ character_event = {
 	
 		set_character_flag = ghost_event 
 		change_variable = { which = 2to5events value = 1 }
-		father = {
-			character_event = CE.10011 ## Fire the event for the parent/guardian (will add guardian later)
+		random_list = {
+			50 = {
+				father = {
+					character_event = CE.10011 ## Look for a way to fire this for the mom too ><
+				}
+			}
+			50 = {
+				educator = {
+					character_event = CE.10011
+				}
+			}
 		}
-		}
+	}
 }
 
 ## Child is scared of ghosts. Could fire for parent or guardian
@@ -146,7 +172,7 @@ character_event = {
 	border = GFX_event_normal_frame_diplomacy
 	desc = EVTDESC_CE_10011
 
-	hide_from = yes
+	
 
 	prisoner = no
 
@@ -187,7 +213,7 @@ character_event = {
 		}
 		name = EVTOPTB_CE_10011 
 		FROM = {
-			set_character_flag = sleep_d2
+			set_character_flag = ghosts_d2
 		}
 	}
 	
@@ -206,7 +232,7 @@ character_event = {
 		}
 		name = EVTOPTC_CE_10011 
 		FROM = {
-			set_character_flag = sleep_d3
+			set_character_flag = ghosts_d3
 		}
 	}
 	
@@ -223,7 +249,7 @@ character_event = {
 		name = EVTOPTD_CE_10011 
 		hidden_tooltip = {
 			FROM = {
-				set_character_flag = sleep_d4
+				set_character_flag = ghosts_d4
 			}
 		}
 	}
@@ -253,11 +279,19 @@ character_event = {
 		
 		set_character_flag = sharing_event 
 		change_variable = { which = 2to5events value = 1 }
-		father = {
-			character_event = CE.10021 ## Fire the event for the parent/guardian (will add guardian later)
+		random_list = {
+			50 = {
+				father = {
+					character_event = CE.10021 ## Look for a way to fire this for the mom too ><
+				}
+			}
+			50 = {
+				educator = {
+					character_event = CE.10021
+				}
+			}
 		}
-		
-		}
+	}
 }
 
 
@@ -267,8 +301,6 @@ character_event = {
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
 	desc = EVTDESC_CE_10021
-
-	hide_from = yes
 
 	prisoner = no
 
@@ -283,6 +315,10 @@ character_event = {
 		}
 		ai_chance = {
 			factor = 10
+			modifier = {
+				factor = 3
+				trait = kind
+			}
 		}
 		name = EVTOPTA_CE_10021 
 		FROM = {
@@ -294,7 +330,6 @@ character_event = {
 		trigger = {
 				NOT = {
 					trait = kind
-					trait = honest
 				}
 			}
 		ai_chance = {
@@ -303,6 +338,10 @@ character_event = {
 		name = EVTOPTB_CE_10021 
 		FROM = {
 			set_character_flag = sharing_d2
+			random = {
+				chance = 30
+				opinion = { who = ROOT modifier = took_my_toys months = 120 }
+			}
 		}
 	}
 	
@@ -330,9 +369,124 @@ character_event = {
 			}
 		}
 		name = EVTOPTD_CE_10021 
+		treasury = -5
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = sharing_d4
+			}
+		}
+	}
+	option = { ## Do Nothing
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTE_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = sharing_d5
+			}
+		}
+	}
+}
+
+## 2-5 Child breaks something while playing with toys
+character_event = {
+	id = CE.10030
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 2
+	max_age = 5 ## Fires between ages 2 and 5. 
+	prisoner = no
+	
+	trigger = {
+		NOT = { has_character_flag = sharing_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone1 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	immediate = {
+		
+		## SHOULD SET COURTIER KID AS EVENT TARGET HERE
+		
+		set_character_flag = sharing_event 
+		change_variable = { which = 2to5events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = CE.10031 ## Look for a way to fire this for the mom too ><
+				}
+			}
+			50 = {
+				educator = {
+					character_event = CE.10031
+				}
+			}
+		}
+	}
+}
+
+
+## 2-5 Child breaks something while playing with toys
+character_event = {
+	id = CE.10031
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_10031
+
+	prisoner = no
+
+	is_triggered_only = yes
+
+	option = { 
+	
+	## Take toys away
+		trigger = {
+			NOT = {
+				trait = kind
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTA_CE_10031 
+		FROM = {
+			set_character_flag = break_d1
+		}
+	}
+	
+	option = { ## scold and punish the child
+		trigger = {
+				NOT = {
+					trait = kind
+				}
+			}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+				OR = {
+				trait = cruel
+				trait = wroth
+				}
+			}
+		}
+		name = EVTOPTB_CE_10031 
+		FROM = {
+			set_character_flag = break_d2
+		}
+	}
+	
+	option = { ## Do nothing 
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTD_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = break_d3
 			}
 		}
 	}
@@ -368,14 +522,155 @@ character_event = {
 		## Perhaps also weighted by genetics!
 		
 		random_list = {
-			#haughty - x5 sharing_d2. x3 sharing_d0. 
-			#affectionate - x5 sharing_d1. x5 sleep_d3
-			#playful x0.5 ghosts_d2
-			#brooding x3 sleep d2. x2 sleep_d1. x1.5 ghosts_d1. x2 ghosts d2
-			#rowdy - x3 sharing_d0. x2 sleep_d2. x0.5 ghosts_d2
-			#indolent x1.5 ghosts d2
+		## haughty
+			10 = {
+				modifier = {
+					factor = 5
+					has_character_flag = sharing_d3
+				}
+				modifier = {
+					factor = 2
+					has_character_flag = sharing_d4
+				}
+				modifier = {
+					factor = 2
+					has_characteR_flag = break_d3
+				}
+				add_trait = haughty
+			}
+			## affectionate
+			10 = {
+				modifier = {
+					factor = 3
+					has_character_flag = sharing_d1
+				}
+				modifier = {
+					factor = 5
+					has_character_flag = sleep_d3
+				}
+				add_trait = affectionate
+			}
+			## playful
+			10 = {
+				modifier = {
+					factor = 0.5
+					has_character_flag = ghosts_d2
+				}
+				modifier = {
+					factor = 0.8
+					has_character_flag = ghosts_d3
+				}
+				modifier = {
+					factor = 2
+					has_character_flag = break_d3
+				}
+				modifier = {
+					factor = 0.5
+					has_character_flag = break_d2
+				}
+				modifier = {
+					factor = 0.75
+					has_character_flag = break_d1
+				}
+				add_trait = playful
+			}
+			## Brooding
+			10 = {
+				modifier = {
+					factor = 2
+					has_character_flag = sleep_d1
+				}
+				modifier = {
+					factor = 3
+					has_character_flag = sleep_d2
+				}
+				modifier = {
+					factor = 1.5
+					has_character_flag = ghosts_d2
+				}
+				modifier = {
+					factor = 2
+					has_character_flag = ghosts_d3
+				}
+				modifier = {
+					factor = 3
+					has_character_flag = break_d2
+				}
+				modifier = {
+					factor = 2
+					has_character_flag = break_d1
+				}
+				add_trait = brooding
+			}
+			## Rowdy
+			10 = {
+				modifier = {
+					factor = 0.5
+					has_character_flag = sleep_d3
+				}
+				modifier = {
+					factor = 0.5
+					has_character_flag = ghosts_d2
+				}
+				modifier = {
+					factor = 3
+					has_character_flag = sleep_d2
+				}
+				modifier = {
+					factor = 3
+					has_character_flag = break_d3
+				}
+				modifier = {
+					factor = 0.5
+					has_character_flag = break_d2
+				}
+				modifier = {
+					factor = 0.75
+					has_character_flag = break_d1
+				}
+				trait = rowdy
+			}
+			#indolent
+			10 = {
+				modifier = {
+					factor = 2
+					has_character_flag = ghosts_d2
+				}
+				modifier = {
+					factor = 2
+					has_character_flag = ghosts_d3
+				}
+				modifier = {
+					factor = 3
+					has_character_flag = sleep_d2
+				}
+				trait = indolent
+			}
 			#fussy
-			#conscientious. x2 sleep_d1. x2 ghosts_d2
+			10 = {
+				trait = fussy
+				}
+			
+			#conscientious 
+			10 = {
+				modifier = {
+					factor = 2
+					has_character_flag = sleep_d1
+				}
+				modifier = {
+					factor = 2
+					has_character_flag = sleep_d2
+				}
+				modifier = {
+					factor = 3
+					has_character_flag = ghosts_d2
+				}
+				modifier = {
+					factor = 2
+					has_character_flag = break_d1
+				}
+				trait = conscientious 
+			}
 			#willful x0.5 ghosts d2
 			#curious x1.5 ghosts d1
 			#idolizer x2 sleep_d1. x4 ghosts_d3. x2 ghosts d3. x0.5 ghosts d1
