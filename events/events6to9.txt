@@ -1,0 +1,421 @@
+
+## 6 to 9 Events
+## Has chance of firing ONE of these events EACH year
+## 4 years in total. Maximum 4 events, likely less than that.
+## Ends with the 9 year keystone event that will determine PROCLIVITY towards one of the 5 stats based on choices, focus, and temperament
+
+## Initial Event. Might need something here to give a buff to the initial guardian chosen so that the player cannot just change the guardian whenever they like without a penalty
+
+## General Events 20000-21999
+
+## Spouse/Parent complains about child doing to dangerous an activity
+character_event = {
+	id = CE.20000
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 6
+	max_age = 9 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		NOT = { has_character_flag = reckless_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone2 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 4
+			trait = willful
+		}
+		modifier = {
+			factor = 3
+			trait = rowdy
+		}
+		modifier = {
+			factor = 1.5
+			trait = curious
+		}
+		modifier = {
+			factor = 2
+			trait = playful
+		}
+		modifier = {
+			factor = 0
+			trait = indolent
+		}
+		modifier = {
+			factor = 0
+			trait = timid
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = reckless_event 
+		change_variable = { which = 6to9events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.20001 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.20001 }
+				}
+			}
+		}
+	}
+}
+
+## Spouse/Parent complains about child doing a dangerous activity
+character_event = {
+	id = CE.20001
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_ZE_8100 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ## Make the child stop
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA
+		hidden_tooltip = {
+		FROM = {
+			set_character_flag = reckless_d1
+			if = {
+				limit = {
+						trait = willful
+					}
+				random = {
+					chance = 25
+					remove_trait = willful
+				}
+				random = {
+					chance = 1
+					add_trait = craven
+				}
+			}
+			else_if = {
+				limit = {
+						trait = rowdy
+					}
+				random = {
+					chance = 20
+					remove_trait = rowdy
+				}
+				random = {
+					chance = 2
+					add_trait = craven
+				}
+			}
+			else_if = {
+				limit = {
+					trait = playful
+				}
+				random = {
+					chance = 10
+					remove_trait = playful
+				}
+				random = {
+					chance = 3
+					add_trait = craven
+				}
+			}
+			else = {
+				random = {
+					chance = 10
+					add_trait = craven
+				}
+			}
+		}
+		}
+	}
+	option = { ## Seek higher peaks
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 10
+				OR = {
+				trait = proud
+				trait = ambitious
+				}
+			}
+		}
+		name = EVTOPTB
+		hidden_tooltip = {
+		FROM = {
+			set_character_flag = reckless_d2
+			if = {
+				limit = {
+					trait = willful
+					}
+				random = {
+					chance = 75
+					add_trait = brave
+				}
+				random = {
+					chance = 5
+					character_event = { id = CE.20002 days = 14 random = 180 } ## chance of the child being injured
+				}
+			}
+			else_if = {
+				limit = {
+					trait = rowdy
+					}
+				random = {
+					chance = 50
+					add_trait = brave
+				}
+				random = {
+					chance = 4
+					character_event = { id = CE.20002 days = 14 random = 180 } ## chance of the child being injured
+				}
+			}
+			else = {
+				random = {
+					chance = 25
+					add_trait = brave
+				}
+				random = {
+					chance = 2
+					character_event = { id = CE.20002 days = 14 random = 180 } ## chance of the child being injured
+				}
+			}
+		}
+		}
+	}
+	
+	option = { ## Allow it to continue
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTB
+		hidden_tooltip = {
+		FROM = {
+			set_character_flag = reckless_d3
+			if = {
+				limit = {
+					trait = willful
+					}
+				random = {
+					chance = 25
+					add_trait = brave
+				}
+				random = {
+					chance = 1
+					character_event = { id = CE.20002 days = 14 random = 180 } ## chance of the child being injured
+				}
+			}
+			else_if = {
+				limit = {
+					trait = rowdy
+					}
+				random = {
+					chance = 20
+					add_trait = brave
+				}
+				random = {
+					chance = 1
+					character_event = { id = CE.20002 days = 14 random = 180 } ## chance of the child being injured
+				}
+			}
+			else = {
+				random = {
+					chance = 10
+					add_trait = brave
+				}
+				random = {
+					chance = 0.5
+					character_event = { id = CE.20002 days = 14 random = 180 } ## chance of the child being injured
+				}
+			}
+		}
+		}
+	}
+}
+
+character_event = {
+	id = CE.20002
+	hide_window = yes
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		random_list = {
+		10 = {
+			death = { death_reason = fell_from_tower }
+			father = {
+				character_event = { id = CE.20003 } ## Notify father child is dead
+			}
+		}
+		40 = {
+			add_trait = severely_injured
+			add_trait = mangled
+				father = {
+					character_event = { id = CE.20004 } ## notify father child is injured
+				}
+		}
+		20 = {
+			add_trait = severely_injured
+			add_trait = one_legged
+				father = {
+					character_event = { id = CE.20004 } ## notify father child is injured
+				}
+		}
+		30 = {
+			add_trait = wounded
+			father = {
+				character_event = { id = CE.20004 } ## notify father child is injured
+			}
+		}
+		}
+	}
+}
+
+## Events 20003 and 20004 Here
+
+## Child does not interact with peers
+character_event = {
+	id = CE.20010
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 6
+	max_age = 9 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		NOT = { has_character_flag = introvert_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone2 } ## Once Stage 1 development has passed this event can't fire
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 4
+			trait = brooding
+		}
+		modifier = {
+			factor = 3
+			trait = timid
+		}
+		modifier = {
+			factor = 3
+			trait = haughty
+		}
+		modifier = {
+			factor = 0.25
+			trait = affectionate
+		}
+		modifier = {
+			factor = 0.25
+			trait = rowdy
+		}
+		modifier = {
+			factor = 0.2
+			trait = playful
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = introvert_event 
+		change_variable = { which = 6to9events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.20011 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.20011 }
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = CE.20021
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_ZE_8100
+
+	hide_from = yes
+
+	prisoner = no
+
+	is_triggered_only = yes
+	
+	option = { ## Find a child to play with him/her
+		ai_chance = {
+			factor = 20
+		}
+	}
+	
+	option = { ## Encourage the solitude through pride
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA
+		hidden_tooltip = {
+		FROM = {
+			set_character_flag = introvert_d2
+			if = {
+				limit = {
+						trait = haughty
+					}
+				random = {
+					chance = 60
+					add_trait = proud
+				}
+			}
+			else_if = {
+				limit = {
+						trait = brooding
+					}
+				random = {
+					chance = 40
+					add_trait = proud
+				}
+			}
+			else = {
+				random = {
+					chance = 20
+					add_trait = proud
+				}
+			}
+		}
+		}
+	}
+	
+	option = { ## Let it be
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA
+		hidden_tooltip = {
+		FROM = {
+			set_character_flag = introvert_d3
+		}
+		}
+	}
+}
+
+## Keystone Events
+	
