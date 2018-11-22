@@ -141,9 +141,6 @@ character_event = {
 	trigger = {
 		NOT = { has_character_flag = ghost_event } ## We don't want this event firing twice for the same kid
 		NOT = { has_character_flag = keystone1 } ## Once Stage 1 development has passed this event can't fire
-		father = {
-			war = no
-		}
 	}
 	
 	immediate = {
@@ -268,9 +265,6 @@ character_event = {
 	trigger = {
 		NOT = { has_character_flag = sharing_event } ## We don't want this event firing twice for the same kid
 		NOT = { has_character_flag = keystone1 } ## Once Stage 1 development has passed this event can't fire
-		father = {
-			war = no
-		}
 	}
 	
 	immediate = {
@@ -400,18 +394,15 @@ character_event = {
 	prisoner = no
 	
 	trigger = {
-		NOT = { has_character_flag = sharing_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = break_event } ## We don't want this event firing twice for the same kid
 		NOT = { has_character_flag = keystone1 } ## Once Stage 1 development has passed this event can't fire
-		father = {
-			war = no
-		}
 	}
 	
 	immediate = {
 		
 		## SHOULD SET COURTIER KID AS EVENT TARGET HERE
 		
-		set_character_flag = sharing_event 
+		set_character_flag = break_event 
 		change_variable = { which = 2to5events value = 1 }
 		random_list = {
 			50 = {
