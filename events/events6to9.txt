@@ -1,4 +1,3 @@
-
 ## 6 to 9 Events
 ## Has chance of firing ONE of these events EACH year
 ## 4 years in total. Maximum 4 events, likely less than that.
@@ -52,6 +51,10 @@ character_event = {
 		modifier = {
 			factor = 0
 			trait = timid
+		}
+		modifier = {
+			factor = 2
+			has_focus = focus_ch_struggle
 		}
 	}
 	
@@ -184,8 +187,8 @@ character_event = {
 			}
 			else = {
 				random = {
-					chance = 25
-					add_trait = brave
+					chance = 50
+					add_trait = willful
 				}
 				random = {
 					chance = 2
@@ -232,8 +235,8 @@ character_event = {
 			}
 			else = {
 				random = {
-					chance = 10
-					add_trait = brave
+					chance = 25
+					add_trait = willful
 				}
 				random = {
 					chance = 0.5
@@ -396,8 +399,8 @@ character_event = {
 			}
 			else = {
 				random = {
-					chance = 20
-					add_trait = proud
+					chance = 50
+					add_trait = haughty
 				}
 			}
 		}
@@ -417,5 +420,238 @@ character_event = {
 	}
 }
 
-## Keystone Events
+## Trait based events 21500-21999
+
+## Ugly child is ignored and mocked at court (actually I guess we could make this a humility/etiquette event)
+character_event = {
+	id = CE.21500
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 6
+	max_age = 9 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		trait = ugly
+		NOT = { has_character_flag = ghost_event }
+		NOT = { has_character_flag = keystone2 } 
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 6
+			has_focus = focus_ch_etiquette
+		}
+		modifier = {
+			factor = 3
+			has_focus = focus_ch_humility
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = mockedforugly_event 
+		change_variable = { which = 6to9events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.21501 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.21501 }
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = CE.21501
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_ZE_8100
+
+	hide_from = yes
+
+	prisoner = no
+
+	is_triggered_only = yes
+	
+	option = { ## Encourage through Pride
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+				trait = proud
+			}
+		}
+		name = whatever
+		hidden_tooltip = {
+			FROM = {
+				random_list = {
+					20 = {
+						modifier = {
+							factor = 2
+							trait = haughty
+						}
+						if = {
+							limit = {
+								trait = haughty
+							}
+							add_trait = proud
+						}
+						else = {
+							add_trait = haughty
+						}	
+						set_character_flag = mockedugly_d1a
+					}
+					60 = {
+					
+						set_character_flag = mockedugly_d1b 
+					}
+					20 = {
+						set_character_flag = mockedugly_d1c ## Character is unhappy about being mocked
+					}
+				}
+			}
+		}
+	}
+
+	option = { ## Encourage Other means
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				trait = proud
+			}
+			modifier = {
+				factor = 2
+				trait = diligent
+			}
+			modifier = {
+				factor = 2
+				trait = patient
+			}
+		}
+		name = whatever
+		hidden_tooltip = {
+			FROM = {
+				random_list = {
+					20 = { ## Works
+						set_character_flag = mockedugly_d2a 
+					}
+					80 = { ## Doesn't work
+						set_character_flag = mockedugly_d2b 
+					}
+				}
+			}
+		}
+	}
+	
+	option = { ## Just worship God
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+				trait = zealous
+			}
+		}
+		name = whatever
+		hidden_tooltip = {
+			FROM = {
+				random_list = {
+					20 = { ## Works
+						modifier = {
+							factor = 3
+							trait = idolizer
+						}
+						set_character_flag = mockedugly_d3a
+					}
+					80 = { ## Doesn't work
+						modifier = {
+							factor = 3
+							trait = curious
+						}
+						set_character_flag = mockedugly_d3b
+					}
+				}
+			}
+		}
+	}	
+	option = { ## Yes you are ugly
+		ai_chance = {
+			factor = 5
+			trigger = {
+				trait = cruel
+			}
+			modifier = {
+				factor = 10
+				trait = cruel
+			}
+		}
+		name = whatever
+		hidden_tooltip = {
+			FROM = {
+				random_list = {
+					80 = { ## Child becomes depressed
+						random = {
+							chance = 50
+							add_trait = brooding
+						}
+						set_character_flag = mockedugly_d4a
+					}
+					10 = { ## Doesn't work
+						set_character_flag = mockedugly_d4b
+					}
+				}
+			}
+		}
+	}
+	option = { ## Do nothing
+		ai_chance = {
+			factor = 15
+			modifier = {
+				factor = 3
+				trait = slothful
+			}
+			modifier = {
+				factor = 0.5
+				trait = kind
+			}
+		}
+		name = whatever
+		hidden_tooltip = {
+			FROM = {
+				random_list = {
+					30 = { ## Child becomes depressed
+						random = {
+							chance = 20
+							add_trait = brooding
+						}
+						set_character_flag = mockedugly_d4a
+					}
+					70 = { ## Nothing
+						set_character_flag = mockedugly_d4b
+					}
+				}
+			}
+		}
+	}
+}
+					
+					
+	
+
+
+## Faith
+
+
+## Temperament Keystone Event #29999
+
+
 	
