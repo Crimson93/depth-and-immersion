@@ -1,0 +1,12 @@
+
+## This is the final phase of childhood. Well, adolescence
+## A lot of these events will be EDUCATION based
+## The Keystone event here is very important. First of all, it will give the final trait buffs as well as
+## assign the relevant education trait to the child depending on various factors such as the choices they
+## made, how well they get along with their guardian and things like that.
+## The Keystone event also determines lifelong ambition. 
+
+## Keystone Event (F, H, E, HU, S, P, T, D)
+## LEARNING
+## AMBITIONS: 
+## PLURALIST (S, E, T, Hu), CYNIC (F, T), ZEALOUS WARRIOR (F, P, D), SKEPTIC (T, S), DOGMATIC (F,H,P,D), SPIRITUAL (F, H, Hu), INDIFFERENT
