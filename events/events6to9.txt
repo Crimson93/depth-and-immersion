@@ -434,7 +434,13 @@ character_event = {
 	
 	
 	trigger = {
+		OR = {
 		trait = ugly
+		trait = hunchback
+		trait = harelip
+		trait = clubfooted
+		trait = dwarf
+		}
 		NOT = { has_character_flag = ghost_event }
 		NOT = { has_character_flag = keystone2 } 
 	}
