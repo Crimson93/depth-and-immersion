@@ -1,12 +1,74 @@
 
 ## This is the final phase of childhood. Well, adolescence
 ## A lot of these events will be EDUCATION based
+## LEARNING: CHILD FOCUSES ON BECOMING A WELL READ
+## STEWARDSHIP: CHILD FOCUSES ON LEARNING ABOUT MONEY AND MERCHANTS
+## INTRIGUE: CHILD LEARNS ABOUT NAVIGATING COURT INTRIGUE
+## DIPLOMACY: CHILD MEETS OTHER RULERS AND VASSALS AND LEARNS TO BE DIPLOMATIC
+## MARTIAL: CHILD LEARNS ABOUT WAR
 ## The Keystone event here is very important. First of all, it will give the final trait buffs as well as
 ## assign the relevant education trait to the child depending on various factors such as the choices they
 ## made, how well they get along with their guardian and things like that.
 ## The Keystone event also determines lifelong ambition. 
 
-## Keystone Event (F, H, E, HU, S, P, T, D)
-## LEARNING
-## AMBITIONS: 
-## PLURALIST (S, E, T, Hu), CYNIC (F, T), ZEALOUS WARRIOR (F, P, D), SKEPTIC (T, S), DOGMATIC (F,H,P,D), SPIRITUAL (F, H, Hu), INDIFFERENT
+
+##############################################
+## Keystone Event
+##############################################
+## ADD FINAL OPINION OF PARENTS AND GUARDIAN BASED ON CHILDHOOD EXPERINCE
+## Based on traits of both and the experience from the decisions made.
+
+## ADD FINAL CHILD STATS
+## Based on their CHILHOOD TRAITS, OTHER TRAITS, DECISIONS MADE, GUARDIAN STATS/EDUCATION, ATTITUDE TOWARDS GUARDIAN, FOCUS, AND EDUCATION
+
+## ADD FINAL CHILD TRAITS
+## Based on CHILDHOOD TRAITS AND EDUCATION
+
+## ADD AMBITION
+## AMBITIONS ARENT TIED TO EDUCATION, but EDUCATION + FOCUS
+## HOW TO DETERMINE AMBITIONS: 
+## FIRST, the childhood focus and the education are taken into account. The final choice of ambition will be drasticailly influenced by these ## two choices
+## SECOND, EVERY CHOICE made by the player and the guardian regarding the child is taken into account.
+## NOT EVERY CHARACTER ENDS UP WITH AN AMBITION
+
+## MOSTLY FAITH BASED
+## ZEALOUS WARRIOR (Faith or Heritage -> Martial) - Win 3 Holy Wars
+## PLURALIST ( Faith -> Diplomacy) - Learn about other religions
+## DOGMATIC ( Faith, Heritage, Pride -> Learning) - Obtain a large amount of piety
+## CYNIC ( Faith -> Learning, Diplomcy) - ??
+## SKEPTIC ( Faith -> Learning, Intrigue ) - Discover something to believe in
+## SPIRITUAL (Faith, Heritage -> Learning) - Find God 
+## REFORMIST ( Faith -> Learning) - Increase Moral Authority of Religion or something
+
+## HERITAGE
+## FAMILY MAN/WOMAN (Heritage, Humility, Duty, Stewardship) - Have 5 children and see them to age 16, all your religion, and have positive relations with all of them, and wife
+
+## PRIDE 
+## CONQUEROR (Pride, Struggle -> Martial) - Get conquest casus Belli. Win 3 wars using that casus Belli
+## ADMINISTRATOR (Pride, Duty, Thrift -> Stewardship) - increase monthly tax income
+## AUTOCRAT (Pride -> Diplomacy) - Abolish Council power, obtain total control
+## THE GREAT (Pride) - Obtain _ amount of prestige
+## THE PHILOSOPHER KING (Pride, Struggle - Learning) - amount of prestige, piety, and books in treasury
+## PACIFIST (Pride, Struggle - Martial) - never go to war (offensive)
+
+## STRUGGLE
+## DUELIST (Struggle -> Martial) - Win 10 lifetime duels
+## TACTICIAN (Struggle, pride -> Martial) - Win 10 battles
+## ASSASSIN (Struggle -> Intrigue) - Assassinate a high profie target (Pope, King)
+
+## ETIQUETTE
+## LOVED BY ALL (Etiquette, Humility -> Diplomacy) Have a good relationship with 90% of your vassals
+## GOOD RELATIONS (Etiquette) - Have positive relations with all neighbors
+## REFORMER (Etiquette -> Intrigue) - Rid the country of corruption
+## ROMANTIC (Etiquette -> Diplomacy) - Fall in love
+
+## HUMILITY
+## FAITHFUL SERVANT (Humility -> Diplomacy) - Be considered a faithful servant by your liege
+
+## DUTY and Thrift
+## KLEPTOCRAT (Thrift -> Stewardship) Have a treasury of __ size
+## NEPOTISM (Duty - > Intrigue) Have members of your dynasty control 50% of the realm
+## INVENTOR (Thrift -> Learning) Invent new technology
+
+
+## CLEAR ALL CHILDHOOD FLAGS
