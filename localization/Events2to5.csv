@@ -1,9 +1,12 @@
 #CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
 # Child is scared of sleeping alone;;;;;;;;;;;;;;
-EVTDESC_CE_10001;;;;;;;;;;;;;;x
-EVTOPTA_CE_10001;;;;;;;;;;;;;;x
-EVTOPTB_CE_10001;;;;;;;;;;;;;;x
-EVTOPTC_CE_10001;;;;;;;;;;;;;;x
+EVTDESC_CE_10001;You awaken late in the night to little [FROM.GetFirstName] attempting to crawl up into the bed. Murmuring sleepily, you ask what the problem is. [FROM.GetFirstName] responds that he/she was scared by a bad dream and wants to come sleep with [FROM.GetHerHim] mother.;;;;;;;;;;;;;x
+EVTOPTA_CE_10001;It was only a dream. You shouldn’t be afraid of such things.;;;;;;;;;;;;;x
+EVTOPTA_CE_10001_TT;You sternly tell [FROM.GetFirstName] that [FROM.GetSheHe] must return to [FROM.GetHerHim] own bed.;;;;;;;;;;;;;x
+EVTOPTB_CE_10001;Bad dreams? I’ll give you something to be afraid of you little whelp!;;;;;;;;;;;;;x
+EVTOPTB_CE_10001_TT;A harsh word and a quick lash will teach this child manners.;;;;;;;;;;;;;x
+EVTOPTC_CE_10001;You poor thing, come here;;;;;;;;;;;;;x
+EVTOPTC_CE_10001_TT;You invite the child to come and sleep with in the bed with you, at least for tonight.;;;;;;;;;;;;;x
 # Child is scared of ghosts.;;;;;;;;;;;;;;
 EVTDESC_CE_10011;;;;;;;;;;;;;;x
 EVTOPTA_CE_10011;;;;;;;;;;;;;;x
