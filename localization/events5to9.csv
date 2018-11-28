@@ -1,1 +1,18 @@
 #CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+#Spouse/Parent complains about child doing a dangerous activity;;;;;;;;;;;;;;
+EVTDESC_CE_20001;;;;;;;;;;;;;;x
+EVTOPTA_CE_20001;;;;;;;;;;;;;;x
+EVTOPTB_CE_20001;;;;;;;;;;;;;;x
+EVTOPTC_CE_20001;;;;;;;;;;;;;;x
+#Child does not interact with peers;;;;;;;;;;;;;;
+EVTDESC_CE_20021;;;;;;;;;;;;;;x
+EVTOPTA_CE_20021;;;;;;;;;;;;;;x
+EVTOPTB_CE_20021;;;;;;;;;;;;;;x
+EVTOPTC_CE_20021;;;;;;;;;;;;;;x
+#Child mocked for being ugly;;;;;;;;;;;;;;
+EVTDESC_CE_21501;;;;;;;;;;;;;;x
+EVTOPTA_CE_21501;;;;;;;;;;;;;;x
+EVTOPTB_CE_21501;;;;;;;;;;;;;;x
+EVTOPTC_CE_21501;;;;;;;;;;;;;;x
+EVTOPTD_CE_21501;;;;;;;;;;;;;;x
+EVTOPTE_CE_21501;;;;;;;;;;;;;;x

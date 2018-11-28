@@ -82,7 +82,7 @@ character_event = {
 	id = CE.20001
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_ZE_8100 
+	desc = EVTDESC_CE_20001 
 	
 	prisoner = no
 	
@@ -92,7 +92,7 @@ character_event = {
 		ai_chance = {
 			factor = 15
 		}
-		name = EVTOPTA
+		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = reckless_d1
@@ -155,7 +155,7 @@ character_event = {
 				}
 			}
 		}
-		name = EVTOPTB
+		name = EVTOPTB_CE_20001
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = reckless_d2
@@ -203,7 +203,7 @@ character_event = {
 		ai_chance = {
 			factor = 15
 		}
-		name = EVTOPTB
+		name = EVTOPTC_CE_20001
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = reckless_d3
@@ -357,7 +357,7 @@ character_event = {
 	id = CE.20021
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_ZE_8100
+	desc = EVTDESC_CE_20021
 
 	hide_from = yes
 
@@ -369,13 +369,14 @@ character_event = {
 		ai_chance = {
 			factor = 20
 		}
+		name = EVTOPTA_CE_20021
 	}
 	
 	option = { ## Encourage the solitude through pride
 		ai_chance = {
 			factor = 15
 		}
-		name = EVTOPTA
+		name = EVTOPTB_CE_20021
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = introvert_d2
@@ -411,7 +412,7 @@ character_event = {
 		ai_chance = {
 			factor = 15
 		}
-		name = EVTOPTA
+		name = EVTOPTC_CE_20021
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = introvert_d3
@@ -441,7 +442,7 @@ character_event = {
 		trait = clubfooted
 		trait = dwarf
 		}
-		NOT = { has_character_flag = ghost_event }
+		NOT = { has_character_flag = mockedforugly_event }
 		NOT = { has_character_flag = keystone2 } 
 	}
 	
@@ -480,7 +481,7 @@ character_event = {
 	id = CE.21501
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_ZE_8100
+	desc = EVTDESC_CE_21501
 
 	hide_from = yes
 
@@ -488,7 +489,7 @@ character_event = {
 
 	is_triggered_only = yes
 	
-	option = { ## Encourage through Pride
+	option = { ## Encourage through pride
 		ai_chance = {
 			factor = 10
 			modifier = {
@@ -496,7 +497,7 @@ character_event = {
 				trait = proud
 			}
 		}
-		name = whatever
+		name = EVTOPTA_CE_21501
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
@@ -544,7 +545,7 @@ character_event = {
 				trait = patient
 			}
 		}
-		name = whatever
+		name = EVTOPTB_CE_21501
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
@@ -567,7 +568,7 @@ character_event = {
 				trait = zealous
 			}
 		}
-		name = whatever
+		name = EVTOPTC_CE_21501
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
@@ -600,7 +601,7 @@ character_event = {
 				trait = cruel
 			}
 		}
-		name = whatever
+		name = EVTOPTD_CE_21501
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
@@ -630,7 +631,7 @@ character_event = {
 				trait = kind
 			}
 		}
-		name = whatever
+		name = EVTOPTE_CE_21501
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
