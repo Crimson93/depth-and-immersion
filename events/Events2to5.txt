@@ -60,6 +60,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTA_CE_10001
+		custom_tooltip = { text = EVTOPTA_CE_10001_TT }
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = sleep_d1 ## Track the decision being made.
@@ -87,6 +88,7 @@ character_event = {
 				}
 			}
 		}
+		custom_tooltip = { text = EVTOPTB_CE_10001_TT }
 		name = EVTOPTB_CE_10001
 		hidden_tooltip = {
 			FROM = {
@@ -116,6 +118,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTC_CE_10001
+		custom_tooltip = { text = EVTOPTC_CE_10001_TT }
 		hidden_tooltip = {
 			FROM = {
 			set_character_flag = sleep_d3
