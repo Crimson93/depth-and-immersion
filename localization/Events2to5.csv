@@ -16,8 +16,9 @@ EVTOPTA_CE_10021;;;;;;;;;;;;;;x
 EVTOPTB_CE_10021;;;;;;;;;;;;;;x
 EVTOPTC_CE_10021;;;;;;;;;;;;;;x
 EVTOPTD_CE_10021;;;;;;;;;;;;;;x
+EVTOPTE_CE_10021;;;;;;;;;;;;;;x
 # 2-5 Child breaks something while playing with toys;;;;;;;;;;;;;;
 EVTDESC_CE_10031;;;;;;;;;;;;;;
 EVTOPTA_CE_10031;;;;;;;;;;;;;;
 EVTOPTB_CE_10031;;;;;;;;;;;;;;
-EVTOPTD_CE_10021;;;;;;;;;;;;;;
+EVTOPTC_CE_10031;;;;;;;;;;;;;;
