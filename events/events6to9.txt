@@ -137,7 +137,7 @@ character_event = {
 			}
 			else = {
 				random = {
-					chance = 10
+					chance = 5
 					add_trait = craven
 				}
 			}
@@ -655,10 +655,558 @@ character_event = {
 	
 
 
-## Faith
+## Faith 28000-28999
 
+## Execution Event Chain - Heretic
+
+character_event = {
+	id = CE.28000
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 6
+	max_age = 9 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		NOT = { has_character_flag = executionH_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone2 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 0
+			NOT = {
+			has_focus = focus_ch_faith
+			has_focus = focus_ch_heritage
+			}
+		}
+		modifier = {
+			factor = 2
+			trait = curious
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = executionH_event 
+		change_variable = { which = 6to9events value = 1 }
+		father = {
+				character_event = { id = CE.20001 }
+		}
+	}
+}
+
+## Execution Event Chain - Heretic
+character_event = {
+	id = CE.28001
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { 
+	## Option 1: Such things are not for the eyes of children
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+				trait = kind
+			}
+		}
+		name = EVTOPTA_CE_10021 
+		FROM = {			
+			if = {
+				limit = {
+					OR = {
+						trait = rowdy
+						trait = willful
+					}
+				}
+				random_list = {
+					40 = { ## Snuck out, saw execution 
+						random_list = {
+							5 = { ## were scarred
+								modifier = {
+									factor = 3
+									trait = affectionate
+								}
+								modifier = {
+									factor = 3
+									trait = timid
+								}
+								set_character_flag = oppose_heretic_execution
+								ROOT = {
+									character_event = { id = 28004}
+								}
+							}
+							2 = { ## liked it
+								set_character_flag = support_heretic_execution
+								ROOT = {
+									character_event = { id = 28005}
+								}
+									
+							}
+							3 = { ## didn't see the big deal
+							}
+						}
+					}
+					30 = { ## Snuck out and were caught
+						ROOT = {
+							character_event = { id = 28003}
+						}
+					}
+					30 = { ## nothing
+					}
+				}
+			}
+			random = {
+				chance = 50
+				modifier = { 
+					factor = 0
+					trait = affectionate
+				}
+				opinion = { who = ROOT modifier = didnt_take_to_execution months = 120 }
+			}
+		}
+	}
+	option = { ## Sure you can come along
+		ai_chance = {
+			factor = 15
+			modifier = {
+				factor = 10
+				trait = cruel
+			}
+		}
+		name = EVTOPTB_CE_20001
+		hidden_tooltip = {
+			character_event = { id = 28002 }
+
+		}
+	}
+
+}
+
+## Execution Event Chain - Heretic. Child is taken to Execution
+character_event = {
+	id = CE.28002
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { 
+	## It is our duty to punish criminals
+		trigger = {
+			trait = just
+		}
+		ai_chance = {
+			factor = 200
+		}
+		name = EVTOPTA_CE_10021
+		
+		hidden_tooltip = {
+		FROM = {
+			## Conscientious kids will likely benefit from this decision
+			if = {
+				limit = {
+					trait = conscientious
+				}
+				random_list = {
+					80 = { ## Yes, we are just doing our duty
+						add_trait = just
+						set_character_flag = executionH_d1a
+					}
+					10 = { ## But... does this man really deserve death?
+						modifier = {
+							factor = 3
+							trait = curious
+						}
+						set_character_flag = executionH_d1b
+					}
+					10 = {
+					}
+				}
+			}
+			## Affectionate kids will likely feel sad
+			else_if = {
+				limit = {
+					trait = affectionate
+				}
+				random_list = {
+					30 = {
+						add_trait = conscientious
+						set_character_flag = executionH_d1a
+					}
+					70 = {
+						set_character_flag = executionH_d1c
+					}
+				}
+			}
+			## Child will likely think the killing was just. Possibly otherwise
+			else = {
+				random_list = {
+					70 = {
+						add_trait = conscientious
+						set_character_flag = executionH_d1a
+					}
+					20 = {
+					}
+					10 = {
+						set_character_flag = executionH_d1b
+					}
+				}
+			}
+		}
+		}
+	}
+	option = { 
+	## He has broken the law
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 2
+				trait = diligent
+			}
+		}
+		name = EVTOPTA_CE_10021
+		
+		hidden_tooltip = {
+		FROM = {
+			## Conscientious kids will likely benefit from this decision
+			if = {
+				limit = {
+					trait = conscientious
+				}
+				random_list = {
+					20 = { ## Yes, we are just doing our duty
+						add_trait = just
+						set_character_flag = executionH_d1a
+					}
+					10 = { ## But... does this man really deserve death?
+						modifier = {
+							factor = 3
+							trait = curious
+						}
+						set_character_flag = executionH_d1b
+					}
+					70 = {
+					}
+				}
+			}
+			## Affectionate kids will likely feel sad
+			else_if = {
+				limit = {
+					trait = affectionate
+				}
+				random_list = {
+					20 = {
+						add_trait = conscientious
+						set_character_flag = executionH_d1a
+					}
+					80 = {
+						set_character_flag = executionH_d1c
+					}
+				}
+			}
+			## Child will likely think the killing was just. Possibly otherwise
+			else = {
+				random_list = {
+					30 = {
+						add_trait = conscientious
+						set_character_flag = executionH_d1a
+					}
+					60 = {
+					}
+					10 = {
+						set_character_flag = executionH_d1b
+					}
+				}
+			}
+		}
+		}
+	}
+	option = { ## Look away child
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTB_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+				
+				## Affectionate children will be less scarred
+				if = {
+					limit = {
+						trait = affectionate
+					}
+					set_character_flag = executionH_d2a
+				}
+				else = {
+					set_character_flag = executionH_d2a
+				}
+			}
+		}
+	}
+	option = { ## Enjoy the show!
+		trigger = {
+				trait = cruel
+			}
+		ai_chance = {
+			factor = 200
+		}
+		name = EVTOPTC_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+			## Affectionate children will be scarred. They will probably dislike you too
+				if = {
+					limit = {
+						trait = affectionate
+					}
+					set_character_flag = executionH_d3a ## scarred
+					opinion = { WHO = ROOT modifier = execution_is_cruel months = 120 }
+				}
+			## Rowdy and Haughty children might become cruel. Might end up enjoying bloodshed
+				else_if = {
+					limit = {
+						OR = {
+						trait = haughty
+						trait = rowdy
+						trait = brooding
+						}
+					}
+					random_list = {
+						60 = {
+							random = {
+								chance = 25
+								add_trait = cruel
+							}
+							set_character_flag = executionH_d3b ## enjoyed it
+						}
+						40 = {
+							set_character_flag = executionH_d3c ## against it
+						}
+					}
+				}
+			## Otherwise, children might enjoy it and have a small chance of cruel. But larger chance of being against bloodshed
+				else = {
+					random_list = {
+						30 = {
+							random = {
+								chance = 25
+								add_trait = cruel
+							}
+							set_character_flag = executionH_d3b
+							}
+						50 = {
+							set_character_flag = executionH_d3c ## against it
+						}
+						20 = {
+							set_character_flag = executionH_d3a ## scarred
+						}
+					}
+				}
+			}
+		}
+	}
+	option = { ## THIS IS WHAT HAPPENS TO PEOPLE WHO DEFY GOD
+		trigger = {
+				trait = zealous
+			}
+		ai_chance = {
+			factor = 200
+		}
+		name = EVTOPTC_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+			## Affectionate children will be scarred. They will probably dislike you too
+				if = {
+					limit = {
+						trait = affectionate
+					}
+					set_character_flag = executionH_d3a ## scarred
+					opinion = { WHO = ROOT modifier = execution_is_cruel months = 120 }
+				}
+			## Indolent children might become zealous. They might become cruel. They might see heretics as scum.
+				else_if = {
+					limit = {
+						trait = indolent
+					}
+					random_list = {
+						60 = {
+							random = {
+								chance = 25
+								add_trait = zealous
+							}
+							random = {
+								chance = 25
+								add_trait = cruel
+							}
+							set_character_flag = executionH_d4a ## hates heretics
+						}
+						20 = {
+							set_character_flag = executionH_d3c ## against it
+						}
+						20 = {
+							set_character_flag = executionH_d4b ## our religion is too cruel
+						}
+					}
+				}
+			## Otherwise, children might enjoy it and have a small chance of cruel. But larger chance of being against bloodshed
+				else = {
+					random_list = {
+						30 = {
+							random = {
+								chance = 25
+								add_trait = zealous
+							}
+							random = {
+								chance = 25
+								add_trait = cruel
+							}
+							set_character_flag = executionH_d3b
+							}
+						30 = {
+							set_character_flag = executionH_d3c ## against it
+						}
+						40 = {
+							set_character_flag = executionH_d4b ## our religion is too cruel
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+## Execution Event Chain - children caught sneaking out!
+character_event = {
+	id = CE.28003
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ## A good beating will teach them to not do it again
+		trigger = {
+			OR = {
+			trait = wroth
+			trait = cruel
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTB_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+				## Chance to lose rowdy or willful
+				## Opinion loss for father
+			}
+		}
+	}
+	option = { ## Scold them
+		trigger = {
+			NOT = {
+				OR = {
+				trait = wroth
+				trait = cruel
+				}
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTB_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+				## Chance to lose rowdy or willful
+			}
+		}
+	}
+	option = { ## Probably should have taken them along
+		trigger = {
+			NOT = {
+				OR = {
+				trait = wroth
+				trait = cruel
+				}
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTB_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = sneaking_out_d3
+			}
+		}
+	}
+	
+}
+
+## Execution Event Chain - children snuck out and enjoyed the execution
+character_event = {
+	id = CE.28004
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	
+	option = { ## interesting
+		name = EVTOPTB_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = executionH_d3b
+				random = { 
+					chance = 25
+					trait = cruel
+				}
+			}
+		}
+	}
+	
+}
+
+## Execution Event Chain - children snuck out and didnt enjoy the execution
+character_event = {
+	id = CE.28005
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	
+	option = { ## interesting
+		name = EVTOPTB_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = executionH_d3c
+			}
+		}
+	}
+	
+}
 
 ## Temperament Keystone Event #29999
-
-
-	
