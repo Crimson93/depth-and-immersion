@@ -1,11 +1,892 @@
-
 ## Events 9 to 12
 ## This is the final few events that occur before education
 ## Same as the 6 to 9 events, except that the proclivities from keystone 1 will be factored into some events
 ## This part of the Childhood Development focuses heavily on struggle and weaknesses. The events that fire could work towards that narrative
 ## At 12, we have a major Keystone Event, which is a major event (or an event chain) that leads to some problem for the child that lasts throughout their life. Insecurity, Lust, loneliness.. etc
+## The keystone also summarizes their focus and proclivity
 
 ## General Events 30000-31000
 
+## If God exists, why is my life so bad?
+
+## Makes friends with someone of other faith
+
+
 ## Trait Based Events 31000-32000
+
+####################
+
+## Pride Based Events 34000-35000
+
+## Child feels pressured by amount they have to learn 
+
+## Child feels insecure after failure in []
+
+## Child feels frustrated after being beaten by fellow courtier kid (N)
+
+## Child is too good at [] and is letting it get to his/her head
+
+## Child is brought along to a council meeting
+
+## Martial Proclivity
+
+## Learning Proclivity
+
+## Guardian Suggests child should be given a rolemodel ruler to read about (N)
+## Me, Alexander (Christian, Islam) , Constantine (Christian), Charlemagne (Christian), Muhammad (Islam), Ali (Islam), Ragnar (Viking), Atilla (Altaic), Chandragupta (India), Ashoka (India)
+
+## PRIDE CONCLUSION
+## CONQUEROR, ADMINISTRATOR, AUTOCRAT, GLORYHOUND, PHILOSOPHER, PACIFIST
+
+#####################
+
+## Faith Based Events 38000-39000
+
+## Child finds comfort in being able to retreat into religious education, and is spending hours praying - Major
+character_event = {
+	character_event = {
+	id = CE.38000
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 9
+	max_age = 11 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		OR = {
+		has_focus = focus_ch_faith
+		}
+		NOT = { has_character_flag = reclusive_F_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone3 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 3
+			trait = idolizer
+		}
+		modifier = {
+			factor = 2
+			trait = indolent
+		}
+		modifier = {
+			factor = 0
+			trait = rowdy
+		}
+		modifier = {
+			factor = 0
+			trait = willful
+		}
+		modifier = {
+			factor = 2
+			trait = ugly
+		}
+		modifier = {
+			factor = 2
+			trait = shy
+		}
+		modifier = {
+			factor = 2
+			OR = {
+			trait = hunchback
+			trait = clubfooted
+			trait = harelip
+			trait = lisp
+			trait = dwarf
+			trait = stutter
+			}
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = reclusive_F_event 
+		change_variable = { which = 9to11events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.38001 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.38001 }
+				}
+			}
+		}
+	}
+}
+
+## Child finds comfort in being able to retreat into religious education, and is spending hours praying - Major
+character_event = {
+	id = CE.38001
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ## Encourage the child to spend time outside of religious teachings.
+
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## You encourage the child’s current interests.
+
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## force <name> into a more martial bent.
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+}
+
+## Child catches priest doing something sinful - Major
+character_event = {
+	id = CE.38010
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 9
+	max_age = 11 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		OR = {
+		has_focus = focus_ch_faith
+		}
+		NOT = { has_character_flag = badpriest_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone3 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 0.5
+			trait = indolent
+		}
+		modifier = {
+			factor = 2
+			trait = rowdy
+		}
+		modifier = {
+			factor = 2
+			trait = willful
+		}
+		modifier = {
+			factor = 2
+			trait = curious
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = badpriest_event 
+		change_variable = { which = 9to11events value = 1 }
+		## SET EVENT TARGET HERE. MUST BE HOLY MAN WHO IS NOT GUARDIAN
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.38011 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.38011 }
+				}
+			}
+		}
+	}
+}
+
+## Child catches priest doing something sinful - Major
+character_event = {
+	id = CE.38011
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ##  attempt to turn the experience into an important life lesson.
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## You teach <name> that none are infallible and that they must be ever vigilant
+
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## A little indulgence never killed a man
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Have the man whipped
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+}
+
+## Skeptical child wonders whether there is any proof of God or Jesus
+character_event = {
+	id = CE.38020
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 9
+	max_age = 11 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		OR = {
+		has_focus = focus_ch_faith
+		}
+		NOT = { has_character_flag = ProofofGod_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone3 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 0.5
+			trait = idolizer
+		}
+		modifier = {
+			factor = 2
+			trait = brooding
+		}
+		modifier = {
+			factor = 4
+			trait = curious
+		}
+		modifier = {
+			factor = 2
+			OR = {
+			trait = quick
+			trait = genius
+			}
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = ProofofGod_event 
+		change_variable = { which = 9to11events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.38021 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.38021 }
+				}
+			}
+		}
+	}
+}
+## Skeptical child wonders whether there is any proof of God or Jesus
+character_event = {
+	id = CE.38011
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ##  You attempt to tell <name> that they should have more faith.
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ##  You warn <name> that the kinds of questions he/she asks can be exceptionally dangerous
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## so many would believe so devoutly or recount miracles that have occurred
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Encourage the child's questioning mind
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+}
+
+## Child has been taking care of the poor in the city as accordance with the religious teachings (N)
+character_event = {
+	id = CE.38030
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 9
+	max_age = 11 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		OR = {
+		has_focus = focus_ch_faith
+		}
+		NOT = { has_character_flag = charity_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone3 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 4
+			OR = {
+			trait = affectionate
+			trait = kind
+			}
+		}
+		modifier = {
+			factor = 0.5
+			trait = indolent
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = charity_event 
+		change_variable = { which = 9to11events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.38031 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.38031 }
+				}
+			}
+		}
+	}
+}
+
+## Child has been taking care of the poor in the city as accordance with the religious teachings
+character_event = {
+	id = CE.38031
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ##  I think she's taking helping the poor too seriously. Discourage her
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ##  What priest has been teaching her this? I wont have <name> be around such scum
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Atta girl
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+}
+
+## Curious child has taken an interest in _ Faith (N)
+character_event = {
+	id = CE.38040
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 9
+	max_age = 11 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		has_focus = focus_ch_faith
+		NOT = { has_character_flag = conversion_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone3 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 4
+			trait = curious
+		}
+		## Another modifier if they have a friend who is of another religion
+		## Or parent
+		## Or sibling
+	}
+	
+	immediate = {
+	
+		set_character_flag = conversion_event 
+		change_variable = { which = 9to11events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.38041 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.38041 }
+				}
+			}
+		}
+	}
+}
+
+## Curious child has taken an interest in _ Faith (N)
+character_event = {
+	id = CE.38041
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ##  Not on my watch! Have child whipped and burn the book
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Try to convince the child against reading other faiths
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Nothing wrong with gaining knowledge
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+}
+
+## Makes a friend of another faith. Priests/Nuns tell her this is not allowed (N)
+character_event = {
+	id = CE.38050
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 9
+	max_age = 11 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		OR = {
+		has_focus = focus_ch_faith
+		has_focus = focus_ch_humility
+		}
+		## Check if court has a possible event target
+		NOT = { has_character_flag = conversion_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone3 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+	}
+	
+	immediate = {
+	
+		set_character_flag = conversion_event 
+		change_variable = { which = 9to11events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.38051 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.38051 }
+				}
+			}
+		}
+	}
+}
+
+## Makes a friend of another faith. Priests/Nuns tell her this is not allowed (N)
+character_event = {
+	id = CE.38051
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ##  Nothing wrong with it
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Agree with the priests and stop the friendship
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	
+}
+
+## Slow child struggles with understanding religious texts - Trait
+character_event = {
+	id = CE.38060
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 9
+	max_age = 11 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		OR = {
+		has_focus = focus_ch_faith
+		has_focus = focus_ch_humility
+		}
+		trait = slow
+		## Check if court has a possible event target
+		NOT = { has_character_flag = slowfaith_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone3 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+	}
+	
+	immediate = {
+	
+		set_character_flag = slowfaith_event 
+		change_variable = { which = 9to11events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.38061 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.38061 }
+				}
+			}
+		}
+	}
+}
+
+## Slow child struggles with understanding religious texts - Trait
+character_event = {
+	id = CE.38061
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ## Just memorize the prayers
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Push the child to learn
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Frame it like a puzzle (quick, genius,)
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+}
+
+## Genius Child finds religious education dull, shallow, and too dogmatic and so isnt taking it seriously - Trait
+## Maybe this should be a learning event instead....
+character_event = {
+	id = CE.38070
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 10
+	max_age = 11 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		has_focus = focus_ch_faith
+		OR = {
+		trait = genius
+		trait = quick
+		}
+		## Check if court has a possible event target
+		NOT = { has_character_flag = smartfaith_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone3 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+	}
+	
+	immediate = {
+	
+		set_character_flag = smartfaith_event 
+		change_variable = { which = 9to11events value = 1 }
+		random_list = {
+			50 = {
+				father = {
+					character_event = { id = CE.38071 }
+				}
+			}
+			50 = {
+				educator = {
+					character_event = { id = CE.38071 }
+				}
+			}
+		}
+	}
+}
+
+## Genius Child finds religious education dull, shallow, and too dogmatic and so isnt taking it seriously - Trai
+character_event = {
+	id = CE.38071
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ## Bring a theologian to discuss with them
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Push the child to learn
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+	
+	option = { ## Frame it like a puzzle (quick, genius,)
+		ai_chance = {
+			factor = 15
+		}
+		name = EVTOPTA_CE_20001
+		hidden_tooltip = {
+		FROM = {
+		}
+		}
+	}
+}
+
+## Conclusion
+
+## At the end of the faith narrative at the age of 12 we determine where the child leans
+## Dogmatic, Reformist, Skeptic, Antitheist, Spiritual, Pluralist, Indifferent
+## There will be an ambition associated with each of these, though which and whether it will be activated depends on education
+
+
+
+
+## Heritage: Haughty child becomes Xenophobe (N)
+
+## Conclusion
+## Dogmatic, Xenophobe, Spiritual, Indifferent (Safe form of Faith)
 
