@@ -84,6 +84,10 @@ character_event = {
 			trait = willful
 		}
 		modifier = {
+			factor = 0
+			trait = playful
+		}
+		modifier = {
 			factor = 2
 			trait = ugly
 		}
@@ -134,13 +138,15 @@ character_event = {
 	
 	is_triggered_only = yes
 	
-	option = { ## Encourage the child to spend time outside of religious teachings.
+	option = { ## Encourage the child to spend time socializing instead of religious teachings.
 
 		ai_chance = {
 			factor = 15
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## this will generally backfire and cause a loss to diplomacy. But it can give extra diplomacy instead
+		## Child will probably become sad
 		FROM = {
 		}
 		}
@@ -153,6 +159,7 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Child is more likely to be well read, but suffers penalty to diplomacy and martial
 		FROM = {
 		}
 		}
@@ -164,6 +171,10 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Child will probably dislike you. 
+		## Child might become sad
+		## Might lose the learning gain
+		## Might gain martial
 		FROM = {
 		}
 		}
@@ -250,18 +261,22 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Might end up convince the child to remain religious
+		## More likely to work if you have good traits
 		FROM = {
 		}
 		}
 	}
 	
 	option = { ## You teach <name> that none are infallible and that they must be ever vigilant
-
+		
 		ai_chance = {
 			factor = 15
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Child might become more open minded
+		## But also possible they turn away from religion
 		FROM = {
 		}
 		}
@@ -273,6 +288,8 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Child might end up hating religion
+		## But also possible they dont take it seriously and become hedonists
 		FROM = {
 		}
 		}
@@ -282,6 +299,8 @@ character_event = {
 		ai_chance = {
 			factor = 15
 		}
+		## Encourages dogmatism in the child
+		## Opinion loss of event target
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
 		FROM = {
@@ -371,17 +390,22 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Works well with idolizer. Backfires on brooding or curious. 
 		FROM = {
+		
 		}
 		}
 	}
 	
 	option = { ##  You warn <name> that the kinds of questions he/she asks can be exceptionally dangerous
+		
 		ai_chance = {
 			factor = 15
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Works well with idolizer. Backfires on brooding or curious. 
+		## If Fail, bad consequences. Hates religion. Hates you.
 		FROM = {
 		}
 		}
@@ -393,6 +417,7 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Works better with curious than the others. 
 		FROM = {
 		}
 		}
@@ -404,11 +429,12 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Possibly lose idolizer. Possible negative consequences eventually gaining cynical.
+		## Overall lean towards more openness. Less dogmatic. 
 		FROM = {
 		}
 		}
 	}
-	
 }
 
 ## Child has been taking care of the poor in the city as accordance with the religious teachings (N)
@@ -445,6 +471,18 @@ character_event = {
 		modifier = {
 			factor = 0.5
 			trait = indolent
+		}
+		modifier = {
+			factor = 0.5
+			trait = brooding
+		}
+		modifier = {
+			factor = 0.5
+			trait = rowdy
+		}
+		modifier = {
+			factor = 0
+			trait = haughty
 		}
 	}
 	
@@ -484,6 +522,7 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Might lose affectionate if successful. Reformist
 		FROM = {
 		}
 		}
@@ -495,6 +534,7 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Might lose affectionate. Might dislike religion. Probably will dislike you. Reformist or Cynic
 		FROM = {
 		}
 		}
@@ -506,6 +546,7 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Might gain affectionate. Might gain kind. Spiritual. 
 		FROM = {
 		}
 		}
@@ -580,6 +621,7 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Makes the character hate/be indifferent towards religion. Despises you.
 		FROM = {
 		}
 		}
@@ -591,6 +633,7 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Might fail. Might succeed. Less terrible
 		FROM = {
 		}
 		}
@@ -602,6 +645,9 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Might cause the child to convert
+		## Might cause cynicism
+		## Might cause pluralism
 		FROM = {
 		}
 		}
@@ -672,6 +718,9 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Child might convert to that religion
+		## Child gains tolerant
+		## Pluralist
 		FROM = {
 		}
 		}
@@ -683,6 +732,10 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Child is sad
+		## Child dislikes you
+		## Child loses idolizer if they have it
+		## Child dislikes religion
 		FROM = {
 		}
 		}
@@ -707,7 +760,10 @@ character_event = {
 		has_focus = focus_ch_faith
 		has_focus = focus_ch_humility
 		}
+		OR = {
 		trait = slow
+		trait = imbecile
+		}
 		## Check if court has a possible event target
 		NOT = { has_character_flag = slowfaith_event } ## We don't want this event firing twice for the same kid
 		NOT = { has_character_flag = keystone3 } ## Once Stage 1 development has passed this event can't fire
@@ -755,6 +811,8 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Dogmatic
+		## Child is not pressured
 		FROM = {
 		}
 		}
@@ -767,6 +825,8 @@ character_event = {
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
 		FROM = {
+		## Child likely become frustrated (always if imbecile)
+		## Might cause the child to lose slow
 		}
 		}
 	}
@@ -777,6 +837,8 @@ character_event = {
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
+		## Child likely become frustrated (always if imbecile)
+		## Might cause the child to lose slow
 		FROM = {
 		}
 		}
