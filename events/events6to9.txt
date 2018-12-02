@@ -697,7 +697,7 @@ character_event = {
 		set_character_flag = executionH_event 
 		change_variable = { which = 6to9events value = 1 }
 		father = {
-				character_event = { id = CE.20001 }
+				character_event = { id = CE.28001 }
 		}
 	}
 }
@@ -1037,10 +1037,10 @@ character_event = {
 					set_character_flag = executionH_d3a ## scarred
 					opinion = { WHO = ROOT modifier = execution_is_cruel months = 120 }
 				}
-			## Indolent children might become zealous. They might become cruel. They might see heretics as scum.
+			## Idolizer children might become zealous. They might become cruel. They might see heretics as scum.
 				else_if = {
 					limit = {
-						trait = indolent
+						trait = idolizer
 					}
 					random_list = {
 						60 = {
@@ -1209,4 +1209,276 @@ character_event = {
 	
 }
 
+# Child is uninterested in prayer
+character_event = {
+	id = CE.28010
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 6
+	max_age = 9 ## Fires between ages 6 and 9 
+	prisoner = no
+	
+	
+	trigger = {
+		NOT = { has_character_flag = prayer_event } ## We don't want this event firing twice for the same kid
+		NOT = { has_character_flag = keystone2 } ## Once Stage 1 development has passed this event can't fire
+		father = {
+			war = no
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 0
+			NOT = {
+			has_focus = focus_ch_faith
+			has_focus = focus_ch_heritage
+			}
+		}
+		modifier = {
+			factor = 0.25
+			trait = idolizer
+		}
+		modifier = {
+			factor = 2
+			trait = indolent
+		}
+		modifier = {
+			factor = 2
+			trait = curious
+		}
+		modifier = {
+			factor = 3
+			trait = rowdy
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = prayer_event 
+		change_variable = { which = 6to9events value = 1 }
+		random_list = {
+			25 = {
+				father = {
+					character_event = { id = CE.28011 }
+				}
+			}
+			75 = {
+				educator = {
+					character_event = { id = CE.28011 }
+				}
+			}
+		}
+	}
+}
+
+## Child is uninterested in prayer
+character_event = {
+	id = CE.28011
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { 
+	## Have my Court Chaplain Speak to him
+		trigger = {
+			job_spiritual = { NOT = {is_guardian = FROM } learning = 12 }
+		}
+		ai_chance = {
+			factor = 20
+		}
+		name = EVTOPTA_CE_10021 
+		hidden_tooltip = {
+		#This could lead to a sub-event firing which would be determined by Court Chaplain traits.
+			job_spiritual = {
+				character = { id = 28012 days = 2 random = 3 }
+			}
+		}
+	}
+	option = { 
+	## you must pay attention during prayer
+		ai_chance = {
+			factor = 20
+		}
+		name = EVTOPTA_CE_10021 
+		hidden_tooltip = {
+		
+			FROM = {
+				random_list = {
+					50 = {
+						modifier = {
+							factor = 3
+							trait = idolizer
+						}
+						set_character_flag = prayer_event_d2a ## Pays more attention
+						if = {
+							limit = {
+								NOT = { trait = idolizer }
+							}
+							random = {
+								chance = 40
+								add_trait = idolizer
+							}
+						}
+							
+					}
+					50 = {
+						modifier = {
+							factor = 3
+							trait = curious
+						}
+						set_character_flag = prayer_event_d2b ## Unimpressed
+					}
+				}
+			}
+		}
+	}
+	option = { 
+	## The fires of Hell await!
+		trigger = {
+			trait = zealous
+		}
+		ai_chance = {
+			factor = 50
+		}
+		name = EVTOPTA_CE_10021 
+		hidden_tooltip = {
+		## Idolizer kids will be positively affected by this. Overall, can make kids scared of hell. 
+			FROM = {
+				random_list = {
+					50 = {
+						modifier = {
+							factor = 3
+							trait = idolizer
+						}
+						set_character_flag = prayer_event_d3a ## Scared of hell
+						if = {
+							limit = {
+								NOT = { trait = idolizer }
+							}
+							random = {
+								chance = 80
+								add_trait = idolizer
+							}
+						}
+						change_learning = 1
+					}
+					50 = {
+						modifier = {
+							factor = 3
+							trait = curious
+						}
+						set_character_flag = prayer_event_d2b ## Unimpressed
+					}
+				}
+			}
+		}
+	}
+	option = { 
+	## She's too smart to care about this nonsense
+		trigger = {
+			trait = cynical
+		}
+		ai_chance = {
+			factor = 100
+		}
+		name = EVTOPTA_CE_10021 
+		hidden_tooltip = {
+		# Idolizer kids will be negatively affected by this. Curious kids might get cynical. Other kids might get curious
+			FROM = {
+				set_character_flag = prayer_event_d4
+				if = {
+					limit = {
+						trait = idolizer
+					}
+					random = {
+						chance = 20
+						remove_trait = idolizer
+					}
+				}
+				else_if = {
+					limit = {
+						trait = curious
+					}
+					random = {
+						chance = 20
+						add_trait = cynical
+					}
+				}
+				else = {
+					random = {
+						chance = 30
+						add_trait = curious
+					}
+				}
+			}
+		}
+	}
+	option = { 
+	## Children can't really be expected to care to much
+		trigger = {
+			job_spiritual = { NOT = {is_guardian = FROM } learning = 12 }
+		}
+		ai_chance = {
+			factor = 20
+		}
+		name = EVTOPTA_CE_10021 
+		hidden_tooltip = {
+		#This could lead to a sub-event firing which would be determined by Court Chaplain traits.
+			FROM = {
+				set_character_flag = prayer_event_d4
+				if = {
+					limit = {
+						trait = idolizer
+					}
+					random = {
+						chance = 10
+						remove_trait = idolizer
+					}
+				}
+				else_if = {
+					limit = {
+						trait = curious
+					}
+					random = {
+						chance = 10
+						add_trait = cynical
+					}
+				}
+				else = {
+					random = {
+						chance = 20
+						add_trait = curious
+					}
+				}
+			}
+		}
+	}
+}
+## Chaplain intervenes
+character_event = {
+	id = CE.28012
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_20001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	## Child is FROMFROM
+}
+
+
+
 ## Temperament Keystone Event #29999
+
+## Stat proclivity. Strong. +3 to +4 to that stat, and +1 or 0 randomly to others.
+## Weak. +2 to +3 to that. +1 to others. 
+## Balanced proclivity. +1 or +2 to all. 
