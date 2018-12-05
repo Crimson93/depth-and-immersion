@@ -44,7 +44,6 @@
 
 ## Child finds comfort in being able to retreat into religious education, and is spending hours praying - Major
 character_event = {
-	character_event = {
 	id = CE.38000
 	
 	hide_window = yes ## Is a hidden event
@@ -93,7 +92,7 @@ character_event = {
 		}
 		modifier = {
 			factor = 2
-			trait = shy
+			trait = timid
 		}
 		modifier = {
 			factor = 2
@@ -147,7 +146,55 @@ character_event = {
 		hidden_tooltip = {
 		## this will generally backfire and cause a loss to diplomacy. But it can give extra diplomacy instead
 		## Child will probably become sad
+		## Fail - 
+		## Succeed - Dogmatic-, spiritual-
 		FROM = {
+			random_list = {
+				## Succeed
+				50 = {
+					modifier = {
+					factor = 0.5
+					trait = indolent
+					}
+					modifier = {
+					factor = 0.5
+					trait = idolizer
+					}
+					modifier = {
+					factor = 0.2
+					OR = {
+					trait = ugly
+					trait = hunchback
+					trait = clubfooted
+					trait = harelip
+					trait = lisp
+					trait = dwarf
+					trait = stutter
+					}
+					}
+					random_list = {
+						50 = {
+						change_diplomacy = 1
+						remove_trait = timid
+						}
+						50 = {
+						change_diplomacy = 1
+						}
+					}
+					## Become sad
+				}
+				50 = { ## Fail
+					random_list = {
+						50 = {
+						change_diplomacy = -1
+						add_trait = timid
+						}
+						50 = {
+						}
+					}
+					## Become Sad
+				}
+			}
 		}
 		}
 	}
@@ -161,6 +208,23 @@ character_event = {
 		hidden_tooltip = {
 		## Child is more likely to be well read, but suffers penalty to diplomacy and martial
 		FROM = {
+			random_list = {
+				25 = {
+				change_diplomacy = -1
+				change_martial = -1
+				change_learning = 2
+				add_trait = timid
+				}
+				25 = {
+				change_diplomacy = -2
+				change_learning = 2
+				add_trait = brooding
+				}
+				50 = {
+				change_learning = 1
+				}
+			}
+			## Happy
 		}
 		}
 	}
@@ -176,6 +240,46 @@ character_event = {
 		## Might lose the learning gain
 		## Might gain martial
 		FROM = {
+			random_list = {
+				## Succeed
+				50 = {
+					modifier = {
+					factor = 0.5
+					trait = indolent
+					}
+					modifier = {
+					factor = 0.5
+					trait = idolizer
+					}
+					modifier = {
+					factor = 0.2
+					trait = affectionate
+					}
+					random_list = {
+						50 = {
+						change_martial = 1
+						remove_trait = indolent
+						}
+						50 = {
+						change_martial = 1
+						}
+					}
+					## Become sad
+				}
+				50 = { ## Fail
+					random_list = {
+						50 = {
+						change_martial = -1
+						add_trait = brooding
+						## Dislike you
+						}
+						50 = {
+						## Dislike you
+						}
+					}
+					## Become Sad
+				}
+			}
 		}
 		}
 	}
@@ -264,6 +368,59 @@ character_event = {
 		## Might end up convince the child to remain religious
 		## More likely to work if you have good traits
 		FROM = {
+			random_list = {
+				## Succeed
+				50 = {
+					modifier = {
+					factor = 0.5
+					trait = quick
+					}
+					modifier = {
+					factor = 2
+						ROOT = {
+						OR = { trait = quick trait = genius }
+						}
+					}
+					modifier = {
+					factor = 1.5
+					trait = conscientious
+					}
+					modifier = {
+					factor = 0.5
+					trait = curious
+					}
+					modifier = {
+					factor = 2
+					trait = idolizer
+					}
+					## Remains religious
+					## Reformist
+				}
+				50 = { ## Fail
+					random_list = {
+						25 = {
+							modifier = {
+								factor = 2
+								trait = curious
+							}
+							modifier = {
+								factor = 2
+								trait = brooding
+							}
+							modifier = {
+								factor = 0
+								trait = idolizer
+							}
+						add_trait = cynical
+						## Become Cynic
+						}
+						50 = {
+						## Lower religiousity
+						}
+					}
+					## Become Sad if religious
+				}
+			}
 		}
 		}
 	}
@@ -278,32 +435,125 @@ character_event = {
 		## Child might become more open minded
 		## But also possible they turn away from religion
 		FROM = {
+			random_list = {
+				## Succeed
+				50 = {
+					modifier = {
+					factor = 0.5
+					trait = quick
+					}
+					modifier = {
+					factor = 1.5
+					trait = affectionate
+					}
+					modifier = {
+					factor = 0.5
+					trait = curious
+					}
+					modifier = {
+					factor = 0.25
+					trait = brooding
+					}
+					modifier = {
+					factor = 1.75
+					trait = idolizer
+					}
+					## Indifferent
+				}
+				50 = { ## Fail
+					## Also indifferent
+					## Become Sad if religious
+				}
+			}
 		}
 		}
 	}
 	
 	option = { ## A little indulgence never killed a man
+		trigger = {
+			NOT = { has_trait = zealous }
+		}
 		ai_chance = {
 			factor = 15
+			modifier = {
+				factor = 3
+				trait = arbitrary
+			}
+			modifier = {
+				factor = 3
+				trait = lustful
+			}
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
 		## Child might end up hating religion
 		## But also possible they dont take it seriously and become hedonists
 		FROM = {
+			random_list = {
+				## Succeed
+				50 = {
+					modifier = {
+					factor = 1.5
+					trait = playful
+					}
+					modifier = {
+					factor = 1.5
+					trait = rowdy
+					}
+					modifier = {
+					factor = 0.1
+					trait = idolizer
+					}
+					modifier = {
+					factor = 0.1
+					trait = conscientious
+					}
+					modifier = {
+					factor = 0.1
+					trait = brooding
+					}
+					## Become hedonistic
+					remove_trait = conscientious
+					random = {
+						chance = 50
+						character_event = { id = 38012 days = 360 random = 180 } ## Become Lustful
+					}
+				}
+				50 = { ## Fail
+					remove_trait = idolizer
+					## hates religion
+				}
+			}
 		}
 		}
 	}
 	
 	option = { ## Have the man whipped
+		trigger = {
+			NOT = { trait = kind }
+			OR = { trait = cruel trait = zealous trait = wroth}
+		}
 		ai_chance = {
-			factor = 15
+			factor = 30
 		}
 		## Encourages dogmatism in the child
 		## Opinion loss of event target
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
 		FROM = {
+			## Becomes more dogmatic
+			random = {
+				chance = 50
+				if = {
+					limit = {
+						trait = idolizer
+					}
+					trait = zealous
+				}
+				else = {
+					trait = idolizer
+				}
+			}
 		}
 		}
 	}
@@ -354,7 +604,7 @@ character_event = {
 			}
 		}
 	}
-	
+
 	immediate = {
 	
 		set_character_flag = ProofofGod_event 
@@ -392,7 +642,33 @@ character_event = {
 		hidden_tooltip = {
 		## Works well with idolizer. Backfires on brooding or curious. 
 		FROM = {
-		
+			random_list = {
+				## Succeed
+				75 = {
+					modifier = {
+					factor = 3
+					trait = idolizer
+					}
+					modifier = {
+					factor = 0
+					trait = curious
+					}
+					modifier = {
+					factor = 0
+					trait = brooding
+					}
+					modifier = {
+					factor = 0.75
+					trait = fussy
+					}
+					remove_trait = curious
+					## Become spiritual
+				}
+				25 = { ## Fail
+					remove_trait = idolizer
+					## skeptic
+				}
+			}
 		}
 		}
 	}
@@ -407,6 +683,33 @@ character_event = {
 		## Works well with idolizer. Backfires on brooding or curious. 
 		## If Fail, bad consequences. Hates religion. Hates you.
 		FROM = {
+			random_list = {
+				## Succeed
+				75 = {
+					modifier = {
+					factor = 3
+					trait = idolizer
+					}
+					modifier = {
+					factor = 0.1
+					trait = curious
+					}
+					modifier = {
+					factor = 0.1
+					trait = brooding
+					}
+					modifier = {
+					factor = 2
+					trait = timid
+					}
+					remove_trait = curious
+					## Become dogmatic
+				}
+				25 = { ## Fail
+					remove_trait = idolizer
+					## skeptic
+				}
+			}
 		}
 		}
 	}
@@ -419,6 +722,23 @@ character_event = {
 		hidden_tooltip = {
 		## Works better with curious than the others. 
 		FROM = {
+			random_list = {
+				## Succeed
+				70 = {
+					modifier = {
+					factor = 0.5
+					trait = curious
+					}
+					modifier = {
+					factor = 0.2
+					trait = brooding
+					}
+				}
+				30 = { ## Fail
+					remove_trait = idolizer
+					## skeptic
+				}
+			}
 		}
 		}
 	}
@@ -432,11 +752,24 @@ character_event = {
 		## Possibly lose idolizer. Possible negative consequences eventually gaining cynical.
 		## Overall lean towards more openness. Less dogmatic. 
 		FROM = {
+			random_list = {
+				## likes you
+				50 = {
+					change_learning = 1
+					remove_trait = idolizer
+					## become cynical
+				}
+				50 = { 
+					change_learning = 1
+					## chance for pluralist or reformist
+				}
+			}
 		}
 		}
 	}
 }
 
+}
 ## Child has been taking care of the poor in the city as accordance with the religious teachings (N)
 character_event = {
 	id = CE.38030
@@ -524,6 +857,24 @@ character_event = {
 		hidden_tooltip = {
 		## Might lose affectionate if successful. Reformist
 		FROM = {
+			random_list = {
+				## Succeed
+				50 = {
+					modifier = {
+					factor = 0.25
+					trait = affectionate
+					}
+					remove_trait = affectionate
+					## Indifferent
+				}
+				50 = { ## Fail
+					## Dislikes you
+					random = {
+						chance = 50
+						## decrease religiousity
+					}
+				}
+			}
 		}
 		}
 	}
@@ -536,6 +887,21 @@ character_event = {
 		hidden_tooltip = {
 		## Might lose affectionate. Might dislike religion. Probably will dislike you. Reformist or Cynic
 		FROM = {
+			random_list = {
+				## Succeed
+				50 = {
+					modifier = {
+					factor = 0.25
+					trait = affectionate
+					}
+					remove_trait = affectionate
+					## Indifferent
+				}
+				50 = { ## Fail
+					## Hates you
+						## decrease religiousity
+				}
+			}
 		}
 		}
 	}
@@ -548,6 +914,23 @@ character_event = {
 		hidden_tooltip = {
 		## Might gain affectionate. Might gain kind. Spiritual. 
 		FROM = {
+			random_list = {
+				60 = {
+					if = {
+						limit = {
+							trait = affectionate
+						}
+						add_trait = kind
+					}
+					else = {
+						add_trait = affectionate
+					}
+					## Spiritual
+				}
+				60 = { 
+					## Spiritual
+				}
+			}
 		}
 		}
 	}
@@ -618,11 +1001,31 @@ character_event = {
 	option = { ##  Not on my watch! Have child whipped and burn the book
 		ai_chance = {
 			factor = 15
+			modifier = {
+				factor = 5
+				trait = zealous
+				NOT = { trait = kind }
+			}
 		}
 		name = EVTOPTA_CE_20001
 		hidden_tooltip = {
 		## Makes the character hate/be indifferent towards religion. Despises you.
 		FROM = {
+			random_list = {
+				40 = {	
+					remove_trait = idolizer
+					opinion = { WHO = ROOT modifier = whipped_me months = 120 } 
+					## Cynic
+				}
+				40 = { 
+					remove_trait = idolizer
+					opinion = { WHO = ROOT modifier = whipped_me months = 120 }
+					## Indifferent
+				}
+				20 =  {
+					## Dogmatic
+				}
+			}
 		}
 		}
 	}
@@ -942,6 +1345,7 @@ character_event = {
 
 ## At the end of the faith narrative at the age of 12 we determine where the child leans
 ## Dogmatic, Reformist, Skeptic, Antitheist, Spiritual, Pluralist, Indifferent
+## Can use variables to determine...
 ## There will be an ambition associated with each of these, though which and whether it will be activated depends on education
 
 
