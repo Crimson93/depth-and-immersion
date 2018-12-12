@@ -88,8 +88,8 @@ character_event = {
 				}
 			}
 		}
-		custom_tooltip = { text = EVTOPTB_CE_10001_TT }
 		name = EVTOPTB_CE_10001
+		custom_tooltip = { text = EVTOPTB_CE_10001_TT }
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = sleep_d2
@@ -193,6 +193,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTA_CE_10011 
+		custom_tooltip = { text = EVTOPTA_CE_10011_TT }
 		FROM = {
 			set_character_flag = ghosts_d1
 		}
@@ -211,7 +212,9 @@ character_event = {
 					trait = deceitful
 			}
 		}
+		
 		name = EVTOPTB_CE_10011 
+		custom_tooltip = { text = EVTOPTB_CE_10011_TT }
 		FROM = {
 			set_character_flag = ghosts_d2
 		}
@@ -231,6 +234,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTC_CE_10011 
+		custom_tooltip = { text = EVTOPTC_CE_10011_TT }
 		FROM = {
 			set_character_flag = ghosts_d3
 		}
@@ -247,6 +251,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTD_CE_10011 
+		custom_tooltip = { text = EVTOPTD_CE_10011_TT }
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = ghosts_d4
@@ -318,6 +323,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTA_CE_10021 
+		custom_tooltip = { text = EVTOPTA_CE_10021_TT }
 		FROM = {
 			set_character_flag = share_d1
 		}
@@ -333,6 +339,7 @@ character_event = {
 			factor = 10
 		}
 		name = EVTOPTB_CE_10021 
+		custom_tooltip = { text = EVTOPTB_CE_10021_TT }
 		FROM = {
 			set_character_flag = sharing_d2
 			random = {
@@ -350,6 +357,7 @@ character_event = {
 			factor = 30
 		}
 		name = EVTOPTC_CE_10021 
+		custom_tooltip = { text = EVTOPTC_CE_10021_TT }
 		FROM = {
 			set_character_flag = sharing_d3
 		}
@@ -366,6 +374,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTD_CE_10021 
+		custom_tooltip = { text = EVTOPTD_CE_10021_TT }
 		treasury = -5
 		hidden_tooltip = {
 			FROM = {
@@ -378,6 +387,7 @@ character_event = {
 			factor = 10
 		}
 		name = EVTOPTE_CE_10021 
+		custom_tooltip = { text = EVTOPTE_CE_10021_TT }
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = sharing_d5
@@ -446,6 +456,7 @@ character_event = {
 			factor = 10
 		}
 		name = EVTOPTA_CE_10031 
+		custom_tooltip = { text = EVTOPTA_CE_10031_TT }
 		FROM = {
 			set_character_flag = break_d1
 			random = {
@@ -472,6 +483,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTB_CE_10031 
+		custom_tooltip = { text = EVTOPTB_CE_10031_TT }
 		FROM = {
 			set_character_flag = break_d2
 			random = {
@@ -486,6 +498,7 @@ character_event = {
 			factor = 10
 		}
 		name = EVTOPTC_CE_10031 
+		custom_tooltip = { text = EVTOPTC_CE_10031_TT }
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = break_d3
