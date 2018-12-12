@@ -2,17 +2,74 @@
 #Spouse/Parent complains about child doing a dangerous activity;;;;;;;;;;;;;;
 EVTDESC_CE_20001;;;;;;;;;;;;;;x
 EVTOPTA_CE_20001;;;;;;;;;;;;;;x
+EVTOPTA_CE_20001_TT;;;;;;;;;;;;;;x
 EVTOPTB_CE_20001;;;;;;;;;;;;;;x
+EVTOPTB_CE_20001_TT;;;;;;;;;;;;;;x
 EVTOPTC_CE_20001;;;;;;;;;;;;;;x
+EVTOPTC_CE_20001_TT;;;;;;;;;;;;;;x
 #Child does not interact with peers;;;;;;;;;;;;;;
 EVTDESC_CE_20021;;;;;;;;;;;;;;x
 EVTOPTA_CE_20021;;;;;;;;;;;;;;x
+EVTOPTA_CE_20021_TT;;;;;;;;;;;;;;x
 EVTOPTB_CE_20021;;;;;;;;;;;;;;x
+EVTOPTB_CE_20021_TT;;;;;;;;;;;;;;x
 EVTOPTC_CE_20021;;;;;;;;;;;;;;x
+EVTOPTC_CE_20021_TT;;;;;;;;;;;;;;x
 #Child mocked for being ugly;;;;;;;;;;;;;;
 EVTDESC_CE_21501;;;;;;;;;;;;;;x
 EVTOPTA_CE_21501;;;;;;;;;;;;;;x
+EVTOPTA_CE_21501_TT;;;;;;;;;;;;;;x
 EVTOPTB_CE_21501;;;;;;;;;;;;;;x
+EVTOPTB_CE_21501_TT;;;;;;;;;;;;;;x
 EVTOPTC_CE_21501;;;;;;;;;;;;;;x
+EVTOPTC_CE_21501_TT;;;;;;;;;;;;;;x
 EVTOPTD_CE_21501;;;;;;;;;;;;;;x
+EVTOPTD_CE_21501_TT;;;;;;;;;;;;;;x
 EVTOPTE_CE_21501;;;;;;;;;;;;;;x
+EVTOPTE_CE_21501_TT;;;;;;;;;;;;;;x
+#Execution Event Chain - Heretic;;;;;;;;;;;;;;x
+EVTDESC_CE_28001;;;;;;;;;;;;;;x
+EVTOPTA_CE_28001;;;;;;;;;;;;;;x
+EVTOPTA_CE_28001_TT;;;;;;;;;;;;;;x
+EVTOPTB_CE_28001;;;;;;;;;;;;;;x
+EVTOPTB_CE_28001_TT;;;;;;;;;;;;;;x
+#Execution Event Chain - children caught sneaking out!;;;;;;;;;;;;;;x
+EVTDESC_CE_28002;;;;;;;;;;;;;;x
+EVTOPTA_CE_28002;;;;;;;;;;;;;;x
+EVTOPTA_CE_28002_TT;;;;;;;;;;;;;;x
+EVTOPTB_CE_28002;;;;;;;;;;;;;;x
+EVTOPTB_CE_28002_TT;;;;;;;;;;;;;;x
+EVTOPTC_CE_28002;;;;;;;;;;;;;;x
+EVTOPTC_CE_28002_TT;;;;;;;;;;;;;;x
+EVTOPTD_CE_28002;;;;;;;;;;;;;;x
+EVTOPTD_CE_28002_TT;;;;;;;;;;;;;;x
+EVTOPTE_CE_28002;;;;;;;;;;;;;;x
+EVTOPTE_CE_28002_TT;;;;;;;;;;;;;;x
+#Execution Event Chain - children snuck out and enjoyed the execution;;;;;;;;;;;;;;x
+EVTDESC_CE_28003;;;;;;;;;;;;;;x
+EVTOPTA_CE_28003;;;;;;;;;;;;;;x
+EVTOPTA_CE_28003_TT;;;;;;;;;;;;;;x
+EVTOPTB_CE_28003;;;;;;;;;;;;;;x
+EVTOPTB_CE_28003_TT;;;;;;;;;;;;;;x
+#Execution Event Chain - children snuck out and enjoyed the execution;;;;;;;;;;;;;;x
+EVTDESC_CE_28004;;;;;;;;;;;;;;x
+EVTOPTA_CE_28004;;;;;;;;;;;;;;x
+EVTOPTA_CE_28004_TT;;;;;;;;;;;;;;x
+#Execution Event Chain - children snuck out and didnt enjoy the execution;;;;;;;;;;;;;;x
+EVTDESC_CE_28005;;;;;;;;;;;;;;x
+EVTOPTA_CE_28005;;;;;;;;;;;;;;x
+EVTOPTA_CE_28005_TT;;;;;;;;;;;;;;x
+#Child is uninterested in prayer;;;;;;;;;;;;;;x
+EVTDESC_CE_28011;;;;;;;;;;;;;;x
+EVTOPTA_CE_28011;;;;;;;;;;;;;;x
+EVTOPTA_CE_28011_TT;;;;;;;;;;;;;;x
+EVTOPTB_CE_28011;;;;;;;;;;;;;;x
+EVTOPTB_CE_28011_TT;;;;;;;;;;;;;;x
+EVTOPTC_CE_28011;;;;;;;;;;;;;;x
+EVTOPTC_CE_28011_TT;;;;;;;;;;;;;;x
+EVTOPTD_CE_28011;;;;;;;;;;;;;;x
+EVTOPTD_CE_28011_TT;;;;;;;;;;;;;;x
+EVTOPTE_CE_28011;;;;;;;;;;;;;;x
+EVTOPTE_CE_28011_TT;;;;;;;;;;;;;;x
+#Child is uninterested in prayer - Chaplain intervenes;;;;;;;;;;;;;;x
+EVTDESC_CE_28012;;;;;;;;;;;;;;x

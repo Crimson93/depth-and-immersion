@@ -7,7 +7,7 @@
 
 ## General Events 20000-21999
 
-## Spouse/Parent complains about child doing to dangerous an activity
+## Spouse/Parent complains about child doing too dangerous activities
 character_event = {
 	id = CE.20000
 	
@@ -77,7 +77,7 @@ character_event = {
 	}
 }
 
-## Spouse/Parent complains about child doing a dangerous activity
+## Spouse/Parent complains about child doing too dangerous activities
 character_event = {
 	id = CE.20001
 	picture = GFX_evt_feast
@@ -93,6 +93,7 @@ character_event = {
 			factor = 15
 		}
 		name = EVTOPTA_CE_20001
+		custom_tooltip = { text = EVTOPTA_CE_20001_TT }
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = reckless_d1
@@ -156,6 +157,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTB_CE_20001
+		custom_tooltip = { text = EVTOPTB_CE_20001_TT }
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = reckless_d2
@@ -204,6 +206,7 @@ character_event = {
 			factor = 15
 		}
 		name = EVTOPTC_CE_20001
+		custom_tooltip = { text = EVTOPTC_CE_20001_TT }
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = reckless_d3
@@ -370,6 +373,7 @@ character_event = {
 			factor = 20
 		}
 		name = EVTOPTA_CE_20021
+		custom_tooltip = { text = EVTOPTA_CE_20021_TT }
 	}
 	
 	option = { ## Encourage the solitude through pride
@@ -377,6 +381,7 @@ character_event = {
 			factor = 15
 		}
 		name = EVTOPTB_CE_20021
+		custom_tooltip = { text = EVTOPTB_CE_20021_TT }
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = introvert_d2
@@ -413,6 +418,7 @@ character_event = {
 			factor = 15
 		}
 		name = EVTOPTC_CE_20021
+		custom_tooltip = { text = EVTOPTC_CE_20021_TT }
 		hidden_tooltip = {
 		FROM = {
 			set_character_flag = introvert_d3
@@ -498,6 +504,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTA_CE_21501
+		custom_tooltip = { text = EVTOPTA_CE_21501_TT }
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
@@ -546,6 +553,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTB_CE_21501
+		custom_tooltip = { text = EVTOPTB_CE_21501_TT }
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
@@ -569,6 +577,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTC_CE_21501
+		custom_tooltip = { text = EVTOPTC_CE_21501_TT }
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
@@ -602,6 +611,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTD_CE_21501
+		custom_tooltip = { text = EVTOPTD_CE_21501_TT }
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
@@ -632,6 +642,7 @@ character_event = {
 			}
 		}
 		name = EVTOPTE_CE_21501
+		custom_tooltip = { text = EVTOPTE_CE_21501_TT }
 		hidden_tooltip = {
 			FROM = {
 				random_list = {
@@ -707,7 +718,7 @@ character_event = {
 	id = CE.28001
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_CE_20001 
+	desc = EVTDESC_CE_28001 
 	
 	prisoner = no
 	
@@ -722,59 +733,62 @@ character_event = {
 				trait = kind
 			}
 		}
-		name = EVTOPTA_CE_10021 
-		FROM = {			
-			if = {
-				limit = {
-					OR = {
-						trait = rowdy
-						trait = willful
+		name = EVTOPTA_CE_28001 
+		custom_tooltip = { text = EVTOPTA_CE_28001_TT }
+		hidden_tooltip = {
+			FROM = {			
+				if = {
+					limit = {
+						OR = {
+							trait = rowdy
+							trait = willful
 					}
 				}
-				random_list = {
-					40 = { ## Snuck out, saw execution 
-						random_list = {
-							5 = { ## were scarred
-								modifier = {
-									factor = 3
-									trait = affectionate
+					random_list = {
+						40 = { ## Snuck out, saw execution 
+							random_list = {
+								5 = { ## were scarred
+									modifier = {
+										factor = 3
+										trait = affectionate
+									}
+									modifier = {
+										factor = 3
+										trait = timid
+									}
+									set_character_flag = oppose_heretic_execution
+									ROOT = {
+										character_event = { id = 28004}
+									}
 								}
-								modifier = {
-									factor = 3
-									trait = timid
+								2 = { ## liked it
+									set_character_flag = support_heretic_execution
+									ROOT = {
+										character_event = { id = 28005}
+									}
+										
 								}
-								set_character_flag = oppose_heretic_execution
-								ROOT = {
-									character_event = { id = 28004}
+								3 = { ## didn't see the big deal
 								}
-							}
-							2 = { ## liked it
-								set_character_flag = support_heretic_execution
-								ROOT = {
-									character_event = { id = 28005}
-								}
-									
-							}
-							3 = { ## didn't see the big deal
 							}
 						}
-					}
-					30 = { ## Snuck out and were caught
-						ROOT = {
-							character_event = { id = 28003}
+						30 = { ## Snuck out and were caught
+							ROOT = {
+								character_event = { id = 28003}
+							}
+						}
+						30 = { ## nothing
 						}
 					}
-					30 = { ## nothing
+				}
+				random = {
+					chance = 50
+					modifier = { 
+						factor = 0
+						trait = affectionate
 					}
+					opinion = { who = ROOT modifier = didnt_take_to_execution months = 120 }
 				}
-			}
-			random = {
-				chance = 50
-				modifier = { 
-					factor = 0
-					trait = affectionate
-				}
-				opinion = { who = ROOT modifier = didnt_take_to_execution months = 120 }
 			}
 		}
 	}
@@ -786,10 +800,10 @@ character_event = {
 				trait = cruel
 			}
 		}
-		name = EVTOPTB_CE_20001
+		name = EVTOPTB_CE_28001 
+		custom_tooltip = { text = EVTOPTB_CE_28001_TT }
 		hidden_tooltip = {
 			character_event = { id = 28002 }
-
 		}
 	}
 
@@ -800,7 +814,7 @@ character_event = {
 	id = CE.28002
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_CE_20001 
+	desc = EVTDESC_CE_28002 
 	
 	prisoner = no
 	
@@ -814,8 +828,8 @@ character_event = {
 		ai_chance = {
 			factor = 200
 		}
-		name = EVTOPTA_CE_10021
-		
+		name = EVTOPTA_CE_28002
+		custom_tooltip = { text = EVTOPTA_CE_28002_TT }
 		hidden_tooltip = {
 		FROM = {
 			## Conscientious kids will likely benefit from this decision
@@ -880,8 +894,8 @@ character_event = {
 				trait = diligent
 			}
 		}
-		name = EVTOPTA_CE_10021
-		
+		name = EVTOPTB_CE_28002
+		custom_tooltip = { text = EVTOPTB_CE_28002_TT}
 		hidden_tooltip = {
 		FROM = {
 			## Conscientious kids will likely benefit from this decision
@@ -941,7 +955,8 @@ character_event = {
 		ai_chance = {
 			factor = 10
 		}
-		name = EVTOPTB_CE_10021 
+		name = EVTOPTC_CE_28002
+		custom_tooltip = { text = EVTOPTC_CE_28002_TT}
 		hidden_tooltip = {
 			FROM = {
 				
@@ -965,7 +980,8 @@ character_event = {
 		ai_chance = {
 			factor = 200
 		}
-		name = EVTOPTC_CE_10021 
+		name = EVTOPTD_CE_28002
+		custom_tooltip = { text = EVTOPTD_CE_28002_TT}
 		hidden_tooltip = {
 			FROM = {
 			## Affectionate children will be scarred. They will probably dislike you too
@@ -1026,7 +1042,8 @@ character_event = {
 		ai_chance = {
 			factor = 200
 		}
-		name = EVTOPTC_CE_10021 
+		name = EVTOPTE_CE_28002
+		custom_tooltip = { text = EVTOPTE_CE_28002_TT}
 		hidden_tooltip = {
 			FROM = {
 			## Affectionate children will be scarred. They will probably dislike you too
@@ -1094,7 +1111,7 @@ character_event = {
 	id = CE.28003
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_CE_20001 
+	desc = EVTDESC_CE_28003 
 	
 	prisoner = no
 	
@@ -1110,7 +1127,8 @@ character_event = {
 		ai_chance = {
 			factor = 10
 		}
-		name = EVTOPTB_CE_10021 
+		name = EVTOPTA_CE_28003
+		custom_tooltip = { text = EVTOPTA_CE_28003_TT}
 		hidden_tooltip = {
 			FROM = {
 				## Chance to lose rowdy or willful
@@ -1149,7 +1167,8 @@ character_event = {
 		ai_chance = {
 			factor = 10
 		}
-		name = EVTOPTB_CE_10021 
+		name = EVTOPTB_CE_28003
+		custom_tooltip = { text = EVTOPTB_CE_28003_TT}
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = sneaking_out_d3
@@ -1164,7 +1183,7 @@ character_event = {
 	id = CE.28004
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_CE_20001 
+	desc = EVTDESC_CE_28004 
 	
 	prisoner = no
 	
@@ -1172,7 +1191,8 @@ character_event = {
 	
 	
 	option = { ## interesting
-		name = EVTOPTB_CE_10021 
+		name = EVTOPTA_CE_28004
+		custom_tooltip = { text = EVTOPTA_CE_28004_TT}
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = executionH_d3b
@@ -1191,7 +1211,7 @@ character_event = {
 	id = CE.28005
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_CE_20001 
+	desc = EVTDESC_CE_28005 
 	
 	prisoner = no
 	
@@ -1199,7 +1219,8 @@ character_event = {
 	
 	
 	option = { ## interesting
-		name = EVTOPTB_CE_10021 
+		name = EVTOPTA_CE_28005
+		custom_tooltip = { text = EVTOPTA_CE_28005_TT}
 		hidden_tooltip = {
 			FROM = {
 				set_character_flag = executionH_d3c
@@ -1279,7 +1300,7 @@ character_event = {
 	id = CE.28011
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_CE_20001 
+	desc = EVTDESC_CE_28011 
 	
 	prisoner = no
 	
@@ -1293,7 +1314,8 @@ character_event = {
 		ai_chance = {
 			factor = 20
 		}
-		name = EVTOPTA_CE_10021 
+		name = EVTOPTA_CE_28011
+		custom_tooltip = { text = EVTOPTA_CE_28011_TT}
 		hidden_tooltip = {
 		#This could lead to a sub-event firing which would be determined by Court Chaplain traits.
 			job_spiritual = {
@@ -1306,7 +1328,8 @@ character_event = {
 		ai_chance = {
 			factor = 20
 		}
-		name = EVTOPTA_CE_10021 
+		name = EVTOPTB_CE_28011
+		custom_tooltip = { text = EVTOPTB_CE_28011_TT}
 		hidden_tooltip = {
 		
 			FROM = {
@@ -1347,7 +1370,8 @@ character_event = {
 		ai_chance = {
 			factor = 50
 		}
-		name = EVTOPTA_CE_10021 
+		name = EVTOPTC_CE_28011
+		custom_tooltip = { text = EVTOPTC_CE_28011_TT}
 		hidden_tooltip = {
 		## Idolizer kids will be positively affected by this. Overall, can make kids scared of hell. 
 			FROM = {
@@ -1388,7 +1412,8 @@ character_event = {
 		ai_chance = {
 			factor = 100
 		}
-		name = EVTOPTA_CE_10021 
+		name = EVTOPTD_CE_28011
+		custom_tooltip = { text = EVTOPTD_CE_28011_TT}
 		hidden_tooltip = {
 		# Idolizer kids will be negatively affected by this. Curious kids might get cynical. Other kids might get curious
 			FROM = {
@@ -1428,7 +1453,8 @@ character_event = {
 		ai_chance = {
 			factor = 20
 		}
-		name = EVTOPTA_CE_10021 
+		name = EVTOPTE_CE_28011
+		custom_tooltip = { text = EVTOPTE_CE_28011_TT}
 		hidden_tooltip = {
 		#This could lead to a sub-event firing which would be determined by Court Chaplain traits.
 			FROM = {
@@ -1466,7 +1492,7 @@ character_event = {
 	id = CE.28012
 	picture = GFX_evt_feast
 	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESC_CE_20001 
+	desc = EVTDESC_CE_28012 
 	
 	prisoner = no
 	
