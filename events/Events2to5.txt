@@ -194,8 +194,10 @@ character_event = {
 		}
 		name = EVTOPTA_CE_10011 
 		custom_tooltip = { text = EVTOPTA_CE_10011_TT }
-		FROM = {
-			set_character_flag = ghosts_d1
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = ghosts_d1
+			}
 		}
 	}
 	
@@ -215,8 +217,10 @@ character_event = {
 		
 		name = EVTOPTB_CE_10011 
 		custom_tooltip = { text = EVTOPTB_CE_10011_TT }
-		FROM = {
-			set_character_flag = ghosts_d2
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = ghosts_d2
+			}
 		}
 	}
 	
@@ -235,8 +239,10 @@ character_event = {
 		}
 		name = EVTOPTC_CE_10011 
 		custom_tooltip = { text = EVTOPTC_CE_10011_TT }
-		FROM = {
-			set_character_flag = ghosts_d3
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = ghosts_d3
+			}
 		}
 	}
 	
@@ -324,8 +330,10 @@ character_event = {
 		}
 		name = EVTOPTA_CE_10021 
 		custom_tooltip = { text = EVTOPTA_CE_10021_TT }
-		FROM = {
-			set_character_flag = share_d1
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = share_d1
+			}
 		}
 	}
 	
@@ -340,11 +348,13 @@ character_event = {
 		}
 		name = EVTOPTB_CE_10021 
 		custom_tooltip = { text = EVTOPTB_CE_10021_TT }
-		FROM = {
-			set_character_flag = sharing_d2
-			random = {
-				chance = 30
-				opinion = { who = ROOT modifier = took_my_toys months = 120 }
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = sharing_d2
+				random = {
+					chance = 30
+					opinion = { who = ROOT modifier = took_my_toys months = 120 }
+				}
 			}
 		}
 	}
@@ -358,8 +368,10 @@ character_event = {
 		}
 		name = EVTOPTC_CE_10021 
 		custom_tooltip = { text = EVTOPTC_CE_10021_TT }
-		FROM = {
-			set_character_flag = sharing_d3
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = sharing_d3
+			}
 		}
 	}
 	
@@ -457,11 +469,13 @@ character_event = {
 		}
 		name = EVTOPTA_CE_10031 
 		custom_tooltip = { text = EVTOPTA_CE_10031_TT }
-		FROM = {
-			set_character_flag = break_d1
-			random = {
-				chance = 20
-				opinion = { who = ROOT modifier = took_my_toys months = 120 }
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = break_d1
+				random = {
+					chance = 20
+					opinion = { who = ROOT modifier = took_my_toys months = 120 }
+				}
 			}
 		}
 	}
@@ -484,11 +498,13 @@ character_event = {
 		}
 		name = EVTOPTB_CE_10031 
 		custom_tooltip = { text = EVTOPTB_CE_10031_TT }
-		FROM = {
-			set_character_flag = break_d2
-			random = {
-				chance = 30
-				opinion = { who = ROOT modifier = scolded_me months = 120 }
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = break_d2
+				random = {
+					chance = 30
+					opinion = { who = ROOT modifier = scolded_me months = 120 }
+				}
 			}
 		}
 	}
