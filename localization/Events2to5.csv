@@ -1,39 +1,39 @@
 #CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
 # Child is scared of sleeping alone;;;;;;;;;;;;;;
-EVTDESC_CE_10001;You awaken late in the night to little [FROM.GetFirstName] attempting to crawl up into the bed. Murmuring sleepily, you ask what the problem is. [FROM.GetFirstName] responds that he/she was scared by a bad dream and wants to come sleep with [FROM.GetHerHim] mother.;;;;;;;;;;;;;x
+EVTDESC_CE_10001;You awaken late in the night to little [FROM.GetFirstName] attempting to crawl up into the bed. Murmuring sleepily, you ask what the problem is. [FROM.GetFirstName] responds that [FROM.GetSheHe] was scared by a bad dream and wants to come sleep with [FROM.GetHerHis] mother.;;;;;;;;;;;;;x
 EVTOPTA_CE_10001;It was only a dream. You shouldn’t be afraid of such things.;;;;;;;;;;;;;x
-EVTOPTA_CE_10001_TT;You sternly tell [FROM.GetFirstName] that [FROM.GetSheHe] must return to [FROM.GetHerHim] own bed.;;;;;;;;;;;;;x
+EVTOPTA_CE_10001_TT;You sternly tell [FROM.GetFirstName] that [FROM.GetSheHe] must return to [FROM.GetHerHis] own bed.;;;;;;;;;;;;;x
 EVTOPTB_CE_10001;Bad dreams? I’ll give you something to be afraid of you little whelp!;;;;;;;;;;;;;x
 EVTOPTB_CE_10001_TT;A harsh word and a quick lash will teach this child manners.;;;;;;;;;;;;;x
 EVTOPTC_CE_10001;You poor thing, come here;;;;;;;;;;;;;x
 EVTOPTC_CE_10001_TT;You invite the child to come and sleep with in the bed with you, at least for tonight.;;;;;;;;;;;;;x
 # Child is scared of ghosts.;;;;;;;;;;;;;;
-EVTDESC_CE_10011;;;;;;;;;;;;;;x
-EVTOPTA_CE_10011;;;;;;;;;;;;;;x
-EVTOPTA_CE_10011_TT;;;;;;;;;;;;;;x
-EVTOPTB_CE_10011;;;;;;;;;;;;;;x
-EVTOPTB_CE_10011_TT;;;;;;;;;;;;;;x
-EVTOPTC_CE_10011;;;;;;;;;;;;;;x
-EVTOPTC_CE_10011_TT;;;;;;;;;;;;;;x
-EVTOPTD_CE_10011;;;;;;;;;;;;;;x
-EVTOPTD_CE_10011_TT;;;;;;;;;;;;;;x
+EVTDESC_CE_10011;[FROM.GetFirstName] starts to cry as the candle is blown out. When questioned, [FROM.GetSheHe] says that the ghosts come out at night.;;;;;;;;;;;;;x
+EVTOPTA_CE_10011;Ghosts aren’t real. Now be good and go to sleep.;;;;;;;;;;;;;x
+EVTOPTA_CE_10011_TT;You reassure the child that such spirits exist only in stories.;;;;;;;;;;;;;x
+EVTOPTB_CE_10011;Ah, but ghosts only haunt bad children who don’t mind their parents.;;;;;;;;;;;;;x
+EVTOPTB_CE_10011_TT;You use the opportunity to instill a bit of proper fear.;;;;;;;;;;;;;x
+EVTOPTC_CE_10011;You have nothing to fear from ghosts. [FROM.Religion.GetHighGodName] will protect you from them.;;;;;;;;;;;;;x
+EVTOPTC_CE_10011_TT;You take a short time to read the child a few verses from the [FROM.Religion.GetScriptureName]. ;;;;;;;;;;;;;x
+EVTOPTD_CE_10011;I don’t have time for such foolishness.;;;;;;;;;;;;;x
+EVTOPTD_CE_10011_TT;You leave the room. The sooner [FROM.GetFirstName] is over this nonsense, the better.;;;;;;;;;;;;;x
 # 3-5 Child refuses to share toys with fellow courtier kid/sibling.;;;;;;;;;;;;;;
-EVTDESC_CE_10021;;;;;;;;;;;;;;x
-EVTOPTA_CE_10021;;;;;;;;;;;;;;x
-EVTOPTA_CE_10021_TT;;;;;;;;;;;;;;x
-EVTOPTB_CE_10021;;;;;;;;;;;;;;x
-EVTOPTB_CE_10021_TT;;;;;;;;;;;;;;x
-EVTOPTC_CE_10021;;;;;;;;;;;;;;x
-EVTOPTC_CE_10021_TT;;;;;;;;;;;;;;x
-EVTOPTD_CE_10021;;;;;;;;;;;;;;x
-EVTOPTD_CE_10021_TT;;;;;;;;;;;;;;x
-EVTOPTE_CE_10021;;;;;;;;;;;;;;x
-EVTOPTE_CE_10021_TT;;;;;;;;;;;;;;x
+EVTDESC_CE_10021;“Mine!” The word, so common lately, rings out once again. It seems this time [FROM.GetFirstName] steadfastly refuses to share even a single toy with [TARGET.GetFirstName].;;;;;;;;;;;;;x
+EVTOPTA_CE_10021;You should share your toys, [FROM.GetFirstName]. It’s more fun to play together with a friend.;;;;;;;;;;;;;x
+EVTOPTA_CE_10021_TT;You encourage [FROM.GetFirstName] to share their toys with [TARGET.GetFirstName].;;;;;;;;;;;;;x
+EVTOPTB_CE_10021;Actually, they’re mine.;;;;;;;;;;;;;x
+EVTOPTB_CE_10021_TT;You take the toys from [FROM.GetFirstName]. If [FROM.GetSheHe] cannot share then [FROM.GetSheHe] can do without.;;;;;;;;;;;;;x
+EVTOPTC_CE_10021;Whatever.;;;;;;;;;;;;;x
+EVTOPTC_CE_10021_TT;You ignore the situation. It will work itself out, surely.;;;;;;;;;;;;;x
+EVTOPTD_CE_10021; You nod approvingly at [FROM.GetFirstName].;;;;;;;;;;;;;x
+EVTOPTD_CE_10021_TT;It is good that they understand their prerogatives.;;;;;;;;;;;;;x
+EVTOPTE_CE_10021;If I promise to buy you a new toy, will you share that one?;;;;;;;;;;;;;x
+EVTOPTE_CE_10021_TT; You attempt to bribe [FROM.GetFirstName] with the promise of something new.;;;;;;;;;;;;;x
 # 2-5 Child breaks something while playing with toys;;;;;;;;;;;;;;
-EVTDESC_CE_10031;;;;;;;;;;;;;;
-EVTOPTA_CE_10031;;;;;;;;;;;;;;
-EVTOPTA_CE_10031_TT;;;;;;;;;;;;;;x
-EVTOPTB_CE_10031;;;;;;;;;;;;;;
-EVTOPTB_CE_10031_TT;;;;;;;;;;;;;;x
-EVTOPTC_CE_10031;;;;;;;;;;;;;;
-EVTOPTC_CE_10031_TT;;;;;;;;;;;;;;x
+EVTDESC_CE_10031;You hear a sudden crash coming from the entry hall. Upon investigation, you find [FROM.GetFirstName] has been playing with [FROM.GetHerHis] favorite toy and has knocked over a decorative bust. The bust was a family heirloom, although not particularly valuable.;;;;;;;;;;;;;
+EVTOPTA_CE_10031;This is why we can’t have nice things.;;;;;;;;;;;;;
+EVTOPTA_CE_10031_TT; You take away the child’s toys.;;;;;;;;;;;;;x
+EVTOPTB_CE_10031;Do you know what that was? That was a bust of your great-great uncle. Now it’s forever gone, and our dynasty is diminished from the loss. Now go to your room and think about what you’ve done.;;;;;;;;;;;;;
+EVTOPTB_CE_10031_TT;You send the child to bed without supper.;;;;;;;;;;;;;x
+EVTOPTC_CE_10031;Whatever.;;;;;;;;;;;;;
+EVTOPTC_CE_10031_TT;You do nothing. You never really liked that bust anyway.;;;;;;;;;;;;;x
