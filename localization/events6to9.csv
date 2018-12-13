@@ -1,50 +1,50 @@
 #CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
 #Spouse/Parent complains about child doing a dangerous activity;;;;;;;;;;;;;;
-EVTDESC_CE_20001;;;;;;;;;;;;;;x
-EVTOPTA_CE_20001;;;;;;;;;;;;;;x
-EVTOPTA_CE_20001_TT;;;;;;;;;;;;;;x
-EVTOPTB_CE_20001;;;;;;;;;;;;;;x
-EVTOPTB_CE_20001_TT;;;;;;;;;;;;;;x
-EVTOPTC_CE_20001;;;;;;;;;;;;;;x
-EVTOPTC_CE_20001_TT;;;;;;;;;;;;;;x
+EVTDESC_CE_20001;[FROM.Mother.GetFullName] comes to see you about some of [FROM.GetFirstName]’s hobbies. [FROM.GetSheHe] has apparently taken to climbing everything around, including trees and the walls of various buildings. [FROM.Mother.GetFullName] is afraid [FROM.GetFirstName] is going to fall and get badly hurt, but will let you have the final decision.;;;;;;;;;;;;;x
+EVTOPTA_CE_20001;Children need to learn to mind their parents.;;;;;;;;;;;;;x
+EVTOPTA_CE_20001_TT;You force [FROM.GetFirstName] to give up climbing as a hobby.;;;;;;;;;;;;;x
+EVTOPTB_CE_20001;Pride goeth before a fall.;;;;;;;;;;;;;x
+EVTOPTB_CE_20001_TT;You dare [FROM.GetFirstName] to climb the tallest tower.;;;;;;;;;;;;;x
+EVTOPTC_CE_20001;It’s important for a child to test their boundaries.;;;;;;;;;;;;;x
+EVTOPTC_CE_20001_TT;You let <name>’s activities continue.;;;;;;;;;;;;;x
 #Child does not interact with peers;;;;;;;;;;;;;;
-EVTDESC_CE_20021;;;;;;;;;;;;;;x
-EVTOPTA_CE_20021;;;;;;;;;;;;;;x
-EVTOPTA_CE_20021_TT;;;;;;;;;;;;;;x
-EVTOPTB_CE_20021;;;;;;;;;;;;;;x
-EVTOPTB_CE_20021_TT;;;;;;;;;;;;;;x
-EVTOPTC_CE_20021;;;;;;;;;;;;;;x
-EVTOPTC_CE_20021_TT;;;;;;;;;;;;;;x
+EVTDESC_CE_20021;You’ve noticed that [FROM.GetFirstName] doesn’t seem to have any friends and tends to avoid socializing with other children.;;;;;;;;;;;;;x
+EVTOPTA_CE_20021;I will arrange supervised playtime with other children of the court!;;;;;;;;;;;;;x
+EVTOPTA_CE_20021_TT; Whether it’s arrogance or shyness, you won’t allow the child to be anti-social.;;;;;;;;;;;;;x
+EVTOPTB_CE_20021;I understand why you don’t want to associate with your peers, they are beneath you. Your time is better spent in solitude.;;;;;;;;;;;;;x
+EVTOPTB_CE_20021_TT;You allow the child to spend more time alone.;;;;;;;;;;;;;x
+EVTOPTC_CE_20021;It’s just a phase.;;;;;;;;;;;;;x
+EVTOPTC_CE_20021_TT;[FROM.GetFirstName] will get over it eventually.;;;;;;;;;;;;;x
 #Child mocked for being ugly;;;;;;;;;;;;;;
-EVTDESC_CE_21501;;;;;;;;;;;;;;x
-EVTOPTA_CE_21501;;;;;;;;;;;;;;x
-EVTOPTA_CE_21501_TT;;;;;;;;;;;;;;x
-EVTOPTB_CE_21501;;;;;;;;;;;;;;x
-EVTOPTB_CE_21501_TT;;;;;;;;;;;;;;x
-EVTOPTC_CE_21501;;;;;;;;;;;;;;x
-EVTOPTC_CE_21501_TT;;;;;;;;;;;;;;x
-EVTOPTD_CE_21501;;;;;;;;;;;;;;x
-EVTOPTD_CE_21501_TT;;;;;;;;;;;;;;x
-EVTOPTE_CE_21501;;;;;;;;;;;;;;x
-EVTOPTE_CE_21501_TT;;;;;;;;;;;;;;x
+EVTDESC_CE_21501;As [FROM.GetFirstName] has gotten older, [FROM.GetSheHe] has become aware of the uncomfortable stares that [FROM.GetHerHis] unusual appearance engenders, and you even hear a few other child mocking [FROM.GetFirstName]. After a few such incidents, [FROM.GetFirstName] starts avoiding the common hall and has been taking meals in [FROM.GetHerHis] room. ;;;;;;;;;;;;;x
+EVTOPTA_CE_21501;As Virgil once said, ’It never troubles the wolf how many the sheep may be’. Care not for their slings and barbs.;;;;;;;;;;;;;x
+EVTOPTA_CE_21501_TT;You encourage the child to stride through the court proudly.;;;;;;;;;;;;;x
+EVTOPTB_CE_21501;Oh, little gosling, you may never be as beautiful as the others, but you could be wiser, or stronger, or have a quicker wit. Ignore your physical flaws and look to what you can improve.;;;;;;;;;;;;;x
+EVTOPTB_CE_21501_TT;You encourage [FROM.GetSheHe] to develop [FROM.GetHerHim]self in other ways.;;;;;;;;;;;;;x
+EVTOPTC_CE_21501;<ToDo - write text for faith event>;;;;;;;;;;;;;x
+EVTOPTC_CE_21501_TT;<ToDo - write tooltip for faith event>;;;;;;;;;;;;;x
+EVTOPTD_CE_21501;Indeed, you are difficult to behold. Why don’t you stay within your chambers? It’s best for all.;;;;;;;;;;;;;x
+EVTOPTD_CE_21501_TT;You remind yourself not to eat before the next time you see [FROM.GetFirstName], lest you lose your lunch.;;;;;;;;;;;;;x
+EVTOPTE_CE_21501;There are more pressing matters for my attention.;;;;;;;;;;;;;x
+EVTOPTE_CE_21501_TT;You do nothing.;;;;;;;;;;;;;x
 #Execution Event Chain - Heretic;;;;;;;;;;;;;;x
-EVTDESC_CE_28001;;;;;;;;;;;;;;x
-EVTOPTA_CE_28001;;;;;;;;;;;;;;x
-EVTOPTA_CE_28001_TT;;;;;;;;;;;;;;x
-EVTOPTB_CE_28001;;;;;;;;;;;;;;x
-EVTOPTB_CE_28001_TT;;;;;;;;;;;;;;x
-#Execution Event Chain - children caught sneaking out!;;;;;;;;;;;;;;x
-EVTDESC_CE_28002;;;;;;;;;;;;;;x
-EVTOPTA_CE_28002;;;;;;;;;;;;;;x
-EVTOPTA_CE_28002_TT;;;;;;;;;;;;;;x
-EVTOPTB_CE_28002;;;;;;;;;;;;;;x
-EVTOPTB_CE_28002_TT;;;;;;;;;;;;;;x
-EVTOPTC_CE_28002;;;;;;;;;;;;;;x
-EVTOPTC_CE_28002_TT;;;;;;;;;;;;;;x
-EVTOPTD_CE_28002;;;;;;;;;;;;;;x
-EVTOPTD_CE_28002_TT;;;;;;;;;;;;;;x
-EVTOPTE_CE_28002;;;;;;;;;;;;;;x
-EVTOPTE_CE_28002_TT;;;;;;;;;;;;;;x
+EVTDESC_CE_28001;A known heretic is being sentenced for their crimes today and there has been much discussion in the castle over their fate. [FROM.GetFirstName] has overheard that there’s to be an execution and is curious to see the fate of the condemned man.;;;;;;;;;;;;;x
+EVTOPTA_CE_28001;Such things are not for the eyes of children.;;;;;;;;;;;;;x
+EVTOPTA_CE_28001_TT;You discourage [FROM.GetFirstName]. Maybe when [FROM.GetSheHe] older.;;;;;;;;;;;;;x
+EVTOPTB_CE_28001;It will be good for you to see the fate of those who go against [FROM.Religion.GetHighGodName].;;;;;;;;;;;;;x
+EVTOPTB_CE_28001_TT;It will be a good learning experience for [FROM.GetFirstName].;;;;;;;;;;;;;x
+#Execution Event Chain - Child is taken to Execution;;;;;;;;;;;;;;x
+EVTDESC_CE_28002;You arrive at the site of the execution just before the condemned is brought out. The price for heresy, of course, is to be burned alive. A grisly fate to be certain, but no less than is deserved. [FROM.GetFirstName] stands at your side, struggling to see over the heads of the crowd that has gathered to witness the spectacle. Soon enough, the prisoner is brought forth and secured. The panic in the man’s eyes is plain to see, and [FROM.GetFirstName] looks to you questioningly. “Why is he to be killed?” ;;;;;;;;;;;;;x
+EVTOPTA_CE_28002;The responsibility of any ruler is to see justice done, even when it isn’t easy. That man is a criminal. Remember this.;;;;;;;;;;;;;x
+EVTOPTA_CE_28002_TT;It is important that [FROM.GetFirstName] takes the right lesson from this.;;;;;;;;;;;;;x
+EVTOPTB_CE_28002;All find death eventually. Some merely seek it out through their own foolishness.;;;;;;;;;;;;;x
+EVTOPTB_CE_28002_TT;After all, death is the one thing which binds together commoner and king.;;;;;;;;;;;;;x
+EVTOPTC_CE_28002;Look away. You shouldn’t see what comes next.;;;;;;;;;;;;;x
+EVTOPTC_CE_28002_TT;There’s no need for a child to see such a grisly sight.;;;;;;;;;;;;;x
+EVTOPTD_CE_28002;He has earned his punishment. Watch what happens to those who break the law;;;;;;;;;;;;;x
+EVTOPTD_CE_28002_TT;You let [FROM.GetFirstName] watch the execution.;;;;;;;;;;;;;x
+EVTOPTE_CE_28002;Watch, child. This is the fate of those who would blasphemy against [FROM.Religion.GetHighGodName].;;;;;;;;;;;;;x
+EVTOPTE_CE_28002_TT;It is best to instill a proper fear of [FROM.Religion.GetHighGodName] in [FROM.GetFirstName] early.;;;;;;;;;;;;;x
 #Execution Event Chain - children snuck out and enjoyed the execution;;;;;;;;;;;;;;x
 EVTDESC_CE_28003;;;;;;;;;;;;;;x
 EVTOPTA_CE_28003;;;;;;;;;;;;;;x
@@ -60,16 +60,16 @@ EVTDESC_CE_28005;;;;;;;;;;;;;;x
 EVTOPTA_CE_28005;;;;;;;;;;;;;;x
 EVTOPTA_CE_28005_TT;;;;;;;;;;;;;;x
 #Child is uninterested in prayer;;;;;;;;;;;;;;x
-EVTDESC_CE_28011;;;;;;;;;;;;;;x
-EVTOPTA_CE_28011;;;;;;;;;;;;;;x
-EVTOPTA_CE_28011_TT;;;;;;;;;;;;;;x
-EVTOPTB_CE_28011;;;;;;;;;;;;;;x
-EVTOPTB_CE_28011_TT;;;;;;;;;;;;;;x
-EVTOPTC_CE_28011;;;;;;;;;;;;;;x
-EVTOPTC_CE_28011_TT;;;;;;;;;;;;;;x
-EVTOPTD_CE_28011;;;;;;;;;;;;;;x
-EVTOPTD_CE_28011_TT;;;;;;;;;;;;;;x
-EVTOPTE_CE_28011;;;;;;;;;;;;;;x
-EVTOPTE_CE_28011_TT;;;;;;;;;;;;;;x
+EVTDESC_CE_28011;And so, [FROM.Religion.GetHighGodName], we give thanks…” Daily prayer is an integral part of life at the castle, yet [FROM.GetFirstName] is often distracted or, worse, falling asleep during this important observance.;;;;;;;;;;;;;x
+EVTOPTA_CE_28011;Have a word with your [ROOT.Religion.GetPriestTitle] about special lessons to revitalize [FROM.GetFirstName]’s interest in [FROM.Religion.GetHighGodName]. ;;;;;;;;;;;;;x
+EVTOPTA_CE_28011_TT;<ToDo - write tooltip for option>;;;;;;;;;;;;;x
+EVTOPTB_CE_28011;[FROM.GetFirstName], you must pay attention during prayer!;;;;;;;;;;;;;x
+EVTOPTB_CE_28011_TT;You beseech [FROM.GetFirstName], once again, to give prayer the attention it deserves.;;;;;;;;;;;;;x
+EVTOPTC_CE_28011;The fires of Hell wait for those who would ignore [FROM.Religion.GetHighGodName] word.;;;;;;;;;;;;;x
+EVTOPTC_CE_28011_TT;You impress upon [FROM.GetFirstName] the consequences for their inattentiveness!;;;;;;;;;;;;;x
+EVTOPTD_CE_28011;<ToDo - write description for option>;;;;;;;;;;;;;x
+EVTOPTD_CE_28011_TT;<ToDo - write tooltip for option>;;;;;;;;;;;;;x
+EVTOPTE_CE_28011;[FROM.GetFirstName] is only a child.;;;;;;;;;;;;;x
+EVTOPTE_CE_28011_TT;You can hardly expect children to understand the importance of such things, anyway.;;;;;;;;;;;;;x
 #Child is uninterested in prayer - Chaplain intervenes;;;;;;;;;;;;;;x
 EVTDESC_CE_28012;;;;;;;;;;;;;;x
