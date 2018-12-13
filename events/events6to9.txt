@@ -820,8 +820,7 @@ character_event = {
 	
 	is_triggered_only = yes
 	
-	option = { 
-	## It is our duty to punish criminals
+	option = { ## It is our duty to punish criminals
 		trigger = {
 			trait = just
 		}
@@ -885,8 +884,7 @@ character_event = {
 		}
 		}
 	}
-	option = { 
-	## He has broken the law
+	option = { ## He has broken the law
 		ai_chance = {
 			factor = 30
 			modifier = {
