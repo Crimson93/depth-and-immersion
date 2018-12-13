@@ -45,7 +45,7 @@ EVTOPTD_CE_28002;He has earned his punishment. Watch what happens to those who b
 EVTOPTD_CE_28002_TT;You let [FROM.GetFirstName] watch the execution.;;;;;;;;;;;;;x
 EVTOPTE_CE_28002;Watch, child. This is the fate of those who would blasphemy against [FROM.Religion.GetHighGodName].;;;;;;;;;;;;;x
 EVTOPTE_CE_28002_TT;It is best to instill a proper fear of [FROM.Religion.GetHighGodName] in [FROM.GetFirstName] early.;;;;;;;;;;;;;x
-#Execution Event Chain - children snuck out and enjoyed the execution;;;;;;;;;;;;;;x
+#Execution Event Chain - children caught sneaking out!;;;;;;;;;;;;;;x
 EVTDESC_CE_28003;;;;;;;;;;;;;;x
 EVTOPTA_CE_28003;;;;;;;;;;;;;;x
 EVTOPTA_CE_28003_TT;;;;;;;;;;;;;;x
