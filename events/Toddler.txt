@@ -1,0 +1,605 @@
+## BABY YEARS
+## 10000-10001 Initialization Event
+## 10002 Event manager
+## 10010-10100 Toddler Events
+
+namespace = CE
+
+## INITIALIZATION EVENT.
+## On birth
+character_event = {
+	id = CE.10000
+	
+	hide_window = yes
+	
+	trigger = {
+	.`
+	NOT = { has_character_flag = initialization_event_0 }
+	
+	}
+	
+	immediate = {
+	
+		set_character_flag = initialization_event_0
+		
+		## Create personality variables
+		## 13 variables...
+		
+		set_variable = { which = conscientious value = 0 }
+		set_variable = { which = affectionate value = 0 }
+		set_variable = { which = timid value = 0 }
+		set_variable = { which = playful value = 0 }
+		set_variable = { which = willful value = 0 }
+		set_variable = { which = rowdy value = 0 }
+		set_variable = { which = sociable value = 0 }
+		set_variable = { which = brooding value = 0 }
+		set_variable = { which = haughty value = 0 }
+		set_variable = { which = fussy value = 0 }
+		set_variable = { which = idolizer value = 0 }
+		set_variable = { which = curious value = 0 }
+		set_variable = { which = humility value = 0 }
+		
+	
+		## Set flags: one to count the number of events that have fired.
+		
+		character_event = { id = CE.10002 days = 1100 } ## Exactly 3 years after
+		character_event = { id = CE.20000 days = 2200 } ## Exactly 6 years after
+	}
+}
+
+
+## Fires annually for kids 2-5. For characters who didnt get the event when born. 
+character_event = {
+	id = CE.10001
+	
+	hide_window = yes
+	
+	trigger = {
+	
+	NOT = { has_character_flag = initialization_event_0 }
+	
+	}
+	
+	min_age = 2
+	max_age = 5
+	
+	immediate = {
+	
+		set_character_flag = initialization_event_0
+		
+		## Create personality variables
+		
+		set_variable = { which = conscientious value = 0 }
+		set_variable = { which = affectionate value = 0 }
+		set_variable = { which = timid value = 0 }
+		set_variable = { which = playful value = 0 }
+		set_variable = { which = willful value = 0 }
+		set_variable = { which = rowdy value = 0 }
+		set_variable = { which = sociable value = 0 }
+		set_variable = { which = brooding value = 0 }
+		set_variable = { which = haughty value = 0 }
+		set_variable = { which = fussy value = 0 }
+		set_variable = { which = idolizer value = 0 }
+		set_variable = { which = curious value = 0 }
+		set_variable = { which = humility value = 0 }
+	
+		## 
+		character_event = { id = CE.10002 days = 1 }
+	}
+}
+
+## Event manager for toddlers!
+character_event = {
+	id = CE.10002
+	
+	hide_window = yes
+	
+	min_age = 3
+	max_age = 5
+	
+	immediate = {
+		## Toddler Events
+			random_list = {
+				## List all toddler events
+				10 = { ## Child is scared of ghosts.
+					modifier = {
+						factor = 0
+						has_character_flag = ghost_event
+					}
+					character_event = { id = CE.10010 days = 10 random = 280 }
+				}
+				10 = { ## 3-5 Child refuses to share toys with fellow courtier kid/sibling.
+					modifier = {
+						factor = 0
+						has_character_flag = sharing_event
+					}
+					character_event = { id = CE.10020 days = 10 random = 280 }
+				}
+				10 = { ##  ## 2-5 Child breaks something while playing with toys
+					modifier = {
+						factor = 0
+						has_character_flag = break_event
+					}
+					character_event = { id = CE.10030 days = 10 random = 280 }
+				}
+				10 = { ##  Child is scared of sleeping alone 
+					modifier = {
+						factor = 0
+						has_character_flag = sleep_event
+					}
+					character_event = { id = CE.10040 days = 10 random = 280 }
+				}
+				20 = {
+					modifier = {
+						factor = 5
+						has_character_flag = ghost_event
+					}
+					modifier = {
+						factor = 5
+						has_character_flag = sharing_event
+					}
+					modifier = {
+						factor = 5
+						has_character_flag = break_event
+					}
+					modifier = {
+						factor = 5
+						has_character_flag = sleep_event
+					}
+				}				
+			}
+		character_event = { id = CE.10002 days = 365 } ## Repeat this event annually
+	}
+}
+
+## Child is scared of ghosts.
+character_event = {
+	id = CE.10010
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 3
+	max_age = 5 ## Fires between ages 2 and 5. 
+	prisoner = no
+	ai = yes
+	
+	immediate = {
+	
+		set_character_flag = ghost_event 
+		father = {
+			character_event = { id = CE.10011 } ## Look for a way to fire this for the mom too ><
+		}
+	}
+}
+
+
+## Child is scared of ghosts. Could fire for parent or guardian
+character_event = {
+	id = CE.10011
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_10011
+
+	prisoner = no
+
+	is_triggered_only = yes
+
+	option = { 
+	## Option 1: No such thing as ghosts
+		trigger = {
+			NOT = {
+				trait = zealous
+			}
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+				trait = cynical
+			}
+		}
+		name = EVTOPTA_CE_10011 
+		FROM = {
+		change_variable = { which = idolizer value = -30 } }
+		custom_tooltip = { text = EVTOPTA_CE_10011_TT }
+	}
+	
+	option = { ## Ghosts only harm good kids
+		trigger = {
+				NOT = {
+					trait = cynical
+				}
+			}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 3
+					trait = deceitful
+			}
+		}
+		
+		name = EVTOPTB_CE_10011 
+		FROM = {
+		change_variable = { which = conscientious value = 30 }
+		change_variable = { which = willful value = -20 }
+		change_variable = { which = rowdy value = -30 } }
+		custom_tooltip = { text = EVTOPTB_CE_10011_TT }
+	}
+	
+	option = { ## Ghosts only harm those who don't pray to God
+		trigger = {
+				NOT = {
+					trait = cynical
+				}
+			}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+					trait = zealous
+			}
+		}
+		name = EVTOPTC_CE_10011 
+		FROM = {
+		change_variable = { which = idolizer value = 30 } }
+		custom_tooltip = { text = EVTOPTC_CE_10011_TT }
+	}
+	
+	option = { ## What should I do about it?
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				OR = {
+					trait = arbitrary
+				}
+			}
+		}
+		name = EVTOPTD_CE_10011 
+		custom_tooltip = { text = EVTOPTD_CE_10011_TT }
+	}
+}
+
+
+## 3-5 Child refuses to share toys with fellow courtier kid/sibling.
+character_event = {
+	id = CE.10020
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 3
+	max_age = 5 ## Fires between ages 2 and 5. 
+	prisoner = no
+	ai = yes
+	
+	immediate = {
+	
+		set_character_flag = sharing_event 
+		father = {
+			character_event = CE.10021 ## Look for a way to fire this for the mom too ><
+		}
+	}
+}
+
+## 3-5 Child refuses to share toys with fellow courtier kid/sibling. Fires for guardian or father
+character_event = {
+	id = CE.10021
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_10021
+
+	prisoner = no
+
+	is_triggered_only = yes
+
+	option = { 
+	## Option 1: Share with your friend
+		trigger = {
+			NOT = {
+				trait = proud
+			}
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 3
+				trait = kind
+			}
+		}
+		name = EVTOPTA_CE_10021 
+		FROM = {
+		change_variable = { which = haughty value = -10 }
+		change_variable = { which = affectionate value = 20 } }
+		custom_tooltip = { text = EVTOPTA_CE_10021_TT }
+	}
+	
+	option = { ## Take toys away
+		trigger = {
+				NOT = {
+					trait = kind
+				}
+			}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTB_CE_10021 
+		custom_tooltip = { text = EVTOPTB_CE_10021_TT }
+		hidden_tooltip = {
+			FROM = {
+				random_list = {
+			## child learns
+			10 = {
+				change_variable = { which = haughty value = -20 }
+			}
+			10 = { ## Child doesnt learn
+				change_variable = { which = haughty value = 20 }
+			}
+			} 
+				random = {
+					chance = 30
+					opinion = { who = ROOT modifier = took_my_toys years = 12 }
+				}
+			}
+		}
+	}
+	
+	option = { ## Approve
+		trigger = {
+				trait = proud
+			}
+		ai_chance = {
+			factor = 30
+		}
+		name = EVTOPTC_CE_10021 
+		FROM = {
+		change_variable = { which = haughty value = 30 }
+		change_variable = { which = willful value = 10 } }
+		custom_tooltip = { text = EVTOPTC_CE_10021_TT }
+	}
+	
+	option = { ## Bribe Child. 
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				OR = {
+					trait = arbitrary
+				}
+			}
+		}
+		name = EVTOPTD_CE_10021 
+		custom_tooltip = { text = EVTOPTD_CE_10021_TT }
+		treasury = -5
+		FROM = {
+		change_variable = { which = haughty value = 10 }
+		change_variable = { which = humility value = -20 } }
+	}
+	
+	option = { ## Do Nothing
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTE_CE_10021 
+		FROM = {
+		change_variable = { which = willful value = 10 } }
+		custom_tooltip = { text = EVTOPTE_CE_10021_TT }
+	}
+}
+
+## 3-5 Child breaks something while playing with toys
+character_event = {
+	id = CE.10030
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 3
+	max_age = 5 ## Fires between ages 2 and 5. 
+	prisoner = no
+	ai = yes
+	
+	immediate = {
+	
+		set_character_flag = break_event 
+		father = {
+			character_event = CE.10031 ## Look for a way to fire this for the mom too ><
+		}
+	}
+}
+
+character_event = {
+	id = CE.10031
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_10031
+
+	prisoner = no
+
+	is_triggered_only = yes
+
+	option = { 
+	
+	## Take toys away
+		trigger = {
+			NOT = {
+				trait = kind
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTA_CE_10031 
+		custom_tooltip = { text = EVTOPTA_CE_10031_TT }
+		hidden_tooltip = {
+			FROM = {
+			
+				change_variable = { which = playful value = -10 }
+				change_variable = { which = rowdy value = -10 }
+				random = {
+					chance = 20
+					opinion = { who = ROOT modifier = took_my_toys months = 120 }
+				}
+			}
+		}
+	}
+	
+	option = { ## scold and punish the child
+		trigger = {
+				NOT = {
+					trait = kind
+				}
+			}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+				OR = {
+				trait = cruel
+				trait = wroth
+				}
+			}
+		}
+		name = EVTOPTB_CE_10031 
+		custom_tooltip = { text = EVTOPTB_CE_10031_TT }
+		hidden_tooltip = {
+			FROM = {
+				change_variable = { which = playful value = -20 }
+				change_variable = { which = brooding value = 20 }
+				change_variable = { which = rowdy value = -20 }
+				random = {
+					chance = 30
+					opinion = { who = ROOT modifier = scolded_me months = 120 }
+				}
+			}
+		}
+	}
+	
+	option = { ## Do nothing 
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTC_CE_10031 
+		custom_tooltip = { text = EVTOPTC_CE_10031_TT }
+		hidden_tooltip = {
+			FROM = {
+				change_variable = { which = rowdy value = 10 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = CE.10040
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 3
+	max_age = 5 ## Fires between ages 2 and 5. 
+	prisoner = no
+	ai = yes
+	
+	immediate = {
+	
+		set_character_flag = sleep_event 
+		father = {
+			character_event = CE.10041 ## Look for a way to fire this for the mom too ><
+		}
+	}
+}
+
+character_event = {
+	id = CE.10041
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_10041 ## ALL OF THESE ARE JUST PLACEHOLDERS. We'll fix these at the end. So no worries.
+
+	prisoner = no
+
+	is_triggered_only = yes
+
+	option = { ## Send him back
+		trigger = {
+			NOT = {
+				trait = wroth
+				trait = cruel
+			}
+		}
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 5
+				OR = {
+					trait = patient
+				}
+			}
+		}
+		name = EVTOPTA_CE_10001
+		custom_tooltip = { text = EVTOPTA_CE_10001_TT }
+		hidden_tooltip = {
+		
+			FROM = {.
+						
+				change_variable = { which = brooding value = 10 }
+				change_variable = { which = conscientious value = 10 }
+				random = {
+					chance = 10
+					opinion = { who = ROOT modifier = was_sent_back months = 120 }
+				}
+			}
+		}
+	}
+	
+	option = { ## Beat him up
+		trigger = {
+				NOT = {
+					trait = kind
+				}
+			}
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 10
+				OR = {
+					trait = wroth
+					trait = cruel
+				}
+			}
+		}
+		name = EVTOPTB_CE_10001
+		custom_tooltip = { text = EVTOPTB_CE_10001_TT }
+		hidden_tooltip = {
+			FROM = {
+				change_variable = { which = brooding value = 20 }
+				change_variable = { which = timid value = 20 }
+				change_variable = { which = rowdy value = 20 }
+					opinion = { who = ROOT modifier = was_beaten_sleep months = 120 }
+				}
+		}
+	}
+	
+	option = { ## Let him sleep
+		trigger = {
+			NOT = {
+				trait = wroth
+				trait = cruel
+			}
+		}
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 10
+				OR = {
+					trait = kind
+				}
+			}
+		}
+		name = EVTOPTC_CE_10001
+		custom_tooltip = { text = EVTOPTC_CE_10001_TT }
+		hidden_tooltip = {
+			FROM = {
+				change_variable = { which = timid value = 20 }
+				change_variable = { which = affectionate value = 20 }
+					opinion = { who = ROOT modifier = slept_with_parents months = 120 }
+			}
+		}
+	}
+}
