@@ -1,0 +1,2333 @@
+### 20000 Initialization Event
+### 20010 Event manager
+### Others are the same event Ids as before
+
+namespace = CE
+
+character_event = {
+	id = CE.20000
+	
+	hide_window = yes
+	
+	is_triggered_only = yes
+
+	min_age = 6
+	max_age = 11
+	
+	trigger = {
+		NOT = { has_character_flag = initialization_event_6 }
+	}
+	
+	immediate = {
+		set_character_flag = initialization_event_6
+		
+		## Assign initial personalities!
+		
+		## Roll for a choleric, melancholic, phlegmatic, or sanguine personality
+		
+		random_list = {
+			20 = {
+				set_character_flag = sanguine
+			}
+			20 = {
+				set_character_flag = choleric
+						15 = {
+				modifier = {
+					factor = 2
+					OR = { 
+						trait = ugly
+						trait = dwarf
+						trait = hunchback
+						trait = clubfoot
+						trait = harelip
+					}
+				}
+				set_character_flag = melancholic
+			}
+			20 = {
+				set_character_flag = phlegmatic
+			}
+		}
+			
+		## Now determine initial variables depending on the rolls
+		
+		## SANGUINE
+		if = {
+			limit = {
+				has_character_flag = sanguine
+			}
+			
+			##LIKELY
+			## Sociable
+			random_list = {
+				10 = {
+					change_variable = { which = sociable value = 75 }
+				}
+				20 = {
+					change_variable = { which = sociable value = 40 }
+				}
+				20 = {
+					change_variable = { which = sociable value = 20 }
+				}
+			}
+			## Playful
+			random_list = {
+				10 = {
+					change_variable = { which = playful value = 75 }
+				}
+				20 = {
+					change_variable = { which = playful value = 40 }
+				}
+				20 = {
+					change_variable = { which = playful value = 20 }
+				}
+			}
+			## Rowdy
+			random_list = {
+				10 = {
+					change_variable = { which = rowdy value = 75 }
+				}
+				20 = {
+					change_variable = { which = rowdy value = 40 }
+				}
+				20 = {
+					change_variable = { which = rowdy value = 20 }
+				}
+			}
+			
+			## POSSIBLY
+			## Idolizer
+			random_list = {
+				10 = {
+					change_variable = { which = idolizer value = 40 }
+				}
+				20 = {
+					change_variable = { which = idolizer value = 20 }
+				}
+				20 = {
+					change_variable = { which = idolizer value = 0 }
+				}
+			}
+			
+			## FLIP
+			## Affectionate
+			random_list = {
+				10 = {
+					change_variable = { which = affectionate value = 40 }
+				}
+				30 = {
+					change_variable = { which = affectionate value = 0 }
+				}
+				10 = {
+					change_variable = { which = affectionate value = -40 }
+				}
+			}
+
+			## Willful
+			random_list = {
+				10 = {
+					change_variable = { which = willful value = 40 }
+				}
+				30 = {
+					change_variable = { which = willful value = 0 }
+				}
+				10 = {
+					change_variable = { which = willful value = -40 }
+				}
+			}
+			## Humility
+			random_list = {
+				10 = {
+					change_variable = { which = humility value = 40 }
+				}
+				30 = {
+					change_variable = { which = humility value = 0 }
+				}
+				10 = {
+					change_variable = { which = humility value = -40 }
+				}
+			}
+			
+			## POSSIBLY NOT
+			## Curious
+			random_list = {
+				10 = {
+					change_variable = { which = curious value = -40 }
+				}
+				20 = {
+					change_variable = { which = curious value = -20 }
+				}
+				20 = {
+					change_variable = { which = curious value = 0 }
+				}
+			}
+			## Haughty
+			random_list = {
+				10 = {
+					change_variable = { which = haughty value = -40 }
+				}
+				20 = {
+					change_variable = { which = haughty value = -20 }
+				}
+				20 = {
+					change_variable = { which = haughty value = 0 }
+				}
+			}
+			## Conscientious
+			random_list = {
+				10 = {
+					change_variable = { which = conscientious value = -40 }
+				}
+				20 = {
+					change_variable = { which = conscientious value = -20 }
+				}
+				20 = {
+					change_variable = { which = conscientious value = 0 }
+				}
+			}
+			## Fussy
+			random_list = {
+				10 = {
+					change_variable = { which = fussy value = -40 }
+				}
+				20 = {
+					change_variable = { which = fussy value = -20 }
+				}
+				20 = {
+					change_variable = { which = fussy value = 0 }
+				}
+			}
+			
+			## UNLIKELY
+			## Brooding
+			random_list = {
+				10 = {
+					change_variable = { which = brooding value = -75 }
+				}
+				20 = {
+					change_variable = { which = brooding value = -40 }
+				}
+				20 = {
+					change_variable = { which = brooding value = -20 }
+				}
+			}
+			## Playful
+			random_list = {
+				10 = {
+					change_variable = { which = timid value = -75 }
+				}
+				20 = {
+					change_variable = { which = timid value = -40 }
+				}
+				20 = {
+					change_variable = { which = timid value = -20 }
+				}
+			}
+		}
+		
+		## CHOLERIC #########
+		if = {
+			limit = {
+				has_character_flag = choleric
+			}
+			
+			##LIKELY
+			## Sociable
+			random_list = {
+				10 = {
+					change_variable = { which = conscientious value = 75 }
+				}
+				20 = {
+					change_variable = { which = conscientious value = 40 }
+				}
+				20 = {
+					change_variable = { which = conscientious value = 20 }
+				}
+			}
+			## Playful
+			random_list = {
+				10 = {
+					change_variable = { which = haughty value = 75 }
+				}
+				20 = {
+					change_variable = { which = haughty value = 40 }
+				}
+				20 = {
+					change_variable = { which = haughty value = 20 }
+				}
+			}
+			## Rowdy
+			random_list = {
+				10 = {
+					change_variable = { which = willful value = 75 }
+				}
+				20 = {
+					change_variable = { which = willful value = 40 }
+				}
+				20 = {
+					change_variable = { which = willful value = 20 }
+				}
+			}
+			
+			## POSSIBLY
+			## Idolizer
+			random_list = {
+				10 = {
+					change_variable = { which = rowdy value = 40 }
+				}
+				20 = {
+					change_variable = { which = rowdy value = 20 }
+				}
+				20 = {
+					change_variable = { which = rowdy value = 0 }
+				}
+			}
+			
+			random_list = {
+				10 = {
+					change_variable = { which = fussy value = 40 }
+				}
+				20 = {
+					change_variable = { which = fussy value = 20 }
+				}
+				20 = {
+					change_variable = { which = fussy value = 0 }
+				}
+			}
+			
+			random_list = {
+				10 = {
+					change_variable = { which = sociable value = 40 }
+				}
+				20 = {
+					change_variable = { which = sociable value = 20 }
+				}
+				20 = {
+					change_variable = { which = sociable value = 0 }
+				}
+			}
+			
+			## FLIP
+			## Humility
+			random_list = {
+				10 = {
+					change_variable = { which = humility value = 40 }
+				}
+				30 = {
+					change_variable = { which = humility value = 0 }
+				}
+				10 = {
+					change_variable = { which = humility value = -40 }
+				}
+			}
+			## Affectionate
+			random_list = {
+				10 = {
+					change_variable = { which = curious value = 40 }
+				}
+				30 = {
+					change_variable = { which = curious value = 0 }
+				}
+				10 = {
+					change_variable = { which = curious value = -40 }
+				}
+			}
+			## Willful
+			random_list = {
+				10 = {
+					change_variable = { which = brooding value = 40 }
+				}
+				30 = {
+					change_variable = { which = brooding value = 0 }
+				}
+				10 = {
+					change_variable = { which = brooding value = -40 }
+				}
+			}
+			## Willful
+			random_list = {
+				10 = {
+					change_variable = { which = idolizer value = 40 }
+				}
+				30 = {
+					change_variable = { which = idolizer value = 0 }
+				}
+				10 = {
+					change_variable = { which = idolizer value = -40 }
+				}
+			}
+			
+			## POSSIBLY NOT
+			## Curious
+			random_list = {
+				10 = {
+					change_variable = { which = affectionate value = -40 }
+				}
+				20 = {
+					change_variable = { which = affectionate value = -20 }
+				}
+				20 = {
+					change_variable = { which = affectionate value = 0 }
+				}
+			}
+			
+			## UNLIKELY
+			## Brooding
+			random_list = {
+				10 = {
+					change_variable = { which = playful value = -75 }
+				}
+				20 = {
+					change_variable = { which = playful value = -40 }
+				}
+				20 = {
+					change_variable = { which = playful value = -20 }
+				}
+			}
+			## Playful
+			random_list = {
+				10 = {
+					change_variable = { which = timid value = -75 }
+				}
+				20 = {
+					change_variable = { which = timid value = -40 }
+				}
+				20 = {
+					change_variable = { which = timid value = -20 }
+				}
+			}
+		}
+				
+		## PHLEGMATIC
+		if = {
+			limit = {
+				has_character_flag = phlegmatic
+			}
+			
+			##LIKELY
+			## Sociable
+			random_list = {
+				10 = {
+					change_variable = { which = affectionate value = 75 }
+				}
+				20 = {
+					change_variable = { which = affectionate value = 40 }
+				}
+				20 = {
+					change_variable = { which = affectionate value = 20 }
+				}
+			}
+			## Playful
+			random_list = {
+				10 = {
+					change_variable = { which = timid value = 75 }
+				}
+				20 = {
+					change_variable = { which = timid value = 40 }
+				}
+				20 = {
+					change_variable = { which = timid value = 20 }
+				}
+			}
+			## Rowdy
+			random_list = {
+				10 = {
+					change_variable = { which = playful value = 75 }
+				}
+				20 = {
+					change_variable = { which = playful value = 40 }
+				}
+				20 = {
+					change_variable = { which = playful value = 20 }
+				}
+			}
+			
+			## POSSIBLY
+			## Idolizer
+			random_list = {
+				10 = {
+					change_variable = { which = idolizer value = 40 }
+				}
+				20 = {
+					change_variable = { which = idolizer value = 20 }
+				}
+				20 = {
+					change_variable = { which = idolizer value = 0 }
+				}
+			}
+			
+			
+			## FLIP
+			## Humility
+			random_list = {
+				10 = {
+					change_variable = { which = humility value = 40 }
+				}
+				30 = {
+					change_variable = { which = humility value = 0 }
+				}
+				10 = {
+					change_variable = { which = humility value = -40 }
+				}
+			}
+			## Curious
+			random_list = {
+				10 = {
+					change_variable = { which = curious value = 40 }
+				}
+				30 = {
+					change_variable = { which = curious value = 0 }
+				}
+				10 = {
+					change_variable = { which = curious value = -40 }
+				}
+			}
+			## Brooding
+			random_list = {
+				10 = {
+					change_variable = { which = brooding value = 40 }
+				}
+				30 = {
+					change_variable = { which = brooding value = 0 }
+				}
+				10 = {
+					change_variable = { which = brooding value = -40 }
+				}
+			}
+			
+			## POSSIBLY NOT
+			#conscientious
+			random_list = {
+				10 = {
+					change_variable = { which = conscientious value = -40 }
+				}
+				20 = {
+					change_variable = { which = conscientious value = -20 }
+				}
+				20 = {
+					change_variable = { which = conscientious value = 0 }
+				}
+			}
+			#SOCIABLE
+			random_list = {
+				10 = {
+					change_variable = { which = sociable value = -40 }
+				}
+				20 = {
+					change_variable = { which = sociable value = -20 }
+				}
+				20 = {
+					change_variable = { which = sociable value = 0 }
+				}
+			}
+			## WILLFUL
+			random_list = {
+				10 = {
+					change_variable = { which = willful value = -40 }
+				}
+				20 = {
+					change_variable = { which = willful value = -20 }
+				}
+				20 = {
+					change_variable = { which = willful value = 0 }
+				}
+			}
+			
+			## UNLIKELY
+			## Rowdy
+			random_list = {
+				10 = {
+					change_variable = { which = rowdy value = -75 }
+				}
+				20 = {
+					change_variable = { which = rowdy value = -40 }
+				}
+				20 = {
+					change_variable = { which = rowdy value = -20 }
+				}
+			}
+			## Fussy
+			random_list = {
+				10 = {
+					change_variable = { which = fussy value = -75 }
+				}
+				20 = {
+					change_variable = { which = fussy value = -40 }
+				}
+				20 = {
+					change_variable = { which = fussy value = -20 }
+				}
+			}
+			## Haughty
+			random_list = {
+				10 = {
+					change_variable = { which = haughty value = -75 }
+				}
+				20 = {
+					change_variable = { which = haughty value = -40 }
+				}
+				20 = {
+					change_variable = { which = haughty value = -20 }
+				}
+			}
+		}
+		
+		#### MELANCHOLIC ###
+		if = {
+			limit = {
+				has_character_flag = melancholic
+			}
+
+			##LIKELY
+			## Brooding
+			random_list = {
+				10 = {
+					change_variable = { which = brooding value = 75 }
+				}
+				20 = {
+					change_variable = { which = brooding value = 40 }
+				}
+				20 = {
+					change_variable = { which = brooding value = 20 }
+				}
+			}
+			## Haughty
+			random_list = {
+				10 = {
+					change_variable = { which = haughty value = 75 }
+				}
+				20 = {
+					change_variable = { which = haughty value = 40 }
+				}
+				20 = {
+					change_variable = { which = haughty value = 20 }
+				}
+			}
+			## Fussy
+			random_list = {
+				10 = {
+					change_variable = { which = fussy value = 75 }
+				}
+				20 = {
+					change_variable = { which = fussy value = 40 }
+				}
+				20 = {
+					change_variable = { which = fussy value = 20 }
+				}
+			}
+			
+			## POSSIBLY
+			## Timid
+			random_list = {
+				10 = {
+					change_variable = { which = timid value = 40 }
+				}
+				20 = {
+					change_variable = { which = timid value = 20 }
+				}
+				20 = {
+					change_variable = { which = timid value = 0 }
+				}
+			}
+			## Conscientious
+			random_list = {
+				10 = {
+					change_variable = { which = conscientious value = 40 }
+				}
+				20 = {
+					change_variable = { which = conscientious value = 20 }
+				}
+				20 = {
+					change_variable = { which = conscientious value = 0 }
+				}
+			}
+			
+			
+			## FLIP
+			## Humility
+			random_list = {
+				10 = {
+					change_variable = { which = humility value = 40 }
+				}
+				30 = {
+					change_variable = { which = humility value = 0 }
+				}
+				10 = {
+					change_variable = { which = humility value = -40 }
+				}
+			}
+			## Affectionate
+			random_list = {
+				10 = {
+					change_variable = { which = affectionate value = 40 }
+				}
+				30 = {
+					change_variable = { which = affectionate value = 0 }
+				}
+				10 = {
+					change_variable = { which = affectionate value = -40 }
+				}
+			}
+			
+			## POSSIBLY NOT
+			#Willful
+			random_list = {
+				10 = {
+					change_variable = { which = willful value = -40 }
+				}
+				20 = {
+					change_variable = { which = willful value = -20 }
+				}
+				20 = {
+					change_variable = { which = willful value = 0 }
+				}
+			}
+			#Idolizer
+			random_list = {
+				10 = {
+					change_variable = { which = idolizer value = -40 }
+				}
+				20 = {
+					change_variable = { which = idolizer value = -20 }
+				}
+				20 = {
+					change_variable = { which = idolizer value = 0 }
+				}
+			}
+			
+			## UNLIKELY
+			## sociable
+			random_list = {
+				10 = {
+					change_variable = { which = sociable value = -75 }
+				}
+				20 = {
+					change_variable = { which = sociable value = -40 }
+				}
+				20 = {
+					change_variable = { which = sociable value = -20 }
+				}
+			}
+			## playful
+			random_list = {
+				10 = {
+					change_variable = { which = playful value = -75 }
+				}
+				20 = {
+					change_variable = { which = playful value = -40 }
+				}
+				20 = {
+					change_variable = { which = playful value = -20 }
+				}
+			}
+			## rowdy
+			random_list = {
+				10 = {
+					change_variable = { which = rowdy value = -75 }
+				}
+				20 = {
+					change_variable = { which = rowdy value = -40 }
+				}
+				20 = {
+					change_variable = { which = rowdy value = -20 }
+				}
+			}
+		}
+		
+	## 6 to 12 event manager
+	character_event = { id = CE.20010 days = 1 }
+	
+	}
+}
+
+## 6 to 11 Event manager
+character_event = {
+	id = CE.20010
+	
+	is_triggered_only = yes
+
+	hide_window = yes
+	
+	min_age = 6
+	max_age = 11 ## is it inclusive????
+	
+	immediate = {
+		####### UPDATE PERSONALITY #######
+		
+		## How is the focus effecting the characters personality?
+		#########################################################
+		## These all have limited effects. The main effects will be done through events!
+		## FOCUS Conscientiousness Curious Brooding Affectionate Timid Playful Sociable Willful Rowdy Fussy Haughty Idolizer
+		## FAITH: 	   0,-2, 0, 0,+1, 0, 0,-1,-1, 0, 0, +3
+		## HERITAGE:   0, 0, 0, 0, 0, 0,-1, 0, 0, 0, +1, +2
+		## ETIQUETTE:  0, 0,-3, 0,-1,+3,+3, 0, 0, 0, 0, 0
+		## HUMILITY:  +1,-1, 0,+2,+2, 0, 0,-3,-1, 0, -3, +1
+		## PRIDE:     +1, 0,+3, 0, 0,-2, 0,+3,+1,+1,+3, 0
+		## STRUGGLE:  -3,+1, 0, 0,-3, 0,+1,+3,+3,-2, 0, -2
+		## THRIFT:    -1,+3,+1,-1,+2,-1,-2, 0,-2,+3, 0, -3
+		## DUTY:	   +3, 0, 0, 0,-1,-1, 0,-2, 0, 0,-1, 0
+		## 1 means +3, 2 means +6, 3 means +9
+		#########################################################
+		
+		if = { 
+			limit = {
+				has_focus = focus_ch_faith
+			}
+			random = {
+				chance = 50
+				change_variable = { which = curious value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = timid value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = willful value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = humility value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = rowdy value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = idolizer value = 9 }
+			}
+		}
+		if = { 
+			limit = {
+				has_focus = focus_ch_heritage
+			}
+			random = {
+				chance = 50
+				change_variable = { which = curious value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = sociable value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = haughty value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = idolizer value = 6 }
+			}
+		}
+		if = { 
+			limit = {
+				has_focus = focus_ch_etiquette
+			}
+			random = {
+				chance = 50
+				change_variable = { which = brooding value = -9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = conscientious value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = timid value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = playful value = 9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = sociable value = 9 }
+			}
+		}
+		if = { 
+			limit = {
+				has_focus = focus_ch_humility
+			}
+			random = {
+				chance = 50
+				change_variable = { which = conscientious value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = curious value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = humility value = 6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = affectionate value = 9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = timid value = 9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = willful value = -9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = rowdy value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = haughty value = -9 }
+			}
+		}
+		if = { 
+			limit = {
+				has_focus = focus_ch_pride
+			}
+			random = {
+				chance = 50
+				change_variable = { which = conscientious value = 6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = brooding value = 9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = affectionate value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = playful value = -6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = willful value = 9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = rowdy value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = fussy value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = haughty value = 9 }
+			}
+		}
+		if = { 
+			limit = {
+				has_focus = focus_ch_struggle
+			}
+			random = {
+				chance = 50
+				change_variable = { which = humility value = -6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = conscientious value = -9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = curious value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = timid value = -9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = sociable value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = willful value = 6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = rowdy value = 9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = fussy value = -6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = idolizer value = -6 }
+			}
+		}
+		if = { 
+			limit = {
+				has_focus = focus_ch_thrift
+			}
+			random = {
+				chance = 50
+				change_variable = { which = conscientious value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = curious value = 9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = brooding value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = timid value = 6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = playful value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = sociable value = -6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = rowdy value = -6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = fussy value = 9 }
+			}
+		}
+		if = { 
+			limit = {
+				has_focus = focus_ch_duty
+			}
+			random = {
+				chance = 50
+				change_variable = { which = conscientious value = 9 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = timid value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = humility value = 3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = playful value = -3 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = willful value = -6 }
+			}
+			random = {
+				chance = 50
+				change_variable = { which = haughty value = -6 }
+			}
+		}
+		
+		## Randomly increase
+		
+		random_list = {
+			10 = { 
+				set_variable = { which = trait_modifier value = 5 }
+			}
+			10 = {
+				set_variable = { which = trait_modifier value = -5 }
+			}
+		}
+		random = {
+			chance = 10
+			change_variable = { which = conscientious which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = affectionate which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = timid which = trait_modifier }
+			subtract_variable = { which = rowdy which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = playful which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = willful which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = rowdy which = trait_modifier }
+			subtract_variable = { which = timid which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = sociable which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = brooding which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = haughty which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = fussy which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = idolizer which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = curious which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = humility which = trait_modifier }
+		}
+
+		
+		## How is the relationship with the guardian effecting the characters personality? 
+			## Similar traits will mean that the character gravitates towards the guardian, particularly with good relationship
+			## Different traits will mean that the character gravitates away from the guardian, particularly with a bad relationship
+			## First the child's current compatibility with the guardian is calculated
+			## Then if negative the child will move opposite to guardian, positive the child will move towards guardian
+			
+			## Relationship with guardian
+			## Check compatibility. 4 levels. Hate, dislike, like, Love. These add to guardian 
+			## High compatibility will make the child more like the guardian. Very low compatibility will drive them away (opposite traits)
+			## For now lets just base compatibility on opinion...
+			
+			## TRAITS TO CONSIDER
+			## CONGENITAL DEFECTS, INTELLIGENCE
+			## Chaste -> Openness--, Humility++
+			## Charitable -> Humility++, Agreeable++
+			## Kind -> Agreeable++, Neurotic++
+			## Diligent -> Conscientiousness+++
+			## Patient -> Agreeble, Concisentious++
+			## Humble -> Humility+++
+			## Greedy, Gluttonous -> Humility---
+			## Lustful -> Humility--, Openness++
+			## Slothful -> Conscientiousness---
+			## Proud -> Humility---
+			## Ambitious -> Openness++, Humility--, neurotic--
+			## Brave -> Neurotic--
+			## Arbitrary -> Humility--
+			## Cruel -> Agreeable--
+			## Gregarious -> Extraversion+++
+			## Craven -> Openess--, neuroticism++
+			## Content -> Humility++
+			## Deceitful -> Humility--
+			## Honest -> Humility++, Agreeable++
+			## Just -> Conscientious++ Humility++
+			## Stubborn -> Agreeable---
+			## Shy -> Neurotic++, Extroversion---
+			## Trusting -> Agreeable+++
+		
+		## Are the mother and father still alive? If not it will obviously have an effect on the character...
+		## Being Dead
+		if = {
+			limit = {
+				OR = {
+					mother = {
+						is_alive = no
+						}
+					father = {
+						is_alive = no
+					}
+				}
+			}
+			## Child feels sad
+			if = {
+				limit = {
+					has_character_flag = melancholic
+				}
+				random = {
+					chance = 25
+					change_variable = { which = brooding value = 20 }
+					change_variable = { which = sociable value = -20 }
+					change_variable = { which = playful value = -20 }
+				}
+			}
+			## Child feels alone
+			if = {
+				limit = {
+					OR = {
+					has_character_flag = sanguine
+					has_character_flag = phlegmatic
+					}
+				}
+				random = {
+					chance = 25
+					change_variable = { which = idolizer value = 20 }
+					change_variable = { which = sociable value = -20 }
+					change_variable = { which = playful value = -20 }
+				}
+			}
+			
+			## Child feels angry
+			if = {
+				limit = {
+					has_character_flag = choleric
+				}
+				random = {
+					chance = 25
+					change_variable = { which = idolizer value = -20 }
+					change_variable = { which = rowdy value = 20 }
+					change_variable = { which = conscientious value = -20 }
+				}
+			}
+		}
+		
+		## Is the child in prison?
+		## Timid or brooding
+		
+		######### ASSIGN TRAITS ##########
+		
+		## Conscientious 
+		if = {
+			limit = {
+				check_variable = { which = conscientious value = 80 }
+			}
+			add_trait = conscientious
+		}
+		else_if = {
+			limit = {
+				NOT = { check_variable = { which = conscientious value = -80 } }
+			}
+			add_trait = indolent
+		}
+		else = {
+			remove_trait = conscientious
+			remove_trait = indolent
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = curious value = 80 }
+			}
+			add_trait = curious
+		}
+		else = {
+			remove_trait = curious
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = brooding value = 80 }
+			}
+			add_trait = brooding
+		}
+		else = {
+			remove_trait = brooding
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = affectionate value = 80 }
+			}
+			add_trait = affectionate
+		}
+		else = {
+			remove_trait = affectionate
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = timid value = 80 }
+				NOT = { trait = rowdy }
+			}
+			add_trait = timid
+		}
+		else = {
+			remove_trait = timid
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = playful value = 80 }
+			}
+			add_trait = playful
+		}
+		else = {
+			remove_trait = playful
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = sociable value = 80 }
+			}
+			add_trait = sociable
+		}
+		else = {
+			remove_trait = sociable
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = willful value = 80 }
+			}
+			add_trait = willful
+		}
+		else_if = {
+			limit = {
+				NOT = { check_variable = { which = willful value = -80 } }
+			}
+			add_trait = agreeable
+		}
+		else = {
+			remove_trait = willful
+			remove_trait = agreeable
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = rowdy value = 80 }
+				NOT = { trait = timid }
+			}
+			add_trait = rowdy
+		}
+		else = {
+			remove_trait = rowdy
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = fussy value = 80 }
+			}
+			add_trait = fussy
+		}
+		else = {
+			remove_trait = fussy
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = haughty value = 80 }
+			}
+			add_trait = haughty
+		}
+		else = {
+			remove_trait = haughty
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = idolizer value = 80 }
+			}
+			add_trait = idolizer
+		}
+		else = {
+			remove_trait = idolizer
+		}
+		
+		########## FIRE EVENTS ###########
+		
+		## Focus EVENTS
+		## Fire events relating to a focus. I guess we need some way of guaranteeing not too many events fire for one character? or...?
+		
+		######## FAITH #########
+		
+		if = {
+			limit = {	
+				has_focus = focus_ch_faith
+			}
+			random_list = { 
+				5 = {# Execution Event
+					modifier = {
+						factor = 0
+						has_character_flag = execution_event
+					}
+					character_event = { id = CE.28000 days = 10 random = 280 }
+				}
+				15 = { ## Child uninterested in prayer
+					modifier = {
+						factor = 0
+						has_character_flag = uninterested_prayer_event
+					}
+					modifier = {
+						factor = 2
+						check_variable = { which = rowdy value = 40 }
+					}
+					modifier = {
+						factor = 2
+						check_variable = { which = idolizer value = -40 }
+					}
+					modifier = {
+						factor = 0
+						check_variable = { which = idolizer value = 40 }
+					}
+					set_character_flag = prayer_event 
+					father = {
+						character_event = { id = CE.28011 days = 10 random = 280 }
+					}
+				}
+				10 = { ## Finds priest doing something sinful
+					modifier = {
+						factor = 0
+						has_character_flag = catchpriest_event
+					}
+					character_event = { id = CE.28020 days = 10 random = 280 }
+				}
+				15 = { ## Sad child spends a lot of time praying	
+					modifier = {
+						factor = 0
+						has_character_flag = sadprayer_event
+					}
+					modifier = {
+						factor = 0
+						check_variable = { which = idolizer value = -40 }
+					}
+					modifier = {
+						factor = 2
+						check_variable = { which = idolizer value = 40 }
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = brooding value = 40 }
+					}
+					modifier = {
+						factor = 2
+						check_variable = { which = sociable value = -40 }
+					}
+					modifier = {
+						factor = 0
+						check_variable = { which = rowdy value = 40 }
+					}
+					modifier = {
+						factor = 0
+						check_variable = { which = playful value = 40 }
+					}
+					character_event = { id = CE.28030 days = 10 random = 280 }
+				}
+				10 = { ## Skeptical Child wonders proof of God or Jesus
+					modifier = {
+						factor = 0
+						has_character_flag = skeptic_event
+					}
+					modifier = {
+						factor = 2
+						check_variable = { which = idolizer value = -40 }
+					}
+					modifier = {
+						factor = 0
+						check_variable = { which = idolizer value = 40 }
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = curious value = 40 }
+					}
+					modifier = {
+						factor = 2
+						check_variable = { which = brooding value = -40 }
+					}
+					character_event = { id = CE.28040 days = 10 random = 280 }
+				}
+				15 = {	# Child has been taking care of the poor in the city as accordance with teachings
+					modifier = {
+						factor = 0
+						has_character_flag = charity_event
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = affectionate value = 40 }
+					}
+					modifier = {
+						factor = 0
+						check_variable = { which = haughty value = 40 }
+					}
+					modifier = {
+						factor = 0.5
+						check_variable = { which = rowdy value = 40 }
+					}
+					modifier = {
+						factor = 0.5
+						check_variable = { which = brooding value = 40 }
+					}
+					modifier = {
+						factor = 2
+						check_variable = { which = sociable value = 40 }
+					}
+					character_event = { id = CE.28050 days = 10 random = 280 }
+				}
+				5 = { ## Child finds another religion interesting
+					modifier = {
+						factor = 0
+						has_character_flag = heresy_event
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = curious value = 50 }
+					}
+					modifier = {
+						factor = 0.5
+						check_variable = { which = haughty value = 50 }
+					}
+					modifier = {
+						factor = 5
+						any_friend = {
+							NOT = { religion_group = ROOT }
+						}
+					}
+					character_event = { id = CE.28060 days = 10 random = 280 }
+				}
+				
+				20 = { ## SLOW child struggles with religious text
+					modifier = {
+						factor = 0
+						has_character_flag = slowreligious_event
+					}
+					modifier = {
+						factor = 0
+						NOT = {
+							trait = slow
+							trait = imbecile
+						}
+					}
+					character_event = { id = CE.28070 days = 10 random = 280 }
+				}
+				
+				20 = { ## Genius Child unhappy with religious education
+					modifier = {
+						factor = 0
+						has_character_flag = quickreligious_event
+					}
+					modifier = {
+						factor = 0
+						NOT = {
+							trait = quick
+							trait = genius
+						}
+					}
+					character_event = { id = CE.28080 days = 10 random = 280 }
+				}
+			}
+		}
+				
+		####### HERITAGE #######
+		
+		######## PRIDE #########
+		
+		
+		
+		##### Other EVENTS #####
+		## Take from the general pool of events
+		
+		## Spouse Complains about child doing dangerous activities
+		## Fires For: Rowdy+++, Willful++, Timid---, Brooding-, Conscientious--, Playful++
+		
+		## Child does not interact with peers
+		## Fires For: Sociable---, NSociable++, Timid++, Playful--, Haughty++, Brooding+++
+		
+		## Child mocked for being ugly in court
+		## Etiquette++, Ugly++
+		
+		## Friend being a bad influence on the child (Rowdy, willful, --consientiousness) 
+	
+		
+		## 
+		
+		################### CHILD DECISIONS ###################
+		## These are events that dont involve the guardian
+		## Since we are NOT creating a child mod here, these 'events' arent actually events. They dont fire at all for the child.
+		## Rather, they are dice rolls, weighted by the childs personality
+		## Perhaps we can give the father and guardian some feedback after a decision is made...
+		################################
+		
+		## Child looks up to courtier
+		
+		## Child (potentially) makes a friend
+		random = {
+			chance = 15
+			modifier = {
+				factor = 3
+				NOT = { num_of_friends = 1 }
+			}
+			modifier = {
+				factor = 0
+				NOT = {
+					educator = {
+						any_courtier = {
+							age_diff = { who = ROOT years = 4 }
+							age = 4
+							prisoner = no
+							is_friend = no
+							is_foe = no
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = 2
+				check_variable = { which = sociable value = 80 }
+			}
+			modifier = {
+				factor = 2
+				check_variable = { which = sociable value = 40 }
+			}
+			modifier = {
+				factor = 0.5
+				NOT = { check_variable = { which = sociable value = -40 } }
+			}
+			modifier = {
+				factor = 0.5
+				NOT = { check_variable = { which = sociable value = -80 } }
+			}
+			educator = {
+				random_courtier = {
+					limit = {
+						age_diff = { who = ROOT years = 4 }
+							age = 4
+							prisoner = no
+							is_friend = no
+							is_foe = no
+					}
+					add_friend = ROOT
+				}
+			}
+		}
+		
+		## Child potentially makes a rival
+		
+		random = {
+			chance = 5
+			modifier = {
+				factor = 0
+				NOT = {
+					educator = {
+						any_courtier = {
+							age_diff = { who = ROOT years = 4 }
+							age = 4
+							prisoner = no
+							is_friend = no
+							is_foe = no
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = 4
+				NOT = { num_of_rivals = 1 }
+			}
+			modifier = {
+				factor = 1.5
+				check_variable = { which = sociable value = 80 }
+			}
+			modifier = {
+				factor = 1.5
+				check_variable = { which = sociable value = 40 }
+			}
+			modifier = {
+				factor = 2
+				check_variable = { which = rowdy value = 80 }
+			}
+			modifier = {
+				factor = 2
+				check_variable = { which = rowdy value = 40 }
+			}
+			educator = {
+				random_courtier = {
+					limit = {
+						age_diff = { who = ROOT years = 4 }
+							age = 4
+							prisoner = no
+							is_friend = no
+							is_foe = no
+					}
+					add_rival = ROOT
+				}
+			}
+		}
+		
+		## VANILLA EVENTS HERE#
+		if = {
+			limit = {
+				has_character_flag = not_for_now
+				has_dlc = "Zeus"
+				prisoner = no
+				NOT = { is_inaccessible_trigger = yes }
+			}
+			random_list = {
+				10 = { ## Child finds x kissing servant in hallway. (random)
+					modifier = {
+						factor = 0
+						NOT = {
+							educator = {
+								any_courtier = {
+									is_adult = yes
+									NOT = { trait = incapable }
+									NOT = { trait = chaste }
+									NOT = { trait = celibate }
+									NOT = { has_character_modifier = the_oubliette }
+									NOT = { has_character_modifier = the_dungeon }
+									}
+								}					
+						}
+					}
+					character_event = { id = CE.30000 days = 10 random = 270 }
+				}
+				
+				10 = { # Comes upon adult beating dog (random)
+					modifier = {
+						factor = 0
+						NOT = {
+							educator = {
+								any_courtier = {
+									is_adult = yes
+									NOT = { is_rival = ROOT }
+									NOT = { trait = incapable }
+									OR = {
+										trait = cruel
+										trait = impaler
+									}
+									NOT = {
+										AND = {
+											religion = jain
+											trait = zealous
+										}
+									}
+									NOT = { has_character_modifier = the_oubliette }
+									NOT = { has_character_modifier = the_dungeon }
+								}
+							}
+						}
+					}
+					character_event = { id = CE.30010 days = 10 random = 270 }
+				}
+				
+				10 = { ## Peasant calls on my attention at roadside. Look lovely (random)
+					character_event = { id = CE.30020 days = 10 random = 270 }
+				}
+				10 = { ## I have nice toys and other child likes them (random)
+					character_event = { id = CE.30030 days = 10 random = 270 }
+				}
+				10 = { ## ## Parents are away - other adults around to befriend? (sociable)
+					character_event = { id = CE.30040 days = 10 random = 270 }
+				}
+				10 = { ## ## Peasant child is hungry
+					character_event = { id = CE.30050 days = 10 random = 270 }
+				}
+				10 = { ## Sees person being wrongly accused
+					character_event = { id = CE.30060 days = 10 random = 270 }
+				}
+				10 = { ## See child at court that I like. Talk to them or shy away?
+					character_event = { id = CE.30070 days = 10 random = 270 }
+				}
+			}
+		}
+
+
+		
+		## I am being asked to sing at prestigious court dinner
+		
+		## Gets into rivalry and fight with other child. Finds child annoying
+		
+		## Wants to pull off a prank with a friend
+		
+		## Climb tallest watchtower
+		
+		## Old hat wont fit.. (wtf)
+		
+		## Haunted House with friend. Not supposed to good
+		
+		## Fishing for hours with nothing to show, stay?
+		
+		# Drunkard courtier doesn't keep promises
+		
+		# Cant whistle
+		
+		## Commoner kids bullying commoner child
+		
+		## # Courtier needs help cutting down trees
+		
+		## has task but its a long walk and want to ask someone else (low conscientiousness)
+		
+		## Read poetry book or go out into the sun
+		
+		# Race courtier back home
+		
+		# See burglar at night
+		
+		# Gardening is boring. Do something fun?
+		
+		# Messy room, sort the books or go play?
+		
+		# # child misbehaves, tell an adult or keep secret?
+		
+		# # lost clothing outside, go look for it or go home?
+		
+		# # About to go to bed, but missing toy
+		
+		# Food is served, but is very hot
+		
+		# Invited to eat cake but it's raining outside
+		
+		# # Follow adult when told to stay at home?
+		
+		# Open sealed letter meant for adult?
+		
+		# Sounds coming from the bushes, investigate?
+		
+		# Amazed by courtier
+		
+		# Adore other child, love?
+		
+		# long prayer at temple
+		
+
+		## Repeat Event
+
+		character_event = { id = CE.20010 days = 365 }
+	}
+}
+
+# Faith 28000-28999
+
+## Execution Event Chain - Heretic
+
+character_event = {
+	id = CE.28000
+	
+	is_triggered_only = yes
+	
+	hide_window = yes ## Is a hidden event
+	
+	min_age = 6
+	max_age = 11 ## Fires between ages 6 and 11
+	prisoner = no
+	
+	
+	trigger = {
+		NOT = { has_character_flag = execution_event } ## We don't want this event firing twice for the same kid
+		father = {
+			war = no
+		}
+	}
+	
+	immediate = {
+	
+		set_character_flag = execution_event 
+		father = {
+				character_event = { id = CE.28001 }
+		}
+	}
+}
+
+######### EXECUTION CHAIN ###########
+## Execution Event Chain - Heretic
+character_event = {
+	id = CE.28001
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_28001 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { 
+	## Option 1: Such things are not for the eyes of children
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 5
+				trait = kind
+			}
+		}
+		name = EVTOPTA_CE_28001 
+		custom_tooltip = { text = EVTOPTA_CE_28001_TT }
+		hidden_tooltip = {
+			FROM = {			
+					random_list = {
+						40 = { ## Snuck out, saw execution 
+							random_list = {
+								5 = { ## were scarred
+									modifier = {
+										factor = 4
+										check_variable = { which = affectionate value = 40 }
+									}
+									modifier = {
+										factor = 3
+										check_variable = { which = timid value = 40 }
+									}
+									modifier = {
+										factor = 0.25
+										check_variable = { which = haughty value = 50 }
+									}
+									
+									change_variable = { which = idolizer value = -30 }
+									change_variable = { which = brooding value = 10 }
+									ROOT = {
+										character_event = { id = 28004}
+									}
+								}
+								2 = { ## liked it
+									change_variable = { which = humility value = -10 }
+									change_variable = { which = rowdy value = 20 }
+									change_variable = { which = haughty value = 10 }
+									ROOT = {
+										character_event = { id = 28005}
+									}
+										
+								}
+								3 = { ## didn't see the big deal
+								}
+							}
+						}
+						30 = { ## Snuck out and were caught
+							ROOT = {
+								character_event = { id = 28003}
+							}
+						}
+						30 = { ## nothing
+						}
+					}
+				}
+				
+			}
+		
+	}
+	option = { ## Sure you can come along
+		ai_chance = {
+			factor = 15
+			modifier = {
+				factor = 10
+				trait = cruel
+			}
+		}
+		name = EVTOPTB_CE_28001 
+		custom_tooltip = { text = EVTOPTB_CE_28001_TT }
+		hidden_tooltip = {
+			character_event = { id = 28002 }
+		}
+	}
+
+}
+
+## Execution Event Chain - Heretic. Child is taken to Execution
+character_event = {
+	id = CE.28002
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_28002 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ## It is our duty to punish criminals
+		trigger = {
+			trait = just
+		}
+		ai_chance = {
+			factor = 200
+		}
+		name = EVTOPTA_CE_28002
+		custom_tooltip = { text = EVTOPTA_CE_28002_TT }
+		hidden_tooltip = {
+		FROM = {
+			random_list = {
+				20 = { ## benefit from decision
+					modifier = {
+						factor = 2
+						check_variable = { which = conscientious value = 40 }
+					}
+					change_variable = { which = humility value = 20 }
+					change_variable = { which = concientious value = 30 }
+				}
+				5 = { ## feel sad
+					modifier = {
+						factor = 20
+						check_variable = { which = affectionate value = 50 }
+					}
+					change_variable = { which = brooding value = 30 }
+					change_variable = { which = playful value = -30 }
+				}
+			}	
+		}
+		}
+	}
+	option = { ## He has broken the law
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 2
+				trait = diligent
+			}
+		}
+		name = EVTOPTB_CE_28002
+		custom_tooltip = { text = EVTOPTB_CE_28002_TT}
+		hidden_tooltip = {
+			FROM = {
+			random_list = {
+				20 = { ## benefit from decision
+					modifier = {
+						factor = 2
+						check_variable = { which = conscientious value = 40 }
+					}
+					change_variable = { which = conscientious value = 30 }
+				}
+				5 = { ## feel sad
+					modifier = {
+						factor = 20
+						check_variable = { which = affectionate value = 50 }
+					}
+					change_variable = { which = brooding value = 30 }
+					change_variable = { which = playful value = -30 }
+				}
+			}	
+		}
+		}
+	}
+	option = { ## Look away child
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTC_CE_28002
+		custom_tooltip = { text = EVTOPTC_CE_28002_TT}
+		hidden_tooltip = {
+			change_variable = { which = timid value = 20 }
+		}
+	}
+	option = { ## Enjoy the show!
+		trigger = {
+				trait = cruel
+			}
+		ai_chance = {
+			factor = 200
+		}
+		name = EVTOPTD_CE_28002
+		custom_tooltip = { text = EVTOPTD_CE_28002_TT}
+		hidden_tooltip = {
+			FROM = {
+			random_list = {
+				20 = { ## has an effect
+					change_variable = { which = humility value = -10 }
+					change_variable = { which = rowdy value = 20 }
+					change_variable = { which = timid value = -20 }
+					change_variable = { which = affectionate value = -50 }
+				}
+				5 = { ## child enjoys it
+					modifier = {
+						factor = 5
+						check_variable = { which = rowdy value = 50 }
+					}
+					modifier = {
+						factor = 5
+						check_variable = { which = haughty value = 50 }
+					}
+					change_variable = { which = humility value = -20 }
+					change_variable = { which = rowdy value = 30 }
+					change_variable = { which = conscientious value = -30 }
+					change_variable = { which = timid value = -40 }
+					change_variable = { which = affectionate value = -70 }
+				}
+				5 = { ## child is scarred
+					modifier = {
+						factor = 50
+						check_variable = { which = affectionate value = 50 }
+					}
+					change_variable = { which = brooding value = 40 }
+					change_variable = { which = playful value = -40 }
+					change_variable = { which = humility value = -20 }
+					opinion = { who = ROOT modifier = is_evil_sociopath years = 12 }
+				}
+			}
+			}
+		}
+	}
+	option = { ## THIS IS WHAT HAPPENS TO PEOPLE WHO DEFY GOD
+		trigger = {
+				trait = zealous
+			}
+		ai_chance = {
+			factor = 200
+		}
+		name = EVTOPTE_CE_28002
+		custom_tooltip = { text = EVTOPTE_CE_28002_TT}
+		hidden_tooltip = {
+			FROM = {
+			random_list = {
+				20 = { ## child becomes idolizer
+					modifier = {
+						factor = 5
+						check_variable = { which = idolizer value = 50 }
+					}
+					change_variable = { which = humility value = -20 }
+					change_variable = { which = idolizer value = 50 }
+					change_variable = { which = timid value = -20 }
+					change_variable = { which = affectionate value = -50 }
+				}
+				5 = { ## child enjoys it
+					modifier = {
+						factor = 5
+						check_variable = { which = rowdy value = 50 }
+					}
+					modifier = {
+						factor = 5
+						check_variable = { which = haughty value = 50 }
+					}
+					change_variable = { which = rowdy value = 30 }
+					change_variable = { which = timid value = -40 }
+					change_variable = { which = affectionate value = -70 }
+				}
+				5 = { ## child is scarred
+					modifier = {
+						factor = 50
+						check_variable = { which = affectionate value = 50 }
+					}
+					change_variable = { which = brooding value = 30 }
+					change_variable = { which = playful value = -30 }
+					change_variable = { which = idolizer value = -60 }
+					opinion = { who = ROOT modifier = is_evil_sociopath years = 12 }
+				}
+			}
+			}
+		}
+	}
+}
+
+## Execution Event Chain - children caught sneaking out!
+character_event = {
+	id = CE.28003
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_28003 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { ## A good beating will teach them to not do it again
+		trigger = {
+			OR = {
+			trait = wroth
+			trait = cruel
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTA_CE_28003
+		custom_tooltip = { text = EVTOPTA_CE_28003_TT}
+		hidden_tooltip = {
+			FROM = {
+				change_variable = { which = willful value = -40 }
+				change_variable = { which = rowdy value = -40 }
+				change_variable = { which = brooding value = 20 }
+				opinion = { who = ROOT modifier = beat_me_up years = 12 }
+			}
+		}
+	}
+	option = { ## Scold them
+		trigger = {
+			NOT = {
+				OR = {
+				trait = wroth
+				trait = cruel
+				}
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTB_CE_10021 
+		hidden_tooltip = {
+			FROM = {
+				change_variable = { which = willful value = -20 }
+				change_variable = { which = rowdy value = -20 }
+			}
+		}
+	}
+	option = { ## Probably should have taken them along
+		trigger = {
+			NOT = {
+				OR = {
+				trait = wroth
+				trait = cruel
+				}
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTB_CE_28003
+		custom_tooltip = { text = EVTOPTB_CE_28003_TT}
+		hidden_tooltip = {
+		}
+	}
+	
+}
+
+## Execution Event Chain - children snuck out and enjoyed the execution
+character_event = {
+	id = CE.28004
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_28004 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	
+	option = { ## interesting
+		name = EVTOPTA_CE_28004
+		custom_tooltip = { text = EVTOPTA_CE_28004_TT}
+	}
+}
+
+## Execution Event Chain - children snuck out and didnt enjoy the execution
+character_event = {
+	id = CE.28005
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_28005 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	
+	option = { ## interesting
+		name = EVTOPTA_CE_28005
+		custom_tooltip = { text = EVTOPTA_CE_28005_TT}
+	}
+	
+}
+
+
+## Child is uninterested in prayer
+character_event = {
+	id = CE.28011
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESC_CE_28011 
+	
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	option = { 
+	## Have my Court Chaplain Speak to him
+		trigger = {
+			job_spiritual = { NOT = {is_guardian = FROM } learning = 12 }
+		}
+		ai_chance = {
+			factor = 20
+		}
+		name = EVTOPTA_CE_28011
+		custom_tooltip = { text = EVTOPTA_CE_28011_TT}
+		hidden_tooltip = {
+		#This could lead to a sub-event firing which would be determined by Court Chaplain traits.
+			job_spiritual = {
+				character = { id = 28012 days = 2 random = 3 } ## This does nothing for now
+			}
+		}
+	}
+	option = { 
+	## you must pay attention during prayer
+		ai_chance = {
+			factor = 20
+		}
+		name = EVTOPTB_CE_28011
+		custom_tooltip = { text = EVTOPTB_CE_28011_TT}
+		hidden_tooltip = {
+		
+			FROM = {
+				random_list = {
+					50 = {
+						modifier = {
+							factor = 3
+							check_variable = { which = idolizer value = 40 }
+						}
+						change_variable = { which = idolizer value = 30 }
+							
+					}
+					50 = {
+						modifier = {
+							factor = 3
+							trait = curious
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+	## The fires of Hell await!
+		trigger = {
+			trait = zealous
+		}
+		ai_chance = {
+			factor = 60
+		}
+		name = EVTOPTC_CE_28011
+		custom_tooltip = { text = EVTOPTC_CE_28011_TT}
+		hidden_tooltip = {
+		## Idolizer kids will be positively affected by this. Overall, can make kids scared of hell. 
+			FROM = {
+				random_list = {
+					50 = {
+						modifier = {
+							factor = 3
+							check_variable = { which = idolizer value = 40 }
+						}
+						change_variable = { which = idolizer value = 60 }
+						change_variable = { which = playful value = -30 }
+						change_variable = { which = sociable value = -20 }
+					}
+					50 = {
+						modifier = {
+							factor = 3
+							trait = curious
+						}
+						change_variable = { which = idolizer value = -30 }
+					}
+				}
+			}
+		}
+	}
+	option = { 
+	## She's too smart to care about this nonsense
+		trigger = {
+			trait = cynical
+		}
+		ai_chance = {
+			factor = 100
+		}
+		name = EVTOPTD_CE_28011
+		custom_tooltip = { text = EVTOPTD_CE_28011_TT}
+		hidden_tooltip = {
+		# Idolizer kids will be negatively affected by this. Curious kids might get cynical. Other kids might get curious
+			FROM = {
+				change_variable = { which = idolizer value = -60 }
+				change_variable = { which = conscientious value = -20 }
+			}
+		}
+	}
+	option = { 
+	## Children can't really be expected to care to much
+		trigger = {
+			job_spiritual = { NOT = {is_guardian = FROM } learning = 12 }
+		}
+		ai_chance = {
+			factor = 20
+		}
+		name = EVTOPTE_CE_28011
+		custom_tooltip = { text = EVTOPTE_CE_28011_TT}
+		hidden_tooltip = {
+		#This could lead to a sub-event firing which would be determined by Court Chaplain traits.
+			FROM = {
+				change_variable = { which = idolizer value = -30 }
+				change_variable = { which = conscientious value = -20 }
+			}
+		}
+	}
+}
+
