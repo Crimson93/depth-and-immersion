@@ -1,0 +1,2054 @@
+### EVENTS FOR ADOLESCENTS FIRE AS SUCH
+### THE EDUCATION DETERMINES MOST OF THE EVENTS THAT WILL FIRE
+### MANY OF THESE EVENTS WILL GIVE THEM ADULT TRAITS (BUT LEAVE CHILDHOOD ONES UNTOUCHED)
+### THERE WILL ALSO BE FRIEND AND ROMANCE EVENTS (MAYBE)
+### THEN CHILD DECISIONS WILL BE MADE TAKEN FROM ZE_
+### FINALLY, THE REMAINING CHILDHOOD TRAITS WILL BE CONVERTED (THOUGH NOT NECESSARILY)
+### THEN AMBITION WILL BE DECIDED
+
+# AGE 12-15
+## INIT EVENT FOR AGE 12-15
+## What needs to be done here?
+## NOTHING
+## Just launch the event manager
+character_event = {
+	id = CE.30000
+	
+	hide_window = yes
+	
+	min_age = 12
+	max_age = 15
+	
+	trigger = {
+		NOT = { has_character_flag = initialization_event_12 }
+	}
+	
+	immediate = {
+		set_character_flag = initialization_event_6
+		
+	
+		
+		
+	## 12 to 15 event manager
+	character_event = { id = CE.20010 days = 1 }
+	
+	}
+}
+
+## 12-15 Event manager
+## Fires annually
+## Updates the childs reaction to their education
+## Add some adulthood traits based on personality variables. Or maybe dont... We can do it through events I suppose? YES! Do it through events. Or just through coded events (rather than events that actually fire, just a random dice roll to determine how the child develops...)
+## Add romance events here
+character_event = {
+	id = CE.30010
+	
+	hide_window = yes
+	
+	min_age = 12
+	max_age = 15
+	
+	trigger = {
+		NOT = { has_character_flag = initialization_event_12 }
+	}
+	
+	immediate = {
+	
+	## 6 to 11 Event manager
+character_event = {
+	id = CE.20010
+	
+	hide_window = yes
+	
+	min_age = 11
+	max_age = 15 ## is it inclusive????
+	
+	immediate = {
+	
+		random_list = {
+			10 = { 
+				set_variable = { which = trait_modifier value = 5 }
+			}
+			10 = {
+				set_variable = { which = trait_modifier value = -5 }
+			}
+		}
+		random = {
+			chance = 10
+			change_variable = { which = conscientious which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = affectionate which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = timid which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = playful which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = willful which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = rowdy which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = sociable which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = brooding which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = haughty which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = fussy which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = idolizer which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = curious which = trait_modifier }
+		}
+		random = {
+			chance = 10
+			change_variable = { which = humility which = trait_modifier }
+		}
+
+		####### UPDATE PERSONALITY #######
+		
+		## How is the focus effecting the characters personality?
+		#########################################################
+		## These all have limited effects. The main effects will be done through events!
+		## FOCUS Conscientiousness Curious Brooding Affectionate Timid Playful Sociable Willful Rowdy Fussy Haughty Idolizer
+		## LEARNING:
+		## DIPLOMACY:
+		## MARTIAL:
+		## INTRIGUE:
+		## STEWARDSHIP:
+		## 1 means +3, 2 means +6, 3 means +9
+		#########################################################
+		
+		## How is the relationship with the guardian effecting the characters personality? 
+			## Similar traits will mean that the character gravitates towards the guardian, particularly with good relationship
+			## Different traits will mean that the character gravitates away from the guardian, particularly with a bad relationship
+			## First the child's current compatibility with the guardian is calculated
+			## Then if negative the child will move opposite to guardian, positive the child will move towards guardian
+			
+			## Relationship with guardian
+			## Check compatibility. 4 levels. Hate, dislike, like, Love. These add to guardian 
+			## High compatibility will make the child more like the guardian. Very low compatibility will drive them away (opposite traits)
+			## For now lets just base compatibility on opinion...
+			
+			## TRAITS TO CONSIDER
+			## CONGENITAL DEFECTS, INTELLIGENCE
+			## Chaste -> Openness--, Humility++
+			## Charitable -> Humility++, Agreeable++
+			## Kind -> Agreeable++, Neurotic++
+			## Diligent -> Conscientiousness+++
+			## Patient -> Agreeble, Concisentious++
+			## Humble -> Humility+++
+			## Greedy, Gluttonous -> Humility---
+			## Lustful -> Humility--, Openness++
+			## Slothful -> Conscientiousness---
+			## Proud -> Humility---
+			## Ambitious -> Openness++, Humility--, neurotic--
+			## Brave -> Neurotic--
+			## Arbitrary -> Humility--
+			## Cruel -> Agreeable--
+			## Gregarious -> Extraversion+++
+			## Craven -> Openess--, neuroticism++
+			## Content -> Humility++
+			## Deceitful -> Humility--
+			## Honest -> Humility++, Agreeable++
+			## Just -> Conscientious++ Humility++
+			## Stubborn -> Agreeable---
+			## Shy -> Neurotic++, Extroversion---
+			## Trusting -> Agreeable+++
+			
+			## MERELY DETERMINE TWO THINGS: ABRASIVE OR SUPPORTIVE? 
+			## AND THEN FOR THE CHILD, PROUD OR WITHDRAWN
+			
+			## ABRASIVE: Proud, Cruel, Ambitious, Wroth, Honest
+			## SUPPORTIVE: Trusting, Shy, Content, Patient, Kind, Charitable
+			
+			## PROUD: Haughty, Rowdy, Willful
+			## WITHDRAWN: Timid, Affectionate, Playful
+			
+			## Otherwise, no bonuses or losses
+
+		## ESTABLISH LEVEL OF Relationship
+		educator = {
+			if = {
+				limit = {
+					has_opinion_modifier = { who = ROOT modifier = level_3_relationship }
+				}
+				## Do nothing
+			}
+			else_if = {
+				limit = {
+					has_opinion_modifier = { who = ROOT modifier = level_2_relationship }
+				}
+				remove_opinion = { who = ROOT modifier = level_2_relationship}
+				opinion = { who = ROOT modifier = level_3_relationship years = 12}
+			}
+			else_if = {
+				limit = {
+					has_opinion_modifier = { who = ROOT modifier = level_1_relationship }
+				}
+				remove_opinion = { who = ROOT modifier = level_1_relationship}
+				opinion = { who = ROOT modifier = level_2_relationship years = 12}
+			}
+			else = {
+				opinion = { who = ROOT modifier = level_1_relationship years = 12}
+			}
+		}
+
+		######### ASSIGN TRAITS ##########
+		
+		## Conscientious 
+		if = {
+			limit = {
+				check_variable = { which = conscientious value = 80 }
+			}
+			add_trait = conscientious
+		}
+		else_if = {
+			limit = {
+				NOT = { check_variable = { which = conscientious value = -80 } }
+			}
+			add_trait = indolent
+		}
+		else = {
+			remove_trait = conscientious
+			remove_trait = indolent
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = curious value = 80 }
+			}
+			add_trait = curious
+		}
+		else = {
+			remove_trait = curious
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = brooding value = 80 }
+			}
+			add_trait = brooding
+		}
+		else = {
+			remove_trait = brooding
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = affectionate value = 80 }
+			}
+			add_trait = affectionate
+		}
+		else = {
+			remove_trait = affectionate
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = timid value = 80 }
+			}
+			add_trait = timid
+		}
+		else = {
+			remove_trait = timid
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = playful value = 80 }
+			}
+			add_trait = playful
+		}
+		else = {
+			remove_trait = playful
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = sociable value = 80 }
+			}
+			add_trait = sociable
+		}
+		else = {
+			remove_trait = sociable
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = willful value = 80 }
+			}
+			add_trait = willful
+		}
+		else_if = {
+			limit = {
+				NOT = { check_variable = { which = willful value = -80 } }
+			}
+			add_trait = agreeable
+		}
+		else = {
+			remove_trait = willful
+			remove_trait = agreeable
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = rowdy value = 80 }
+			}
+			add_trait = rowdy
+		}
+		else = {
+			remove_trait = rowdy
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = fussy value = 80 }
+			}
+			add_trait = fussy
+		}
+		else = {
+			remove_trait = fussy
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = haughty value = 80 }
+			}
+			add_trait = haughty
+		}
+		else = {
+			remove_trait = haughty
+		}
+		
+		if = {
+			limit = {
+				check_variable = { which = idolizer value = 80 }
+			}
+			add_trait = idolizer
+		}
+		else = {
+			remove_trait = idolizer
+		}
+		
+		####### FIRE EVENTS #########
+		
+		#### EDUCATION EVENTS
+		### WHAT TYPE OF EVENTS THE CHILD WILL GET DEPENDS ON THEIR PERSONALITY AND THE GUARDIANS
+		
+		#### LEARNING #####
+		## END RESULT: Assign theology (25%%), arithmetic, geometry, logic, astronomy, grammar, rhetoric, music
+		## Theology: +5 church opinion
+		## Arithmetic: +2 stewardship
+		## Geometry: +1 learning
+		## Astronomy: prestige
+		## Logic: +1 learning, +1 diplomacy
+		## Grammar: chance to become poet, prestige
+		## Music: Chance to become musician, prestige
+		## Rhetoric: +2 diplomacy
+		
+		## PARENT/GUARDIAN EVENTS
+		
+		
+		
+		## CHILD EVENTS
+		
+		## Child discovers God in pursuit of geometry/astronomy
+		## Child decides to improve grammar due to a love interest
+		
+		
+		## Become Frail
+		## 
+		
+		## RELIGIOUS GUARDIAN
+		## Interested in other religious texts
+		## Fire particularly if they have a friend of another religion, or curious
+		
+		## SCHOLARLY GUARDIAN
+		
+		
+		
+		
+		#### OTHER EVENTS 
+		
+		## Devout Child struggles with chastity
+		
+		## Child develops a relationship with a lowborn courtier
+		## COMES AFTER THE CHILD DECISION ROMANCE
+
+		
+		#### CHILD DECISIONS
+		
+		## child digs through a library and finds books
+		
+		## child goes out to buy supplies and finds some scrolls that aren’t necessarily kosher
+		
+			## FRIENDS
+			
+			## FOES
+			
+			## ROMANCE
+			
+		#########################
+		
+	}
+}
+
+### FINAL
+
+## 16
+## ON ADULTHOOD
+## Check for childhood traits, assign their adult versions
+## If total number of traits is less than 4, check the personality variables and assign suitable traits
+## Finalize childs relationship with guardian with a lifelong value
+## Finalize childs relationship with father with a lifelong value
+## Finalize childs relationships with friends with a lifelong value. And perhaps add them automatically as friends
+## Finalize childs AMBITION depending on personality variables and decisions
+## Finalize childs EDUCATION trait depending on traits and guardian relationship
+## Remove all flags and opinion modifiers
+
+		#### AMBITIONS
+		
+character_Event = {
+	id = CE.40000
+	
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		
+		## FINALIZE CHILDS EDUCATION TRAIT
+
+		## GUARDIAN
+		## MERELY DETERMINE TWO THINGS: ABRASIVE OR SUPPORTIVE? 
+			## AND THEN FOR THE CHILD, PROUD OR WITHDRAWN
+			
+			## ABRASIVE: Proud, Cruel, Ambitious, Wroth, Honest
+			## SUPPORTIVE: Trusting, Content, Patient, Kind, Charitable
+			
+			## PROUD: Haughty, Rowdy, Willful
+			## WITHDRAWN: Timid, Affectionate, Playful
+
+			set_variable = { which = abrsup value = 0}
+
+		educator = {
+			
+			if = {
+				limit = {
+					trait = proud
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = 2 }
+				}
+			}
+			if = {
+				limit = {
+					trait = ambitious
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = 3 }
+				}
+			}
+			if = {
+				limit = {
+					trait = wroth
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = 2 }
+				}
+			}
+			if = {
+				limit = {
+					trait = honest
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = 1 }
+				}
+			}
+			if = {
+				limit = {
+					trait = cruel
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = 3 }
+				}
+			}
+			####
+			if = {
+				limit = {
+					trait = trusting
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = -2 }
+				}
+			}
+			if = {
+				limit = {
+					trait = content
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = -3 }
+				}
+			}
+			if = {
+				limit = {
+					trait = patient
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = -2 }
+				}
+			}
+			if = {
+				limit = {
+					trait = kind
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = -2 }
+				}
+			}
+			if = {
+				limit = {
+					trait = charitable
+				}
+				ROOT = {
+				change_variable = { which = abrsup value = -1 }
+				}
+			}
+			####
+		}
+
+		set_variable = { which = education_modifier value = 0}
+
+		if = {
+			limit = {
+				trait = haughty
+			}
+			change_variable = { which = education_modifier value = 2 }
+		}
+		if = {
+			limit = {
+				trait = rowdy
+			}
+			change_variable = { which = education_modifier value = 2 }
+		}
+		if = {
+			limit = {
+				trait = willful
+			}
+			change_variable = { which = education_modifier value = 2 }
+		}
+		if = {
+			limit = {
+				trait = affectionate
+			}
+			change_variable = { which = education_modifier value = -2 }
+		}
+		if = {
+			limit = {
+				trait = playful
+			}
+			change_variable = { which = education_modifier value = -2 }
+		}
+		if = {
+			limit = {
+				trait = timid
+			}
+			change_variable = { which = education_modifier value = -2 }
+		}
+
+		multiply_variable = { which = education_modifier which = abrsup }
+
+
+		## MAX Modifier is 10 * 6 = 60 or -10*-6 = 60
+		## LOWEST is 10*-6 or -10*6 = -60
+		## Average will be 0
+		## Use 10, 25, 40
+
+		## DETERMINE MARTIAL PROCLIVITY
+
+		## Commanding: Brooding, haughty, fussy, -sociable, GUARDIAN, PRIDE, FLAGS
+		## Combat Skill: Willful, Rowdy, GUARDIAN, STRUGGLE, FLAGS
+		## Hunting/Riding: Playful, Sociable, -curious, GUARDIAN, FLAGS
+
+		random_list = {
+			15 = {
+				modifier = {
+					factor = 5
+					educator = {
+						has_character_flag = commander
+					}
+				}
+				modifier = {
+					factor = 5
+					has_focus = focus_ch_pride
+				}
+				modifier = {
+					factor = 5
+					educator = {
+						trait = strategist
+					}
+				}
+				modifier = {
+					factor = 3
+					trait = brooding
+				}
+				set_character_flag = commander
+			}
+			10 = {
+				modifier = {
+					factor = 5
+					educator = {
+						has_character_flag = warrior
+					}
+				}
+				modifier = {
+					factor = 5
+					has_focus = focus_ch_struggle
+				}
+				modifier = {
+					factor = 5
+					educator = {
+						trait = duelist
+					}
+				}
+				modifier = {
+					factor = 3
+					trait = rowdy
+				}
+				set_character_flag = warrior
+			}
+			10 = {
+				modifier = {
+					factor = 5
+					educator = {
+						has_character_flag = rider
+					}
+				}
+				modifier = {
+					factor = 5
+					educator = {
+						trait = hunter
+					}
+				}
+				modifier = {
+					factor = 3
+					trait = playful
+				}
+				set_character_flag = rider
+				health = 1
+				random = {
+					chance = 50
+					remove_trait = Frail
+					add_trait = brawny
+				}
+			}
+		}
+
+		## DETERMINE LEARNING PROCLIVITY
+		## Arts: sociable, ETIQUETTE, GUARDIAN, FLAGS
+		## Learning: Idolizer, FAITH, GUARDIAN, FLAGS
+		## Arithmetics: low sociable, THRFT, GUARDIAN, FLAGS
+
+		random_list = {
+			10 = {
+				modifier = {
+					factor = 5
+					educator = {
+						has_character_flag = arts_scholar
+					}
+				}
+				modifier = {
+					factor = 3
+					has_focus = focus_ch_etiquette
+				}
+				modifier = {
+					factor = 2
+					trait = sociable
+				}
+				set_character_flag = arts_scholar
+				random_list = {
+					10 = {
+						add_trait = musicologist
+					}
+					10 = {
+						add_trait = linguist
+					}
+					10 = {
+						add_trait = rhetorician
+					}
+				}
+			}
+			10 = {
+				modifier = {
+					factor = 5
+					educator = {
+						has_character_flag = arithmetician
+					}
+				}
+				modifier = {
+					factor = 5
+					has_focus = focus_ch_thrift
+				}
+				set_character_flag = arithmetician
+				random_list = {
+					10 = {
+						add_trait = astronomer
+					}
+					10 = {
+						add_trait = arithmetician
+					}
+					10 = {
+						add_trait = geometer
+					}
+					10 = {
+						add_trait = logician
+					}
+				}
+			}
+			10 = {
+				modifier = {
+					factor = 5
+					educator = {
+						has_character_flag = theologian
+					}
+				}
+				modifier = {
+					factor = 5
+					educator = {
+						trait = zealous
+					}
+				}
+				modifier = {
+					factor = 5
+					OR = {
+						has_focus = focus_ch_faith
+						has_focus = focus_ch_heritage
+					}
+				}
+				modifier = {
+					factor = 4
+					trait = idolizer
+				}
+				set_character_flag = theologian
+				add_trait = theologian
+			}
+		}
+		#############################################
+		## Now.. for education
+
+		######## LEARNING ########
+		## First choose from faith, arithmetics (logic, math, astronomy, geometry) or arts (rhetoric, grammar, music)
+		## The choice heavily depends on the guardian, previous focus, and any flags from the events
+
+		## Timid (+1), rowdy (-2), playful(-2) for all of them
+
+		## Faith scales with: Idolizer (+4), conscientious (+2), humility (+2)
+		## Not good with: curious
+		## THE REVERSE (-) should also be taken into account
+
+		## Arithmetics scale with: Curious (+3), brooding(+2), low sociable (+3)
+		## Not good with: normal
+
+		## Arts scale with: sociable (+2), curious (+3)
+		# Not good with: normal
+
+		if = {
+			limit = {
+				has_focus = focus_ed_learning
+			}
+			random_list = { ## 10, 25, 15, 10 
+				10 = { ## NOT IDOLIZER, NOT HUMBLE, CURIOUS, ROWDY, PLAYFUL, WEAK GUARDIAN RELATIONSHIP, WEAK GUARDIAN
+					modifier = {
+						factor = 10
+						educator = {
+							NOT = {
+								OR = {
+									trait = detached_priest
+									trait = martial_cleric
+									trait = scholarly_theologian
+									trait = mastermind_theologian
+								}
+							}
+						}
+					}
+					modifier = {
+						factor = 2
+						has_character_flag = education_effect_imprisoned
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							trait = detached_priest
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -40} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_1_relationship }
+						}
+					}
+					modifier = {
+						factor = 2
+						trait = playful
+					}
+					modifier = {
+						factor = 2
+						trait = rowdy
+					}
+					modifier = {
+						factor = 5
+						AND = {
+							check_variable = { which = idolizer value = -60}
+							has_character_flag = theologian
+						}
+					}
+					modifier = {
+						factor = 0.25
+						AND = {
+							trait = idolizer
+							has_character_flag = theologian
+						}
+					}
+					modifier = {
+						factor = 0.25
+						AND = {
+							trait = curious
+							OR = {
+							has_character_flag = arts_scholar
+							has_character_flag = arithmetician
+							}
+						}
+					}
+					add_trait = detached_priest
+				}
+				25 = {
+					modifier = {
+						factor = 3
+						educator = {
+							trait = martial_cleric
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -20} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_2_relationship }
+						}
+					}
+				}
+				15 = {
+					modifier = {
+						factor = 3
+						educator = {
+							trait = scholarly_theologian
+						}
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = education_modifier value = 20}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 0.5
+						trait = playful
+					}
+					modifier = {
+						factor = 0.5
+						trait = rowdy
+					}
+					modifier = {
+						factor = 1.5
+						trait = timid
+					}
+					modifier = {
+						factor = 2
+						NOT = { check_variable = { which = sociable value = -60 } }
+					}
+					modifier = {
+						factor = 3
+						AND = {
+							trait = idolizer
+							has_character_flag = theologian
+						}
+					}
+					modifier = {
+						factor = 3
+						AND = {
+							trait = curious
+							OR = {
+							has_character_flag = arts_scholar
+							has_character_flag = arithmetician
+							}
+						}
+					}
+				}
+				10 = {
+					modifier = {
+						factor = 3
+						educator = {
+							trait = mastermind_theologian
+						}
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = education_modifier value = 40}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 2.5
+						NOT = { check_variable = { which = sociable value = -60 } }
+					}
+					modifier = {
+						factor = 0.2
+						trait = playful
+					}
+					modifier = {
+						factor = 1.5
+						trait = timid
+					}
+					modifier = {
+						factor = 0.2
+						trait = rowdy
+					}
+					modifier = {
+						factor = 2
+						trait = conscientious
+					}
+					modifier = {
+						factor = 3
+						AND = {
+							trait = idolizer
+							has_character_flag = theologian
+						}
+					}
+					modifier = {
+						factor = 3
+						AND = {
+							trait = curious
+							OR = {
+							has_character_flag = arts_scholar
+							has_character_flag = arithmetician
+							}
+						}
+					}
+				}
+			}
+			character_event = { id = CE.40011 }
+			educator = {
+				character_event = { id = CE.40012 }
+			}
+			if = {
+				limit = {
+					mother = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				mother = {
+					character_event = { id = CE.40012 }
+				}
+			}
+			if = {
+				limit = {
+					father = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				father = {
+					character_event = { id = CE.40012 }
+				}
+			}
+		}
+
+		####### MARTIAL ######
+		## First choose from commanding, personal combat, and hunting/riding
+		## The choice heavily depends on the guardian, previous focus (struggle-PCS, Pride-commanding), and any flags from the events
+		## Personal combat will likely mean lower modifier but higher training level. 20-25-10-5 instead of 15-20-15-10. But 0-30-50-20 instead of 25-40-30-5
+		## Hunting/Riding will mean lower modifier but higher health and chance to get brawny. 
+
+		## Rowdy (+3), Haughty (+3), Brooding (+3), willful (+3)
+		## Timid (-4), Playful(-2), Affectionate (-2)
+
+		if = {
+			limit = {
+				has_focus = focus_ed_martial
+			}
+			random_list = { ## 10, 25, 15, 10 
+				10 = { ## NOT IDOLIZER, NOT HUMBLE, CURIOUS, ROWDY, PLAYFUL, WEAK GUARDIAN RELATIONSHIP, WEAK GUARDIAN
+					modifier = {
+						factor = 2
+						has_character_flag = education_effect_imprisoned
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							trait = misguided_warrior
+						}
+					}
+					modifier = {
+						factor = 10
+						educator = {
+							NOT = {
+								OR = {
+									trait = misguided_warrior
+									trait = tough_soldier
+									trait = skilled_tactician
+									trait = brilliant_strategist
+								}
+							}
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -40} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_1_relationship }
+						}
+					}
+					modifier = {
+						factor = 3
+						trait = timid
+					}
+					modifier = {
+						factor = 3
+						trait = affectionate
+					}
+					modifier = {
+						factor = 2
+						trait = playful
+					}
+					modifier = {
+						factor = 0.25
+						trait = rowdy
+					}
+					modifier = {
+						factor = 0.5
+						trait = willful
+					}
+					add_trait = misguided_warrior
+				}
+				25 = {
+					modifier = {
+						factor = 3
+						educator = {
+							trait = tough_soldier
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -20} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_2_relationship }
+						}
+					}
+					add_trait = tough_soldier
+				}
+				15 = {
+					modifier = {
+						factor = 3
+						educator = {
+							trait = skilled_tactician
+						}
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = education_modifier value = 20}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 0.67
+						has_character_flag = warrior
+					}
+					modifier = {
+						factor = 0.67
+						has_character_flag = rider
+					}
+					modifier = {
+						factor = 0.33
+						trait = timid
+					}
+					modifier = {
+						factor = 0.33
+						trait = affectionate
+					}
+					modifier = {
+						factor = 0.5
+						trait = playful
+					}
+					modifier = {
+						factor = 3
+						trait = rowdy
+					}
+					modifier = {
+						factor = 3
+						trait = willful
+					}
+					modifier = {
+						factor = 2
+						trait = haughty
+					}
+					add_trait = skilled_tactician
+				}
+				10 = {
+					modifier = {
+						factor = 3
+						educator = {
+							trait = brilliant_strategist
+						}
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = education_modifier value = 40}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 0.33
+						has_character_flag = warrior
+					}
+					modifier = {
+						factor = 0.33
+						has_character_flag = rider
+					}
+					modifier = {
+						factor = 0.33
+						trait = timid
+					}
+					modifier = {
+						factor = 0.33
+						trait = affectionate
+					}
+					modifier = {
+						factor = 0.5
+						trait = playful
+					}
+					modifier = {
+						factor = 2
+						trait = rowdy
+					}
+					modifier = {
+						factor = 3
+						trait = willful
+					}
+					modifier = {
+						factor = 2
+						trait = haughty
+					}
+					add_trait = brilliant_strategist
+				}	
+			}
+			character_event = { id = CE.40021 }
+			educator = {
+				character_event = { id = CE.40022 }
+			}
+			if = {
+				limit = {
+					mother = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				mother = {
+					character_event = { id = CE.40022 }
+				}
+			}
+			if = {
+				limit = {
+					father = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				father = {
+					character_event = { id = CE.40022 }
+				}
+			}
+		}
+
+		##### DIPLOMACY #####
+		## Nothing special here
+
+		## Playful, Affectionate, Sociable
+		## Timid, Fussy, Brooding
+
+		if = {
+			limit = {
+				has_focus = focus_ed_diplomacy
+			}
+			random_list = { ## 10, 25, 15, 10 
+				10 = { ## NOT IDOLIZER, NOT HUMBLE, CURIOUS, ROWDY, PLAYFUL, WEAK GUARDIAN RELATIONSHIP, WEAK GUARDIAN
+					modifier = {
+						factor = 2
+						has_character_flag = education_effect_imprisoned
+					}
+					modifier = {
+						factor = 2
+						educator = {
+							trait = naive_appeaser
+						}
+					}
+					modifier = {
+						factor = 10
+						educator = {
+							NOT = {
+								OR = {
+									trait = naive_appeaser
+									trait = underhanded_rogue
+									trait = charismatic_negotiator
+									trait = grey_eminence
+								}
+							}
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -40} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_1_relationship }
+						}
+					}
+					modifier = {
+						factor = 3
+						trait = timid
+					}
+					modifier = {
+						factor = 3
+						trait = brooding
+					}
+					modifier = {
+						factor = 2
+						trait = fussy
+					}
+
+					modifier = {
+						factor = 2
+						trait = rowdy
+					}
+					modifier = {
+						factor = 0.5
+						trait = affectionate
+					}
+					modifier = {
+						factor = 0.5
+						trait = playful
+					}
+					modifier = {
+						factor = 0.25
+						trait = sociable
+					}
+					add_trait = naive_appeaser
+				}
+				25 = {
+					modifier = {
+						factor = 2
+						educator = {
+							trait = underhanded_rogue
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -20} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_2_relationship }
+						}
+					}
+					add_trait = underhanded_rogue
+				}
+				15 = {
+					modifier = {
+						factor = 2
+						educator = {
+							trait = charismatic_negotiator
+						}
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = education_modifier value = 20}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 0.33
+						trait = timid
+					}
+					modifier = {
+						factor = 0.33
+						trait = brooding
+					}
+					modifier = {
+						factor = 0.5
+						trait = fussy
+					}
+
+					modifier = {
+						factor = 0.5
+						trait = rowdy
+					}
+					modifier = {
+						factor = 3
+						trait = affectionate
+					}
+					modifier = {
+						factor = 3
+						trait = playful
+					}
+					modifier = {
+						factor = 4
+						trait = sociable
+					}
+					add_trait = charismatic_negotiator
+				}
+				10 = {
+					modifier = {
+						factor = 2
+						educator = {
+							trait = grey_eminence
+						}
+					}
+					modifier = {
+						factor = 4
+						check_variable = { which = education_modifier value = 40}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 0.33
+						trait = timid
+					}
+					modifier = {
+						factor = 0.33
+						trait = brooding
+					}
+					modifier = {
+						factor = 0.5
+						trait = fussy
+					}
+
+					modifier = {
+						factor = 0.5
+						trait = rowdy
+					}
+					modifier = {
+						factor = 3
+						trait = affectionate
+					}
+					modifier = {
+						factor = 3
+						trait = playful
+					}
+					modifier = {
+						factor = 4
+						trait = sociable
+					}
+					add_trait = grey_eminence
+				}	
+			}
+			character_event = { id = CE.40031 }
+			educator = {
+				character_event = { id = CE.40032 }
+			}
+			if = {
+				limit = {
+					mother = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				mother = {
+					character_event = { id = CE.40032 }
+				}
+			}
+			if = {
+				limit = {
+					father = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				father = {
+					character_event = { id = CE.40032 }
+				}
+			}
+		}
+
+		###### INTRIGUE #######
+		### Nothing particularly special here
+
+		## Playful, Curious, Fussy
+		## Rowdy, Affectionate, Humility
+
+		if = {
+			limit = {
+				has_focus = focus_ed_intrigue
+			}
+			random_list = { ## 10, 25, 15, 10 
+				10 = { ## NOT IDOLIZER, NOT HUMBLE, CURIOUS, ROWDY, PLAYFUL, WEAK GUARDIAN RELATIONSHIP, WEAK GUARDIAN
+					modifier = {
+						factor = 2
+						has_character_flag = education_effect_imprisoned
+					}
+					modifier = {
+						factor = 2
+						educator = {
+							trait = amateurish_plotter
+						}
+					}
+					modifier = {
+						factor = 10
+						educator = {
+							NOT = {
+								OR = {
+									trait = amateurish_plotter
+									trait = flamboyant_schemer
+									trait = intricate_webweaver
+									trait = elusive_shadow
+								}
+							}
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -40} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_1_relationship }
+						}
+					}
+					modifier = {
+						factor = 2
+						trait = rowdy
+					}
+					modifier = {
+						factor = 2
+						trait = affectionate
+					}
+					modifier = {
+						factor = 0.5
+						trait = brooding
+					}
+					modifier = {
+						factor = 0.5
+						trait = playful
+					}
+					modifier = {
+						factor = 0.5
+						trait = curious
+					}
+					modifier = {
+						factor = 0.5
+						trait = sociable
+					}
+					add_trait = amateurish_plotter
+				}
+				20 = {
+					modifier = {
+						factor = 2
+						educator = {
+							trait = flamboyant_schemer
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -20} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_2_relationship }
+						}
+					}
+					add_trait = flamboyant_schemer
+				}
+				15 = {
+					modifier = {
+						factor = 2
+						educator = {
+							trait = intricate_webweaver
+						}
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = education_modifier value = 20}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 0.5
+						trait = rowdy
+					}
+					modifier = {
+						factor = 0.5
+						trait = affectionate
+					}
+					modifier = {
+						factor = 2
+						trait = brooding
+					}
+					modifier = {
+						factor = 2
+						trait = playful
+					}
+					modifier = {
+						factor = 2
+						trait = curious
+					}
+					modifier = {
+						factor = 2
+						trait = sociable
+					}
+					modifier = {
+						factor = 0.5
+						check_variable = { which = humility value = 80}
+					}
+					add_trait = intricate_webweaver
+				}
+				10 = {
+					modifier = {
+						factor = 2
+						educator = {
+							trait = elusive_shadow
+						}
+					}
+					modifier = {
+						factor = 4
+						check_variable = { which = education_modifier value = 40}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 0.5
+						trait = rowdy
+					}
+					modifier = {
+						factor = 0.5
+						trait = affectionate
+					}
+					modifier = {
+						factor = 2
+						trait = brooding
+					}
+					modifier = {
+						factor = 2
+						trait = playful
+					}
+					modifier = {
+						factor = 2
+						trait = curious
+					}
+					modifier = {
+						factor = 2
+						trait = sociable
+					}
+					modifier = {
+						factor = 0.2
+						check_variable = { which = humility value = 80}
+					}
+					add_trait = elusive_shadow
+				}
+			}
+			character_event = { id = CE.40041 }
+			educator = {
+				character_event = { id = CE.40042 }
+			}
+			if = {
+				limit = {
+					mother = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				mother = {
+					character_event = { id = CE.40042 }
+				}
+			}
+			if = {
+				limit = {
+					father = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				father = {
+					character_event = { id = CE.40042 }
+				}
+			}
+		}
+
+		## STEWARDSHIP
+
+		## Fussy, Conscientious, haughty, Brooding
+		## Rowdy, 
+
+		if = {
+			limit = {
+				has_focus = focus_ed_stewardship
+			}
+			random_list = { ## 10, 25, 15, 10 
+				10 = { ## NOT IDOLIZER, NOT HUMBLE, CURIOUS, ROWDY, PLAYFUL, WEAK GUARDIAN RELATIONSHIP, WEAK GUARDIAN
+					modifier = {
+						factor = 2
+						has_character_flag = education_effect_imprisoned
+					}
+					modifier = {
+						factor = 2
+						educator = {
+							trait = indulgent_wastrel
+						}
+					}
+					modifier = {
+						factor = 10
+						educator = {
+							NOT = {
+								OR = {
+									trait = indulgent_wastrel
+									trait = thrifty_clerk
+									trait = fortune_builder
+									trait = midas_touched
+								}
+							}
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -40} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_1_relationship }
+						}
+					}
+					modifier = {
+						factor = 3
+						trait = rowdy
+					}
+					modifier = {
+						factor = 3
+						trait = playful
+					}
+					modifier = {
+						factor = 0.5
+						trait = brooding
+					}
+					modifier = {
+						factor = 0.25
+						trait = conscientious
+					}
+					modifier = {
+						factor = 0.5
+						trait = curious
+					}
+					modifier = {
+						factor = 0.5
+						trait = fussy
+					}
+					add_trait = indulgent_wastrel
+				}
+				25 = {
+					modifier = {
+						factor = 2
+						educator = {
+							trait = thrifty_clerk
+						}
+					}
+					modifier = {
+						factor = 3
+						NOT = { check_variable = { which = education_modifier value = -20} }
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_2_relationship }
+						}
+					}
+					add_trait = thrifty_clerk
+				}
+				15 = {
+					modifier = {
+						factor = 2
+						educator = {
+							trait = fortune_builder
+						}
+					}
+					modifier = {
+						factor = 3
+						check_variable = { which = education_modifier value = 20}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 0.33
+						trait = rowdy
+					}
+					modifier = {
+						factor = 0.33
+						trait = playful
+					}
+					modifier = {
+						factor = 2
+						trait = brooding
+					}
+					modifier = {
+						factor = 4
+						trait = conscientious
+					}
+					modifier = {
+						factor = 2
+						trait = curious
+					}
+					modifier = {
+						factor = 3
+						trait = fussy
+					}
+					add_trait = fortune_builder
+				}
+				10 = {
+					modifier = {
+						factor = 2
+						educator = {
+							trait = midas_touched
+						}
+					}
+					modifier = {
+						factor = 4
+						check_variable = { which = education_modifier value = 40}
+					}
+					modifier = {
+						factor = 3
+						educator = {
+							has_opinion_modifier = { which = level_3_relationship }
+						}
+					}
+					modifier = {
+						factor = 0.33
+						trait = rowdy
+					}
+					modifier = {
+						factor = 0.33
+						trait = playful
+					}
+					modifier = {
+						factor = 2
+						trait = brooding
+					}
+					modifier = {
+						factor = 4
+						trait = conscientious
+					}
+					modifier = {
+						factor = 2
+						trait = curious
+					}
+					modifier = {
+						factor = 3
+						trait = fussy
+					}
+					add_trait = midas_touched
+				}
+			}
+			character_event = { id = CE.40051 }
+			educator = {
+				character_event = { id = CE.40052 }
+			}
+			if = {
+				limit = {
+					mother = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				mother = {
+					character_event = { id = CE.40052 }
+				}
+			}
+			if = {
+				limit = {
+					father = {
+						educator = {
+							NOT = { character = PREV }
+						}
+					}
+				}
+				father = {
+					character_event = { id = CE.40032 }
+				}
+			}
+		}
+
+		## PERSONAL COMBAT Skill LEVEL OF TRAINING. 0,1,2,3
+		## Rowdy, male, willful, PCS proclivity, Martial training, flags, GUARDIAN
+		## affectionate, timid, LEARNING, 
+
+		random_list = { ## 30, 40, 20, 10 
+			50 = {
+				modifier = {
+					factor = 0
+					has_focus = focus_ed_martial 
+				}
+				modifier = {
+					factor = 0
+					has_focus = focus_ch_struggle 
+				}
+				modifier = {
+					factor = 0
+					has_focus = focus_ch_pride 
+				}
+				modifier = {
+					factor = 4
+					trait = timid 
+				}
+				modifier = {
+					factor = 4
+					trait = affectionate 
+				}
+				modifier = {
+					factor = 20
+					trait = female 
+				}
+				modifier = {
+					factor = 5
+					trait = focus_ed_learning 
+				}
+			}
+			40 = {
+				modifier = {
+					factor = 0
+					has_character_flag = warrior
+				}
+				modifier = {
+					factor = 4
+					trait = rowdy 
+				}
+				modifier = {
+					factor = 2
+					trait = willful 
+				}
+				add_trait = combat_training_1
+			}
+			20 = {
+				modifier = {
+					factor = 5
+					trait = rowdy 
+				}
+				modifier = {
+					factor = 2.5
+					trait = willful 
+				}
+				modifier = {
+					factor = 0.25
+					trait = timid 
+				}
+				modifier = {
+					factor = 0.25
+					trait = affectionate 
+				}
+				add_trait = combat_training_2
+			}
+			10 = {
+				modifier = {
+					factor = 2
+					has_character_flag = warrior
+				}
+				modifier = {
+					factor = 5
+					trait = rowdy 
+				}
+				modifier = {
+					factor = 2.5
+					trait = willful 
+				}
+				modifier = {
+					factor = 0
+					trait = timid 
+				}
+				modifier = {
+					factor = 0
+					trait = affectionate 
+				}
+				add_trait = combat_training_3
+			}
+		}
+
+		### CONVERT STATS
+
+		random = {
+			chance = 20
+			modifier = {
+				factor = 0
+					NOT = {
+					OR = {
+					trait = idolizer
+					trait = affectionate
+					}
+				}
+			}
+			modifier = {
+				trait = haughty
+				factor = 0
+			}
+			modifier = {
+				factor = 2
+				trait = affectionate
+			}
+			modifier = {
+				factor = 1.5
+				trait = idolizer
+			}
+			add_trait = charitable
+		}
+		random = {
+			chance = 20
+			modifier = {
+				factor = 0
+					NOT = {
+					OR = {
+					trait = timid
+					NOT = { check_variable = { which = conscientiousness value = -60} }
+					}
+				}
+			}
+			modifier = {
+				trait = rowdy
+				factor = 0
+			}
+			modifier = {
+				factor = 1.5
+				trait = timid
+			}
+			modifier = {
+				factor = 3
+				check_variable = { which = conscientiousness value = -80 }
+			}
+			add_trait = slothful
+		}
+		random = {
+			chance = 20
+			modifier = {
+				factor = 0
+					NOT = {
+					OR = {
+					trait = timid
+					NOT = { check_variable = { which = conscientiousness value = -60} }
+					}
+				}
+			}
+			modifier = {
+				trait = rowdy
+				factor = 0
+			}
+			modifier = {
+				factor = 1.5
+				trait = timid
+			}
+			modifier = {
+				factor = 3
+				check_variable = { which = conscientiousness value = -80 }
+			}
+			add_trait = slothful
+		}
+
+
+
+
+		
+
+
+		clear_focus = yes
+	}
+}
+
+			
+
+		
