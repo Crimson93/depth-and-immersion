@@ -1,0 +1,809 @@
+## Combat Enhanced
+
+## Variables like range should be global_speedcomp
+## Since these events only fire for the human, global variables are OK to use
+## Global variables: Range, poise p1 p2, agility p1 p2, set, round, range, health p1 p2, damage dealt for an attack
+
+namespace = CM
+
+## This event launches after the duel starts to initialize everything
+## INITIALIZATION EVENT
+character_event = {
+	id = CM.10000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+
+		## Check if character has no equipped weapons (THIS SHOULD BE DONE IN THE EVENT BEFORE THIS)
+		if = {
+			limit = {
+				NOT = {
+					OR = {
+						has_character_flag = halberd
+			 			has_character_flag = greatsword
+						has_character_flag = sword
+			 			has_character_flag = curvedsword
+						has_character_flag = warhammer
+			 			has_character_flag = axe
+						has_character_flag = mace
+			 			has_character_flag = spear
+					}
+				}
+			}
+			## Launch AI weapon assignment. Or just do it here...
+		}
+
+		 export_to_variable = { which = PCS value = combat_rating }
+		 set_variable = { which = PCS10 which = PCS }
+		 set_variable = { which = PCS25 which = PCS }
+		 set_variable = { which = PCS50 which = PCS }
+		 multiply_variable = { which = PCS10 value = 0.1} ## 10% of PCS 
+		 multiply_variable = { which = PCS25 value = 0.25} ## 25% of PCS
+		 multiply_variable = { which = PCS50 value = 0.50} ## 50% of PCS
+
+		 ## STATS ##
+		 ###########
+
+		 set_variable = { which = poise value = 100}
+		 change_variable = { which = poise which = PSC10} ## Poise is 100 + 10% of PCS. This gives characters with high PCS a slight edge
+
+		 set_variable = { which = agility value = 50}
+		 set_variable = { which = agility_modifier value = 0}
+		 # Weapons and Armor
+		 if = {
+		 	limit = {
+		 		OR = {
+			 		has_character_flag = halberd
+			 		has_character_flag = greatsword
+		 		}
+		 	}
+		 	change_variable = { which = agility_modifier value = 5}
+		 }
+		 if = {
+		 	limit = {
+			 	has_character_flag = round_shield
+		 	}
+		 	change_variable = { which = agility_modifier value = 5}
+		 }
+		 if = {
+		 	limit = {
+			 	has_character_flag = great_shield
+		 	}
+		 	change_variable = { which = agility_modifier value = 10}
+		 }
+		 if = {
+		 	limit = {
+			 	has_character_flag = medium_armor
+		 	}
+		 	change_variable = { which = agility_modifier value = 10}
+		 }
+		 if = {
+		 	limit = {
+			 	has_character_flag = heavy_armor
+		 	}
+		 	change_variable = { which = agility_modifier value = 20}
+		 }
+		 if = {
+		 	limit = {
+			 	has_character_flag = plate_armor
+		 	}
+		 	change_variable = { which = agility_modifier value = 25}
+		 }
+		 if = {
+		 	limit = {
+		 		is_strong_trigger = yes
+		 	}
+		 	subtract_variable = { which = agility_modifier value = 20 }
+		 	multiply_variable = { which = agility_modifier value = 0.8 }
+		 }
+		 if = {
+		 	limit = {
+		 		is_weak_trigger = yes
+		 	}
+		 	multiply_variable = { which = agility_modifier value = 1.25 }
+		 }
+		 subtract_variable = { which = agility which = agility_modifier }
+
+		 set_variable = { which = armor value = 0 }
+		 if = {
+		 	limit = {
+		 		has_character_flag = light_armor
+		 	}
+		 	change_variable = { which = armor = value = 15 }
+		 }
+		 if = {
+		 	limit = {
+		 		has_character_flag = medium_armor
+		 	}
+		 	change_variable = { which = armor = value = 50 }
+		 }
+		 if = {
+		 	limit = {
+		 		has_character_flag = heavy_armor
+		 	}
+		 	change_variable = { which = armor = value = 150 }
+		 }
+		 if = {
+		 	limit = {
+		 		has_character_flag = heavy_armor
+		 	}
+		 	change_variable = { which = armor = value = 200 }
+		 }
+
+		 set_variable = { which = health value = 100}
+		 if = {
+		 	limit = {
+		 		is_strong_trigger = yes
+		 	}
+		 	change_variable = { which = health = value = 50 }
+		 }
+		 if = {
+		 	limit = {
+		 		is_weak_trigger = yes
+		 	}
+		 	change_variable = { which = health = value = -25 }
+		 }
+
+		 set_variable = { which = set value = 0 } ## Count number of sets
+		 set_variable = { which = round value = 0 } ## Count number of round
+		 set_variable = { which = distance value = 5}
+
+	}
+}
+
+## SET 1a
+character_event = {
+	id = CM.11000
+	desc = whatever
+	is_triggered_only = yes
+
+	immediate = {
+		## Idk what needs to be done here
+		set_variable = { which = set value = 1 }
+	}
+
+	# Offensive Stance
+	option = {
+		name = whatever
+		hidden_tooltip = { 
+			set_character_flag = offensive_stance
+		}
+	}
+	# Balanced Stance
+	option = {
+		name = whatever
+		hidden_tooltip = { 
+			set_character_flag = balanced_stance
+		}
+	}
+
+	# Defensive Stance
+	option = {
+		name = whatever
+		hidden_tooltip = { 
+			set_character_flag = defensive_stance
+		}
+	}
+
+	## More Options
+	option = {
+		name = whatever 
+	}
+
+	## Retreat
+	option = {
+		name = whatever 
+	}
+
+	## Surrender
+	option = {
+		name = whatever
+	}
+
+
+	after = {
+		## Opponent Turn
+		character_event = { id = CE.11001 }
+	}
+}
+
+## SET MANAGER
+character_event = {
+	id = CM.11001
+	desc = whatever
+	is_triggered_only = yes
+
+	immediate = {
+		## Idk what needs to be done here
+		## Weather Effects
+		## Psychological Effects
+		## Wounded Effects
+
+	}
+
+	# Offensive Stance
+	option = {
+		name = whatever
+		hidden_tooltip = { 
+			set_character_flag = offensive_stance
+		}
+	}
+	# Balanced Stance
+	option = {
+		name = whatever
+		hidden_tooltip = { 
+			set_character_flag = balanced_stance
+		}
+	}
+
+	# Defensive Stance
+	option = {
+		name = whatever
+		hidden_tooltip = { 
+			set_character_flag = defensive_stance
+		}
+	}
+
+	## More Options
+	option = {
+		name = whatever 
+	}
+
+	## Retreat
+	option = {
+		name = whatever 
+	}
+
+	## Surrender
+	option = {
+		name = whatever
+	}
+
+	after = {
+		## Start Round Manager
+		FROM = {
+			character_event = { id = CE.11010 }
+		}
+	}
+}
+
+## Round Manager. Determines who's turn it is next, and when to end the set
+character_event = {
+	id = CM.11010
+	desc = whatever
+	is_triggered_only = yes
+
+	immediate = {
+
+		## POISE RECOVERY
+
+
+		if = {
+			limit = {
+				check_variable = { which = round value = 5}
+			}
+			## SET MANAGER
+		}
+		## Determine who gets next turn
+		set_variable = { which = global_speed1 value = 0 }
+		set_variable = { which = global_speed2 value = 0 }
+
+		## Speed = Poise + Agility
+		change_variable = { which = global_speed1 which = poise}
+		change_variable = { which = global_speed1 which = agility}
+		if = {
+			limit = {
+				has_character_flag = offensive_stance
+			}
+			change_variable = { which = global_speed1 value = 50 }
+		}
+		if = {
+			limit = {
+				has_character_flag = defensive_stance
+			}
+			change_variable = { which = global_speed1 value = -25 }
+		}
+
+		FROM = { 
+			change_variable = { which = global_speed2 which = poise}
+			change_variable = { which = global_speed2 which = agility}
+			if = {
+				limit = {
+					has_character_flag = offensive_stance
+				}
+				change_variable = { which = global_speed2 value = 50 }
+			}
+			if = {
+				limit = {
+					has_character_flag = defensive_stance
+				}
+				change_variable = { which = global_speed2 value = -25 }
+			}
+		}
+		## Failsafe
+		if = {
+			limit = {
+				NOT = { check_variable = { which = global_speed1 value = 1} }
+			}
+			set_variable = { which = global_speed1 value = 2}
+		}
+		if = {
+			limit = {
+				NOT = { check_variable = { which = global_speed2 value = 1} }
+			}
+			set_variable = { which = global_speed1 value = 2}
+		}
+
+		set_variable = { which = global_speedcomp value = 0 }
+		change_variable = { which = global_speedcomp which = global_speed1}
+		divide_variable = { which = global_speedcomp which = global_speed2}
+
+		## 100 + 50 + 50 = 200 is max Speed
+		## 100 + 0 -25 = 75 is lowest Speed
+
+		## Lets say 3 is highest difference level
+		## 1 is even 
+		## 0.33 then is lowest (means FROM is much faster)
+
+
+		random_list = {
+			50 = {
+				## ROOT TURN
+				modifier = {
+					factor = 1.20
+					check_variable = { which = global_speedcomp value = 3}
+				}
+				modifier = {
+					factor = 1.25
+					check_variable = { which = global_speedcomp value = 2.5}
+				}
+				modifier = {
+					factor = 1.14
+					check_variable = { which = global_speedcomp value = 2}
+				}
+				modifier = {
+					factor = 1.17
+					check_variable = { which = global_speedcomp value = 1.75}
+				}
+				modifier = {
+					factor = 1.20
+					check_variable = { which = global_speedcomp value = 1.5}
+				}
+				modifier = {
+					factor = 1.25
+					check_variable = { which = global_speedcomp value = 1.25}
+				}
+				character_event = { id = CM.12000 }
+			}
+			50 = {
+				## FROM TURN
+				modifier = {
+					factor = 1.20
+					NOT = { check_variable = { which = global_speedcomp value = 0.33} }
+				}
+				modifier = {
+					factor = 1.25
+					NOT = { check_variable = { which = global_speedcomp value = 0.40} }
+				}
+				modifier = {
+					factor = 1.14
+					NOT = { check_variable = { which = global_speedcomp value = 0.50} }
+				}
+				modifier = {
+					factor = 1.17
+					NOT = { check_variable = { which = global_speedcomp value = 0.57} }
+				}
+				modifier = {
+					factor = 1.20
+					NOT = { check_variable = { which = global_speedcomp value = 0.67} }
+				}
+				modifier = {
+					factor = 1.25
+					NOT = { check_variable = { which = global_speedcomp value = 0.80} }
+				}
+				FROM = {
+					character_event = { id = CM.12000 }
+				}
+			}
+		}
+
+	}
+}
+
+#### Battle Manager
+
+## Range Decider
+character_event = {
+	id = CM.12000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				check_variable = { which = range value = 5}
+			}
+			character_event = { id = 13000 }
+		}
+		if = {
+			limit = {
+				check_variable = { which = range value = 4}
+			}
+			character_event = { id = 14000 }
+		}
+		if = {
+			limit = {
+				check_variable = { which = range value = 3}
+			}
+			character_event = { id = 15000 }
+		}
+		if = {
+			limit = {
+				check_variable = { which = range value = 2}
+			}
+			character_event = { id = 16000 }
+		}
+		if = {
+			limit = {
+				check_variable = { which = range value = 1}
+			}
+			character_event = { id = 17000 }
+		}
+	}
+}
+
+
+## HOW TO DEAL WITH FROM AND ROOT?
+## THE BATTLE MANAGER ALWAYS FIRES FOR FROM
+## SO IF FROM = ROOT then you are the attacker
+## And if not, then you are the defender
+## CAN USE THIS TO SET THE DEFENDER SCOPE. EASILY FIRE THE EVENT
+## AND THEN FOR THE DEFENDER EVENT CAN JUST USE FROM. SINCE THAT WILL ALWAYS BE THE OTHER GUY
+
+## Range 5
+character_event = {
+	id = CM.13000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		
+	}
+
+	## OPTIONS: 
+	## MOVE CLOSER - MOVE BY 1. Low Poise Cost
+	option = {
+		name = move_closer
+		tooltip = {
+
+		}
+		hidden_tooltip = {
+			if = {
+				limit = {
+					has_character_flag = player_1
+				}
+				change_variable = {which = global_poise_1 value = 10 }
+				event_target:player2 = {
+					character_event = { id = CM.13001 } ## Reaction to move forward}
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = player_2
+				}
+				change_variable = { which = global_poise_1ise_2 value = 10}
+				event_target:player2 = {
+					character_event = { id = CM.13001 } ## Reaction to move forward}
+				}
+			}
+			change_variable = { which = range value = 1}
+		}
+	}
+
+	## CHARGE. MOVE BY 3. High Poise cost. 
+	option = {
+		name = CHARGE
+		tooltip = {
+
+		}
+		hidden_tooltip = {
+			if = {
+				limit = {
+					has_character_flag = player_1
+				}
+				change_variable = {which = global_poise_1 value = 40 }
+				event_target:player2 = {
+					character_event = { id = CM.13002 } ## Reaction to charge}
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = player_2
+				}
+				change_variable = { which = global_poise_2 value = 40}
+				event_target:player2 = {
+					character_event = { id = CM.13002 } ## Reaction to charge}
+				}
+			}
+			change_variable = { which = range value = -3}
+		}
+	}
+
+	## CHARGE WITH SHIELD UP (T)
+
+	## CHARGE AND SWING. Charge followed by a quick slash (or thrust for halberd/spear) . Costs a lot of poise
+
+	option = {
+		name = CHARGE_N_SWING
+		trigger = {
+			NOT = {
+				has_character_flag = mace
+			}
+		}
+		tooltip = {
+
+		}
+		hidden_tooltip = {
+			if = {
+				limit = {
+					has_character_flag = player_1
+				}
+				change_variable = {which = global_poise_1 value = 40 }
+				evaluate_poise_cost = yes
+				event_target:player2 = {
+					character_event = { id = CM.13003 } ## Reaction to charge and swing
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = player_2
+				}
+				change_variable = { which = global_poise_2 value = 40}
+				evaluate_poise_cost = yes
+				event_target:player1 = {
+					character_event = { id = CM.13003 } ## Reaction to charge and swing
+				}
+			}
+			change_variable = { which = range value = -3}
+		}
+	}
+
+	option = {
+		name = donothing
+		event_target:other_combatant = {
+			character_event = { id = CM.13004 } ## Reaction to do nothing
+		}
+	}
+
+
+}
+
+## Range 4
+character_event = {
+	id = CM.14000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		
+	}
+
+	## OPTIONS: 
+	## THRUST WITH SPEAR, HALBERD, GREATSWORD (B)
+	option = {
+		if = {
+			limit = {
+				OR = {
+					has_character_flag = halberd
+					has_character_flag = greatsword
+					has_character_flag = spear
+				}
+			}
+		}
+		evaluate_poise_cost = yes
+		set_character_flag = thrust
+		event_target:other_combatant= {
+			character_event = { id = CM.13005 } ## Reaction to attack. When attacked. Use scripted effect. That will clear the previously assigned flag
+		}
+	}
+	## THRUST AT CRITICAL POINT (B). Requires skill to do properly.
+	option = {
+		if = {
+			limit = {
+				OR = {
+					has_character_flag = halberd
+					has_character_flag = greatsword
+					has_character_flag = spear
+				}
+			}
+		}
+		set_character_flag = critical_thrust
+		evaluate_poise_cost = yes
+		event_target:other_combatant= {
+			character_event = { id = CM.13005 } #
+		}
+	}
+	## SLASH WITH HALBERD (B)
+	option = {
+		if = {
+			limit = {
+				has_character_flag = halberd
+			}
+		}
+		set_character_flag = slash
+		evaluate_poise_cost = yes
+		event_target:other_combatant= {
+			character_event = { id = CM.13005 } 
+		}
+	}
+	## BLUDGEON WITH HALBERD (T)
+	option = {
+		if = {
+			limit = {
+				has_character_flag = halberd
+			}
+		}
+		set_character_flag = bludgeon
+		evaluate_poise_cost = yes
+		event_target:other_combatant= {
+			character_event = { id = CM.13005 } 
+		}
+	}
+	## POKE (T)
+	option = {
+		if = {
+			limit = {
+				OR = {
+					has_character_flag = halberd
+					has_character_flag = spear
+				}
+				check_variable = { which = skill_level value = 2}
+			}
+		}
+		set_character_flag = poke
+		evaluate_poise_cost = yes
+		event_target:other_combatant= {
+			character_event = { id = CM.13005 } 
+		}
+	}
+	## MOVE CLOSER
+	option = {
+		evaluate_poise_cost = yes
+		event_target:other_combatant= {
+			character_event = { id = CM.13005 } ## Reaction to move closer
+		}
+	}
+	## CHARGE (B)
+	## CHARGE WITH SHIELD UP (B)
+	## CHARGE AND SWING (T) (all except mace)
+	## DO NOTHING
+
+	
+}
+
+## Reaction to Move Closer
+character_event = {
+	id = CM.13001
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		
+	}
+
+	## OPTIONS: 
+	## TNothing
+	## Poke
+
+}
+
+## Reaction to Charge
+character_event = {
+	id = CM.13001
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		
+	}
+
+	## OPTIONS: 
+	## TNothing
+	## Poke
+	## Poke at feet
+}
+
+## Reaction to Attack
+character_event = {
+	id = CM.13001
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		
+	}
+
+	## OPTIONS: 
+	## Parry with weapon (sword, csword, gsword, Halberd, spear)
+	## Parry with Shield (E)
+	## Block with Shield (B)
+	## Evade
+	## Dodge backwards
+	## DO nothing
+}
+
+
+
+
+## Range 3
+character_event = {
+	id = CM.14000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		
+	}
+
+	## OPTIONS: 
+	## THRUST WITH SPEAR, HALBERD, GREATSWORD, SWORD (B)
+	## THRUST AT CRITICAL POINT (B)
+	## SLASH WITH HALBERD, GREATSWORD (B)
+	## BLUDGEON WITH HALBERD (T)
+	## POKE (T)
+	## JAB AND RETREAT (T)
+	## MOVE CLOSER
+	## CHARGE (B)
+	## CHARGE WITH SHIELD UP (B)
+	## CHARGE AND SWING (T) (all)
+	## DO NOTHING
+
+}
+
+## Range 2
+character_event = {
+	id = CM.14000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		
+	}
+
+	## OPTIONS: 
+	## THRUST WITH SPEAR, HALBERD, GREATSWORD, SWORD (B)
+	## THRUST AT CRITICAL POINT (B)
+	## SLASH WITH HALBERD, GREATSWORD, AXE, SWORD, CURVED SWORD (B)
+	## BLUDGEON WITH HALBERD, WARHAMMER (T)
+	## POKE (T)
+	## JAB AND RETREAT (T)
+	## MOVE CLOSER
+	## DO NOTHING
+}
+
+## Range 1
+character_event = {
+	id = CM.14000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		
+	}
+
+	## OPTIONS: 
+	## THRUST WITH SPEAR, HALBERD, GREATSWORD, SWORD (B)
+	## THRUST AT CRITICAL POINT (B)
+	## SLASH WITH HALBERD, GREATSWORD, AXE, SWORD, CURVED SWORD (B)
+	## BLUDGEON WITH HALBERD, WARHAMMER, MACE (T)
+	## POKE (T)
+	## JAB AND RETREAT (T)
+	## SHIELD BASH (T)
+	## GRAPPLE (T)
+	## SHIELD BASH (T)
+	## KICKBACK (T)
+	## MOVE CLOSER
+	## DO NOTHING
+	
+}
