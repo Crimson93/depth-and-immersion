@@ -1,14 +1,14 @@
-##Court Splendor
-## This is divided into two. The mechanics concerning court splendor and it updating.
-## And the events revolving around court splendor (at the bottom.)
 
 namespace = CS
 
-## The variable is attached to the capital province
-## The modifier is given to the character
-## The modifier is only given to the character from the capital. No other province
+##NOTES:
+## COURT SPLENDOR IS A VARIABLE TRACKED ON THE CAPITAL PROVINCE SCOPE AND WHICH GIVES A MODIFIER TO THE character_event
+## If capital changes to a province without a court_splendor, assign the characters court splendor to the province (- a certain amount)
+## Every 5 years, every province that is not a capital will suffer a large decrease
+## If ruler dies, the next character will inherit the capital province and will be assigned that provinces court splendor
+## 
 
-## Initialization Event - COMPLETE, TESTED
+## INITIALIZE COURT SPLENDOR - WORKING
 character_event = {
 	
 	id = CS.10000
@@ -17,17 +17,27 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
+	is_save_game = no
 	higher_real_tier_than = COUNT
+	is_nomadic = no
+	is_tribal = no
 	}
 	
 	immediate = {
+	if = {
+		limit = {
+			ai = no
+		}
+		log = "1: This event is running for [Root.GetTitledName]"
+	}
 	## Generates starting court splendor for every Duke, King, Emperor, and independent ruler
 	## Variables to Use:
 	## Tier level: Duke, King, Emperor. Important.
-	## Demesne Size. Important.
+	## Demesne Size. Important. 
+	## majesty tech
 	## Yearly income. Very Important
 	## Constantinople and Baghdad, special.
-	capital_scope = {
+		capital_scope = {
 			set_variable = { which = court_splendor value = 10 }
 			if = {
 				limit = {
@@ -142,11 +152,44 @@ character_event = {
 			}
 			if = {
 				limit = {
+					TECH_MAJESTY = 7
+				}
+				multiply_variable = { which = court_splendor value = 1.5 }
+			}
+			else_if = {
+				limit = {
+					TECH_MAJESTY = 6
+				}
+				multiply_variable = { which = court_splendor value = 1.4 }
+			}
+			else_if = {
+				limit = {
+					TECH_MAJESTY = 5
+				}
+				multiply_variable = { which = court_splendor value = 1.3 }
+			}
+			else_if = {
+				limit = {
+					TECH_MAJESTY = 4
+				}
+				multiply_variable = { which = court_splendor value = 1.2 }
+			}
+			else_if = {
+				limit = {
+					TECH_MAJESTY = 3
+				}
+				multiply_variable = { which = court_splendor value = 1.1 }
+			}
+			else = {
+
+			}
+			if = {
+				limit = {
 					owner = { 
-						tier = DUKE
+						tier = EMPEROR
 					}
 				}
-				change_variable = { which = court_splendor value = 5 }
+				change_variable = { which = court_splendor value = 30 }
 			}
 			else_if = {
 				limit = {
@@ -154,15 +197,15 @@ character_event = {
 						tier = KING
 					}
 				}
-				change_variable = { which = court_splendor value = 10 }
+				change_variable = { which = court_splendor value = 18 }
 			}
 			else_if = {
 				limit = {
 					owner = { 
-						tier = EMPEROR
+						tier = DUKE
 					}
 				}
-				change_variable = { which = court_splendor value = 15 }
+				change_variable = { which = court_splendor value = 6 }
 			}
 			else = {
 			}
@@ -179,6 +222,13 @@ character_event = {
 				}
 				change_variable = { which = court_splendor value = 10 }
 			}
+
+			if = {
+				limit = {
+					total_years_played = 5
+				}
+				multiply_variable = { which = court_splendor value = 0.6 }
+			}
 			
 			### Now set the province flag.
 			### Flag better than modifier I think...
@@ -189,6 +239,7 @@ character_event = {
 				}
 				set_province_flag = magnificent_court
 				owner = {
+					remove_court_modifier = yes
 					set_variable = { which = court_splendor_character which = court_splendor} ### NOT SURE IF NECESSARY
 					add_character_modifier = { name = magnificent_court duration = -1}
 					add_character_modifier = { name = magnificent_court_maintenance duration = -1}
@@ -209,6 +260,7 @@ character_event = {
 				}
 				set_province_flag = grand_court
 				owner = {
+					remove_court_modifier = yes
 					set_variable = { which = court_splendor_character which = court_splendor} ### NOT SURE IF NECESSARY
 					add_character_modifier = { name = grand_court duration = -1}
 					add_character_modifier = { name = grand_court_maintenance duration = -1}
@@ -229,6 +281,7 @@ character_event = {
 				}
 				set_province_flag = splendid_court
 				owner = {
+					remove_court_modifier = yes
 					set_variable = { which = court_splendor_character which = court_splendor} ### NOT SURE IF NECESSARY
 					add_character_modifier = { name = splendid_court duration = -1}
 					add_character_modifier = { name = splendid_court_maintenance duration = -1}
@@ -242,6 +295,7 @@ character_event = {
 			}
 			else_if = {
 				limit = {
+
 				check_variable = { which = court_splendor value = 50 }
 				NOT = {
 				check_variable = { which = court_splendor value = 75 }
@@ -249,6 +303,7 @@ character_event = {
 				}
 				set_province_flag = standard_court
 				owner = {
+					remove_court_modifier = yes
 					set_variable = { which = court_splendor_character which = court_splendor} ### NOT SURE IF NECESSARY
 					add_character_modifier = { name = standard_court duration = -1}
 					add_character_modifier = { name = standard_court_maintenance duration = -1}
@@ -264,11 +319,12 @@ character_event = {
 				limit = {
 				check_variable = { which = court_splendor value = 30 }
 				NOT = {
-				check_variable = { which = court_splendor value = 50 }
+				check_variable = { which = court_splendor value = 49.9 }
 				}
 				}
 				set_province_flag = acceptable_court
 				owner = {
+					remove_court_modifier = yes
 					set_variable = { which = court_splendor_character which = court_splendor} ### NOT SURE IF NECESSARY
 					add_character_modifier = { name = acceptable_court duration = -1}
 					add_character_modifier = { name = acceptable_court_maintenance duration = -1}
@@ -289,20 +345,22 @@ character_event = {
 				}
 				set_province_flag = shabby_court
 				owner = {
+					remove_court_modifier = yes
 					set_variable = { which = court_splendor which = court_splendor_character} ### NOT SURE IF NECESSARY
 					add_character_modifier = { name = shabby_court duration = -1}
 					add_character_modifier = { name = shabby_court_maintenance duration = -1}
 					if = {
-					limit = {
-					religion_group = muslim
-					}
-					add_character_modifier = { name = decadence2 duration = -1}
+						limit = {
+							religion_group = muslim
+						}
+						add_character_modifier = { name = decadence2 duration = -1}
 					}
 				}
 			}
 			else = {
 			set_province_flag = abysmal_court
 				owner = {
+					remove_court_modifier = yes
 					set_variable = { which = court_splendor which = court_splendor_character} ### NOT SURE IF NECESSARY
 					add_character_modifier = { name = abysmal_court duration = -1}
 					add_character_modifier = { name = abysmal_court_maintenance duration = -1}
@@ -312,32 +370,65 @@ character_event = {
 					}
 					add_character_modifier = { name = decadence1 duration = -1}
 					}
-			}
+				}
 			}
 	
 	
 		}
+		character_event = { id = CS.11000 days = 3}
 	}
 }
 
+##Investment Event - working from before, whatever
 
-##Investment Event
-
-character_event = {
+long_character_event = {
 	id = CS.10100
 	
 	is_triggered_only = yes
 	
-	desc = EVTCS10100
-	picture = GFX_evt_drunk
+	desc = {
+       trigger = { has_character_modifier = magnificent_court }
+       text = EVT_DESC10100A
+       picture = GFX_magnificent_court
+     }
+     desc = {
+       trigger = { has_character_modifier = grand_court }
+       text = EVT_DESC10100B
+       picture = GFX_grand_court
+     }
+     desc = {
+       trigger = { has_character_modifier = splendid_court }
+       text = EVT_DESC10100C
+       picture = GFX_splendid_court
+     }
+     desc = {
+       trigger = { has_character_modifier = standard_court }
+       text = EVT_DESC10100D
+       picture = GFX_standard_court
+     }
+     desc = {
+       trigger = { has_character_modifier = acceptable_court }
+       text = EVT_DESC10100E
+       picture = GFX_acceptable_court
+     }
+     desc = {
+       trigger = { has_character_modifier = shabby_court }
+       text = EVT_DESC10100F
+       picture = GFX_shabby_court
+     }
+     desc = {
+       trigger = { has_character_modifier = abysmal_court }
+       text = EVT_DESC10100G
+       picture = GFX_abysmal_court
+     }
 	
 	option = {
-		name = EVTOPTA10100
+		name = EVTOPTA_CS10100
 		trigger = {
 			OR = {
 			has_character_modifier = magnificent_court
 			}
-			wealth = 1000 
+			treasury = 1000 
 		}
 		treasury = -1000
 		hidden_tooltip = {
@@ -353,14 +444,14 @@ character_event = {
 		}
 	}
 	option = {
-		name = EVTOPTB10100
+		name = EVTOPTB_CS10100
 		trigger = {
 			OR = {
 			has_character_modifier = magnificent_court
 			has_character_modifier = grand_court
 			has_character_modifier = splendid_court
 			}
-			wealth = 500 
+			treasury = 500 
 		}
 		treasury = -500
 		hidden_tooltip = {
@@ -392,7 +483,7 @@ character_event = {
 		}
 	}
 	option = {
-		name = EVTOPTC10100
+		name = EVTOPTC_CS10100
 		trigger = {
 			OR = {
 			has_character_modifier = magnificent_court
@@ -400,7 +491,7 @@ character_event = {
 			has_character_modifier = splendid_court
 			has_character_modifier = standard_court
 			}
-			wealth = 200 
+			treasury = 200 
 		}
 		treasury = -200
 		hidden_tooltip = {
@@ -440,13 +531,14 @@ character_event = {
 		}
 	}
 	option = {
-		name = EVTOPTD10100
+		name = EVTOPTD_CS10100
 		trigger = {
+			OR = {
 			has_character_modifier = grand_court
 			has_character_modifier = splendid_court
 			has_character_modifier = standard_court
-			has_character_modifier = acceptable_court
-			wealth = 100 
+			has_character_modifier = acceptable_court}
+			treasury = 100 
 		}
 		treasury = -100
 		hidden_tooltip = {
@@ -486,12 +578,13 @@ character_event = {
 		}
 	}
 	option = {
-		name = EVTOPTE10100
+		name = EVTOPTE_CS10100
 		trigger = {
+			OR = {
 			has_character_modifier = standard_court
 			has_character_modifier = acceptable_court
 			has_character_modifier = shabby_court
-			has_character_modifier = abysmal_court
+			has_character_modifier = abysmal_court }
 			wealth = 50 
 		}
 		treasury = -50
@@ -532,11 +625,12 @@ character_event = {
 		}
 	}
 	option = {
-		name = EVTOPTF10100
+		name = EVTOPTF_CS10100
 		trigger = {
+			OR = {
 			has_character_modifier = acceptable_court
 			has_character_modifier = shabby_court
-			has_character_modifier = abysmal_court
+			has_character_modifier = abysmal_court }
 			wealth = 20 
 		}
 		treasury = -20
@@ -569,7 +663,7 @@ character_event = {
 		}
 	}
 	option = {
-		name = EVTOPTG10100
+		name = EVTOPTG_CS10100
 	}
 }
 
@@ -583,79 +677,91 @@ character_event = {
 
 	trigger = {
 		higher_real_tier_than = COUNT
+		NOT = { has_character_modifier = decay_event_active}
 		}
 	
 	immediate = {
-		capital_scope = {
-		## First check if for some reason the capital does not have any flag
+		add_character_modifier = { name = decay_event_active duration = 89 }
+		if = {
+		limit = {
+			FROM = { ai = no }
+		}
+		log = "2: This event is running for [Root.GetTitledName]"
+		}
 		if = {
 			limit = {
-				NOT = {
-						check_variable = { which = court_splendor value = 0.1}
-						}
+				NOT = { has_character_flag = decay_active}
 			}
-			owner = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 110} ## Lower because changing capital should reduce splendor
-					##remove_character_modifier = magnificent_court
-					##remove_character_modifier = magnificent_court_maintenance
-					##add_character_modifier = { name = grand_court duration = -1}
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 85} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 65} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 45} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 25} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 10} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else = {
-					character_event = {
-					id = CS.10000
-					}
-				}
-			}
+			set_character_flag = decay_active
 		}
-							
-				
-			## Magnificent court
+		capital_scope = {
+		## First check if for some reason the capital does not have any flag
+			if = {
+				limit = {
+					NOT = {
+							check_variable = { which = court_splendor value = 0.1}
+							}
+				}
+				owner = {
+					if = {
+						limit = {
+							has_character_modifier = magnificent_court
+							}
+					capital_scope = {
+						set_variable = { which = court_splendor value = 100} ## Lower because changing capital should reduce splendor
+						##remove_character_modifier = magnificent_court
+						##remove_character_modifier = magnificent_court_maintenance
+						##add_character_modifier = { name = grand_court duration = -1}
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = grand_court
+							}
+					capital_scope = {
+						set_variable = { which = court_splendor value = 75} ## Lower because changing capital should reduce splendor
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = splendid_court
+							}
+					capital_scope = {
+						set_variable = { which = court_splendor value = 55} ## Lower because changing capital should reduce splendor
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = standard_court
+							}
+					capital_scope = {
+						set_variable = { which = court_splendor value = 35} ## Lower because changing capital should reduce splendor
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = acceptable_court
+							}
+					capital_scope = {
+						set_variable = { which = court_splendor value = 20} ## Lower because changing capital should reduce splendor
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = shabby_court
+							}
+					capital_scope = {
+						set_variable = { which = court_splendor value = 7} ## Lower because changing capital should reduce splendor
+						}
+					}
+					else = {
+						character_event = {
+						id = CS.10000
+						}
+					}
+				}
+			}
+	## Magnificent court
 			if = {
 				limit = {
 				check_variable = { which = court_splendor value = 125 }
@@ -670,18 +776,7 @@ character_event = {
 								}
 								}
 							}
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
+						remove_court_modifier = yes
 						add_character_modifier = { name = magnificent_court duration = -1}
 						add_character_modifier = { name = magnificent_court_maintenance duration = -1}
 					}
@@ -709,7 +804,7 @@ character_event = {
 							has_character_modifier = magnificent_court_maintenance
 						}
 					}
-					subtract_variable = { which = court_splendor value = 0.1}
+					subtract_variable = { which = court_splendor value = 0.2}
 				}
 				else_if = {
 				limit = {
@@ -732,8 +827,7 @@ character_event = {
 				}
 				if = {
 					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 125 }}
+						NOT = {check_variable = { which = court_splendor value = 125 }}
 					}
 					set_province_flag = grand_court
 					owner = {
@@ -769,18 +863,7 @@ character_event = {
 								}
 								}
 							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
+						remove_court_modifier = yes
 						add_character_modifier = { name = grand_court duration = -1}
 						add_character_modifier = { name = grand_court_maintenance duration = -1}
 				
@@ -807,7 +890,7 @@ character_event = {
 							has_character_modifier = grand_court_maintenance
 						}
 					}
-					subtract_variable = { which = court_splendor value = 0.1}
+					subtract_variable = { which = court_splendor value = 0.2}
 				}
 				else_if = {
 				limit = {
@@ -830,8 +913,7 @@ character_event = {
 				}
 				if = {
 					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 100 }}
+						NOT = {check_variable = { which = court_splendor value = 100 }}
 					}
 					set_province_flag = splendid_court
 					owner = {
@@ -866,18 +948,7 @@ character_event = {
 								}
 								}
 							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
+						remove_court_modifier = yes
 						add_character_modifier = { name = splendid_court duration = -1}
 						add_character_modifier = { name = splendid_court_maintenance duration = -1}
 					
@@ -904,7 +975,7 @@ character_event = {
 							has_character_modifier = splendid_court_maintenance
 						}
 					}
-					subtract_variable = { which = court_splendor value = 0.1}
+					subtract_variable = { which = court_splendor value = 0.2}
 				}
 				else_if = {
 				limit = {
@@ -928,8 +999,7 @@ character_event = {
 				
 				if = {
 					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 75 }}
+						NOT = {check_variable = { which = court_splendor value = 75 }}
 					}
 					set_province_flag = standard_court
 					owner = {
@@ -965,18 +1035,7 @@ character_event = {
 								}
 								}
 							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
+						remove_court_modifier = yes
 						add_character_modifier = { name = standard_court duration = -1}
 						add_character_modifier = { name = standard_court_maintenance duration = -1}
 						
@@ -1003,7 +1062,7 @@ character_event = {
 							has_character_modifier = standard_court_maintenance
 						}
 					}
-					subtract_variable = { which = court_splendor value = 0.1}
+					subtract_variable = { which = court_splendor value = 0.2}
 				}
 				else_if = {
 				limit = {
@@ -1027,8 +1086,7 @@ character_event = {
 				
 				if = {
 					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 50 }}
+						NOT = {check_variable = { which = court_splendor value = 50 }}
 					}
 					set_province_flag = acceptable_court
 					owner = {
@@ -1064,18 +1122,7 @@ character_event = {
 								}
 								}
 							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
+						remove_court_modifier = yes
 						add_character_modifier = { name = acceptable_court duration = -1}
 						add_character_modifier = { name = acceptable_court_maintenance duration = -1}
 						
@@ -1102,7 +1149,7 @@ character_event = {
 							has_character_modifier = acceptable_court_maintenance
 						}
 					}
-					subtract_variable = { which = court_splendor value = 0.1}
+					subtract_variable = { which = court_splendor value = 0.2}
 				}
 				else_if = {
 				limit = {
@@ -1118,8 +1165,7 @@ character_event = {
 				
 				if = {
 					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 30 }}
+						NOT = {check_variable = { which = court_splendor value = 30 }}
 					}
 					set_province_flag = shabby_court
 					owner = {
@@ -1155,18 +1201,7 @@ character_event = {
 								}
 								}
 							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
+						remove_court_modifier = yes
 						add_character_modifier = { name = shabby_court duration = -1}
 						add_character_modifier = { name = shabby_court_maintenance duration = -1}
 					}
@@ -1192,7 +1227,7 @@ character_event = {
 							has_character_modifier = shabby_court_maintenance
 						}
 					}
-					subtract_variable = { which = court_splendor value = 0.1}
+					subtract_variable = { which = court_splendor value = 0.2}
 				}
 				else = {
 					subtract_variable = { which = court_splendor value = 0.3}
@@ -1200,8 +1235,7 @@ character_event = {
 				
 				if = {
 					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 15 }}
+						NOT = {check_variable = { which = court_splendor value = 15 }}
 					}
 					set_province_flag = abysmal_court
 					owner = {
@@ -1237,18 +1271,7 @@ character_event = {
 								}
 								}
 							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
+						remove_court_modifier = yes
 						add_character_modifier = { name = abysmal_court duration = -1}
 						add_character_modifier = { name = abysmal_court_maintenance duration = -1}
 					}
@@ -1271,3122 +1294,856 @@ character_event = {
 				
 				if = {
 					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 1 }}
+						NOT = {check_variable = { which = court_splendor value = 1 }}
 					}
 					set_variable = { which = court_splendor value = 1 }
 				}
 			}
-			
-			###Yay done!
-			
-			## Here we need a few more things. 
-			## First, the chain event. 3 months after, a similar event must fire again (different event), then again (same event), then last time (diff). 
-			## Second, we need to update vassal relative court splendors
-			
-			
+			ROOT = {
+				set_variable = { which = court_splendor which = PREV}
 			}
-			
-			##LAUNCH EVENT FOR INDEPENDENT RULERS
-			## SCOPE TO THEIR VASSALS
-			## ASSIGN RELATIVE SPLENDOR TO EACH VASSAL
-			## LAUNCH INDEPENDENCE EVENTS FROM THERE
-			
-				character_event = {
-					id = CS.12000
-				}
+		}
+
+		## Just since I need courtsplendor to be character...
+
+		## AI EVENTS
+		character_event = {
+			id = CS.13000
+		}
+
+		## AUTONOMY
+		character_event = {
+			id = CS.12000
+		}
 			
 			
 			## CHAIN EVENTS
 			
-			character_event = {
-				id = CS.11100
-				days = 91
-			}	
+		character_event = {
+			id = CS.11000
+			days = 91
+		}	
 	}
 }
 
-### Relative court Levels - COMPLETE, needs TESTING
+## AUTONOMY
 character_event = {
-
 	id = CS.12000
 	hide_window = yes
-	
 	is_triggered_only = yes
 
 	trigger = {
 		higher_real_tier_than = COUNT
 		independent = yes
-		}
-	
+		is_nomadic = no
+		is_tribal = no
+	}
 	immediate = {
-	## One court level at a time...
-	
-	## Magnificent Court
-		if = {
-			limit = {
-				has_character_modifier = magnificent_court
-				}
-			any_vassal = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_1 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_2 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_3
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_4 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_5
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_6 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = abysmal_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_7 
-					duration = 90
-					hidden = yes
-					}
-				}
-			}
-		}
-		## Grand Court
-		if = {
-			limit = {
-				has_character_modifier = grand_court
-				}
-			any_vassal = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_A 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_1 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_2
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_3 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_4
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_5 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = abysmal_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_6 
-					duration = 90
-					hidden = yes
-					}
-				}
-			}
-		}
-		## Splendid Court
-		if = {
-			limit = {
-				has_character_modifier = splendid_court
-				}
-			any_vassal = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_B 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_A 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_1
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_2 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_3
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_4 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = abysmal_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_5 
-					duration = 90
-					hidden = yes
-					}
-				}
-			}
-		}
-		## Standard Court
-		if = {
-			limit = {
-				has_character_modifier = standard_court
-				}
-			any_vassal = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_C 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_B 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_A
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_1 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_2
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_3 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = abysmal_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_4 
-					duration = 90
-					hidden = yes
-					}
-				}
-			}
-		}
-		## ACCEPTABLE
-		if = {
-			limit = {
-				has_character_modifier = acceptable_court
-				}
-			any_vassal = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_D 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_C 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_B
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_A 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_1
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_2 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = abysmal_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_3 
-					duration = 90
-					hidden = yes
-					}
-				}
-			}
-		}
-		## Shabby
-		if = {
-			limit = {
-				has_character_modifier = shabby_court
-				}
-			any_vassal = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_E 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_D 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_C
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_B 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_A
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_1 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = abysmal_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_2 
-					duration = 90
-					hidden = yes
-					}
-				}
-			}
-		}
-		## Abysmal
-		if = {
-			limit = {
-				has_character_modifier = abysmal_court
-				}
-			any_vassal = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_F 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_E 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_D
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_C 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_B
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_A 
-					duration = 90
-					hidden = yes
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = abysmal_court
-						}
-					add_character_modifier = { 
-					name = relative_court_level_1 
-					duration = 90
-					hidden = yes
-					}
-				}
-			}
-		}
-		## clears defacto independence naturally
-		any_vassal = {
-			limit = {
-				has_character_flag = defacto_independent
-				}
-				if = {
-					limit = {
-					OR = {
-						has_character_modifier = relative_court_level_7
-						has_character_modifier = relative_court_level_6
-						has_character_modifier = relative_court_level_5
-						has_character_modifier = relative_court_level_4
-						}
-					}
-					clr_character_flag = defacto_independent
-					}
-				}
-						
-		## Declare Defacto independence
-		any_vassal = {
-		if = {
-		limit = {
-			NOT = {	has_character_flag = defacto_independent }
-			NOT = { has_character_flag = recent_independence_request }
-			}
-			random = {
-				chance = 5
-				modifier = {
-					factor = 0
-					has_character_modifier = relative_court_level_7
-					}
-				modifier = {
-					factor = 0
-					has_character_modifier = relative_court_level_6
-					}
-				modifier = {
-					factor = 0
-					has_character_modifier = relative_court_level_5
-					}
-				modifier = {
-					factor = 0
-					has_character_modifier = relative_court_level_4
-					}
-				modifier = {
-					factor = 0.1
-					has_character_modifier = relative_court_level_3
-					}
-				modifier = {
-					factor = 1
-					has_character_modifier = relative_court_level_2
-					}
-				modifier = {
-					factor = 5
-					has_character_modifier = relative_court_level_1
-					}
-				modifier = {
-					factor = 10
-					has_character_modifier = relative_court_level_A
-					}
-				modifier = {
-					factor = 15
-					has_character_modifier = relative_court_level_B
-					}
-				modifier = {
-					factor = 20
-					has_character_modifier = relative_court_level_C
-					}
-				modifier = {
-					factor = 25
-					has_character_modifier = relative_court_level_D
-					}
-				modifier = {
-					factor = 30
-					has_character_modifier = relative_court_level_E
-					}
-				modifier = {
-					factor = 35
-					has_character_modifier = relative_court_level_F
-					}
-					character_event = {
-						id = 12100
-						days = 5
-						random = 5
-						}
-				}
-			}
-			}
+		set_variable = { which = autonomy value = 0}
+		set_variable = { which = autonomy1 value = 0 }
+		set_variable = { which = levies_provided value = 0}
+
+		determine_min_levy = yes
+
+		determine_max_levy = yes
 		
-		## DECLARE FULL INDEPENDENCE
+		set_variable = { which = vassal_levies value = 0}
+		set_variable = { which = income_temp value = 0 }
+		set_variable = { which = vassal_levies1 value = 0}
+		set_variable = { which = vassal_levies2 value = 0}
 		any_vassal = {
-		if = {
-		limit = {
-			has_character_flag = defacto_independent
-			}
-			random = {
-				chance = 5
-				modifier = {
-					factor = 0
-					has_character_modifier = relative_court_level_7
-					}
-				modifier = {
-					factor = 0
-					has_character_modifier = relative_court_level_6
-					}
-				modifier = {
-					factor = 0
-					has_character_modifier = relative_court_level_5
-					}
-				modifier = {
-					factor = 0
-					has_character_modifier = relative_court_level_4
-					}
-				modifier = {
-					factor = 0
-					has_character_modifier = relative_court_level_3
-					}
-				modifier = {
-					factor = 0.5
-					has_character_modifier = relative_court_level_2
-					}
-				modifier = {
-					factor = 1
-					has_character_modifier = relative_court_level_1
-					}
-				modifier = {
-					factor = 2
-					has_character_modifier = relative_court_level_A
-					}
-				modifier = {
-					factor = 4
-					has_character_modifier = relative_court_level_B
-					}
-				modifier = {
-					factor = 8
-					has_character_modifier = relative_court_level_C
-					}
-				modifier = {
-					factor = 12
-					has_character_modifier = relative_court_level_D
-					}
-				modifier = {
-					factor = 16
-					has_character_modifier = relative_court_level_E
-					}
-				modifier = {
-					factor = 20
-					has_character_modifier = relative_court_level_F
-					}
-				
-					character_event = {
-						id = CS.12200
-						days = 5
-						random = 5
-						}
-				}
-			}
-			}
-			
-			
-	}
-}
 
-
-## Chain Event 1
-
-character_event = {
-
-	id = CS.11100
-	hide_window = yes
-	
-	is_triggered_only = yes
-
-	trigger = {
-		higher_real_tier_than = COUNT
-		}
-	
-	immediate = {
-		capital_scope = {
-		## First check if for some reason the capital does not have any flag
-		if = {
-			limit = {
-				NOT = {
-						check_variable = { which = court_splendor value = 1}
-						}
-			}
-			owner = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 110} ## Lower because changing capital should reduce splendor
-					##remove_character_modifier = magnificent_court
-					##remove_character_modifier = magnificent_court_maintenance
-					##add_character_modifier = { name = grand_court duration = -1}
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 85} ## Lower because changing capital should reduce splendor
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 65} ## Lower because changing capital should reduce splendor
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 45} ## Lower because changing capital should reduce splendor
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 25} ## Lower because changing capital should reduce splendor
-					}
-				}
-				if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 10} ## Lower because changing capital should reduce splendor
-					}
-				}
-			}
-		}
-							
-				
-		if = {
-			limit = {
-				NOT = {
-						check_variable = { which = court_splendor value = 0.1}
-						}
-			}
-			owner = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 110} ## Lower because changing capital should reduce splendor
-					##remove_character_modifier = magnificent_court
-					##remove_character_modifier = magnificent_court_maintenance
-					##add_character_modifier = { name = grand_court duration = -1}
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 85} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 65} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 45} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 25} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 10} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else = {
-					character_event = {
-					id = CS.10000
-					}
-				}
-			}
-		}
-							
-				
-			## Magnificent court
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 125 }
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = magnificent_court
-								has_character_modifier = magnificent_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = magnificent_court duration = -1}
-						add_character_modifier = { name = magnificent_court_maintenance duration = -1}
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence7
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence7 duration = -1}
-						}
-				}
-					
-								
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = magnificent_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = grand_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = splendid_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 125 }}
-					}
-					set_province_flag = grand_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = magnificent_court_maintenance
-								}
-							remove_character_modifier = magnificent_court_maintenance
-							add_character_modifier = { name = grand_court_maintenance duration = -1}
-						}
-						remove_character_modifier = magnificent_court
-						add_character_modifier = { name = grand_court duration = -1}
-					}
-				}
-					
-			}
-			
-			## GRAND COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 100 }
-				NOT = {
-				check_variable = { which = court_splendor value = 125 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = grand_court
-								has_character_modifier = grand_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = grand_court duration = -1}
-						add_character_modifier = { name = grand_court_maintenance duration = -1}
-				
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence6
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence7
-							add_character_modifier = { name = decadence6 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = grand_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = splendid_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = standard_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 100 }}
-					}
-					set_province_flag = splendid_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = grand_court_maintenance
-								}
-							remove_character_modifier = grand_court_maintenance
-							add_character_modifier = { name = splendid_court_maintenance duration = -1}
-						}
-						remove_character_modifier = grand_court
-						add_character_modifier = { name = splendid_court duration = -1}
-					}
-				}	
-			}
-			
-			## SPLENDID COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 75 }
-				NOT = {
-				check_variable = { which = court_splendor value = 100 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = splendid_court
-								has_character_modifier = splendid_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = splendid_court duration = -1}
-						add_character_modifier = { name = splendid_court_maintenance duration = -1}
-					
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence5
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence5 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = splendid_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = standard_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = acceptable_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 75 }}
-					}
-					set_province_flag = standard_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = splendid_court_maintenance
-								}
-							remove_character_modifier = splendid_court_maintenance
-							add_character_modifier = { name = standard_court_maintenance duration = -1}
-						}
-						remove_character_modifier = splendid_court
-						add_character_modifier = { name = standard_court duration = -1}
-					}
-				}
-					
-			}
-			
-			### STANDARD COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 50 }
-				NOT = {
-				check_variable = { which = court_splendor value = 75 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = standard_court
-								has_character_modifier = standard_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = standard_court duration = -1}
-						add_character_modifier = { name = standard_court_maintenance duration = -1}
-						
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence4
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence4 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = standard_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = acceptable_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = shabby_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 50 }}
-					}
-					set_province_flag = acceptable_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = standard_court_maintenance
-								}
-							remove_character_modifier = standard_court_maintenance
-							add_character_modifier = { name = acceptable_court_maintenance duration = -1}
-						}
-						remove_character_modifier = standard_court
-						add_character_modifier = { name = acceptable_court duration = -1}
-					}
-				}
-					
-			}
-			
-			## ACCEPTABLE COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 30 }
-				NOT = {
-				check_variable = { which = court_splendor value = 50 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = acceptable_court
-								has_character_modifier = acceptable_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = acceptable_court duration = -1}
-						add_character_modifier = { name = acceptable_court_maintenance duration = -1}
-						
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence7
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence3 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = acceptable_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = shabby_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.5}
-					}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 30 }}
-					}
-					set_province_flag = shabby_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = acceptable_court_maintenance
-								}
-							remove_character_modifier = acceptable_court_maintenance
-							add_character_modifier = { name = shabby_court_maintenance duration = -1}
-						}
-						remove_character_modifier = acceptable_court
-						add_character_modifier = { name = shabby_court duration = -1}
-					}
-				}
-					
-			}
-			
-			### Shabby court
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 15 }
-				NOT = {
-				check_variable = { which = court_splendor value = 30 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = shabby_court
-								has_character_modifier = shabby_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = shabby_court duration = -1}
-						add_character_modifier = { name = shabby_court_maintenance duration = -1}
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence2
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence2 duration = -1}
-						}
-				}
-				if = {
-				limit = {
-						owner = {
-							has_character_modifier = shabby_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.3}
-					}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 15 }}
-					}
-					set_province_flag = abysmal_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = shabby_court_maintenance
-								}
-							remove_character_modifier = shabby_court_maintenance
-							add_character_modifier = { name = abysmal_court_maintenance duration = -1}
-						}
-						remove_character_modifier = shabby_court
-						add_character_modifier = { name = abysmal_court duration = -1}
-					}
-				}
-					
-			}
-			
-			### Abysmal Court Failsafe
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 0 }
-				NOT = {
-				check_variable = { which = court_splendor value = 15 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = abysmal_court
-								has_character_modifier = abysmal_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						add_character_modifier = { name = abysmal_court duration = -1}
-						add_character_modifier = { name = abysmal_court_maintenance duration = -1}
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence1
-							}
-							}
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence1 duration = -1}
-						}
-				}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 1 }}
-					}
-					set_variable = { which = court_splendor value = 1 }
-				}
-			}
-			
-			###Yay done!
-			
-			## Here we need a few more things. 
-			## First, the chain event. 3 months after, a similar event must fire again (different event), then again (same event), then last time (diff). 
-			## Second, we need to update vassal relative court splendors
-			
-			## ASSIGN RELATIVE COURT SPLENDORS FOR ALL VASSALS
-			
-			## HIDDEN GREATER INDEPENDENCE EVENT
-			
-			## DECLARE DEFACTO INDEPENDENCE EVENT
-			
-			## DECLARE FULL INDEPENDENCE EVENT
-			
-			## CHAIN EVENTS
-			
-			}
-			
-			##LAUNCH EVENT FOR INDEPENDENT RULERS
-			## SCOPE TO THEIR VASSALS
-			## ASSIGN RELATIVE SPLENDOR TO EACH VASSAL
-			## NEED TO DO SOME CONTROL STUFF. TRICKY
-			## LAUNCH DEFACTO INDEPENDENCE EVENTS FROM THERE
-			any_independent_ruler = {
-				character_event = {
-					id = CS.12000
-				}
-			}
-			
-			## CHAIN EVENTS
-			
 			character_event = {
-				id = CS.11200
-				days = 91
-				}	
-	}
-}
-
-## CHAIN EVENT 2
-
-character_event = {
-
-	id = CS.11200
-	hide_window = yes
-	
-	is_triggered_only = yes
-
-	trigger = {
-		higher_real_tier_than = COUNT
-		}
-	
-	immediate = {
-		capital_scope = {
-		## First check if for some reason the capital does not have any flag
-		if = {
-			limit = {
-				NOT = {
-						check_variable = { which = court_splendor value = 0.1}
-						}
+				id = CS.12100
+				days = 1
 			}
-			owner = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 110} ## Lower because changing capital should reduce splendor
-					##remove_character_modifier = magnificent_court
-					##remove_character_modifier = magnificent_court_maintenance
-					##add_character_modifier = { name = grand_court duration = -1}
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 85} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 65} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 45} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 25} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 10} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else = {
-					character_event = {
-					id = CS.10000
-					}
-				}
-			}
-		}
-							
-				
-			## Magnificent court
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 125 }
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = magnificent_court
-								has_character_modifier = magnificent_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = magnificent_court duration = -1}
-						add_character_modifier = { name = magnificent_court_maintenance duration = -1}
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence7
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence7 duration = -1}
-						}
-				}
-					
-								
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = magnificent_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = grand_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = splendid_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 125 }}
-					}
-					set_province_flag = grand_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = magnificent_court_maintenance
-								}
-							remove_character_modifier = magnificent_court_maintenance
-							add_character_modifier = { name = grand_court_maintenance duration = -1}
-						}
-						remove_character_modifier = magnificent_court
-						add_character_modifier = { name = grand_court duration = -1}
-					}
-				}
-					
-			}
-			
-			## GRAND COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 100 }
-				NOT = {
-				check_variable = { which = court_splendor value = 125 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = grand_court
-								has_character_modifier = grand_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = grand_court duration = -1}
-						add_character_modifier = { name = grand_court_maintenance duration = -1}
-				
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence6
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence7
-							add_character_modifier = { name = decadence6 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = grand_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = splendid_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = standard_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 100 }}
-					}
-					set_province_flag = splendid_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = grand_court_maintenance
-								}
-							remove_character_modifier = grand_court_maintenance
-							add_character_modifier = { name = splendid_court_maintenance duration = -1}
-						}
-						remove_character_modifier = grand_court
-						add_character_modifier = { name = splendid_court duration = -1}
-					}
-				}	
-			}
-			
-			## SPLENDID COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 75 }
-				NOT = {
-				check_variable = { which = court_splendor value = 100 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = splendid_court
-								has_character_modifier = splendid_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = splendid_court duration = -1}
-						add_character_modifier = { name = splendid_court_maintenance duration = -1}
-					
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence5
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence5 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = splendid_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = standard_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = acceptable_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 75 }}
-					}
-					set_province_flag = standard_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = splendid_court_maintenance
-								}
-							remove_character_modifier = splendid_court_maintenance
-							add_character_modifier = { name = standard_court_maintenance duration = -1}
-						}
-						remove_character_modifier = splendid_court
-						add_character_modifier = { name = standard_court duration = -1}
-					}
-				}
-					
-			}
-			
-			### STANDARD COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 50 }
-				NOT = {
-				check_variable = { which = court_splendor value = 75 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = standard_court
-								has_character_modifier = standard_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = standard_court duration = -1}
-						add_character_modifier = { name = standard_court_maintenance duration = -1}
-						
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence4
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence4 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = standard_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = acceptable_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = shabby_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 50 }}
-					}
-					set_province_flag = acceptable_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = standard_court_maintenance
-								}
-							remove_character_modifier = standard_court_maintenance
-							add_character_modifier = { name = acceptable_court_maintenance duration = -1}
-						}
-						remove_character_modifier = standard_court
-						add_character_modifier = { name = acceptable_court duration = -1}
-					}
-				}
-					
-			}
-			
-			## ACCEPTABLE COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 30 }
-				NOT = {
-				check_variable = { which = court_splendor value = 50 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = acceptable_court
-								has_character_modifier = acceptable_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = acceptable_court duration = -1}
-						add_character_modifier = { name = acceptable_court_maintenance duration = -1}
-						
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence7
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence3 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = acceptable_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = shabby_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.5}
-					}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 30 }}
-					}
-					set_province_flag = shabby_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = acceptable_court_maintenance
-								}
-							remove_character_modifier = acceptable_court_maintenance
-							add_character_modifier = { name = shabby_court_maintenance duration = -1}
-						}
-						remove_character_modifier = acceptable_court
-						add_character_modifier = { name = shabby_court duration = -1}
-					}
-				}
-					
-			}
-			
-			### Shabby court
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 15 }
-				NOT = {
-				check_variable = { which = court_splendor value = 30 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = shabby_court
-								has_character_modifier = shabby_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = shabby_court duration = -1}
-						add_character_modifier = { name = shabby_court_maintenance duration = -1}
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence2
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence2 duration = -1}
-						}
-				}
-				if = {
-				limit = {
-						owner = {
-							has_character_modifier = shabby_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.3}
-					}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 15 }}
-					}
-					set_province_flag = abysmal_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = shabby_court_maintenance
-								}
-							remove_character_modifier = shabby_court_maintenance
-							add_character_modifier = { name = abysmal_court_maintenance duration = -1}
-						}
-						remove_character_modifier = shabby_court
-						add_character_modifier = { name = abysmal_court duration = -1}
-					}
-				}
-					
-			}
-			
-			### Abysmal Court Failsafe
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 0 }
-				NOT = {
-				check_variable = { which = court_splendor value = 15 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = abysmal_court
-								has_character_modifier = abysmal_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						add_character_modifier = { name = abysmal_court duration = -1}
-						add_character_modifier = { name = abysmal_court_maintenance duration = -1}
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence1
-							}
-							}
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence1 duration = -1}
-						}
-				}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 1 }}
-					}
-					set_variable = { which = court_splendor value = 1 }
-				}
-			}
-			
-			###Yay done!
-			
-			## Here we need a few more things. 
-			## First, the chain event. 3 months after, a similar event must fire again (different event), then again (same event), then last time (diff). 
-			## Second, we need to update vassal relative court splendors
-			
-			## ASSIGN RELATIVE COURT SPLENDORS FOR ALL VASSALS
-			
-			## HIDDEN GREATER INDEPENDENCE EVENT
-			
-			## DECLARE DEFACTO INDEPENDENCE EVENT
-			
-			## DECLARE FULL INDEPENDENCE EVENT
-			
-			## CHAIN EVENTS
-			
-			}
-			
-			##LAUNCH EVENT FOR INDEPENDENT RULERS
-			## SCOPE TO THEIR VASSALS
-			## ASSIGN RELATIVE SPLENDOR TO EACH VASSAL
-			## NEED TO DO SOME CONTROL STUFF. TRICKY
-			## LAUNCH DEFACTO INDEPENDENCE EVENTS FROM THERE
-			any_independent_ruler = {
-				character_event = {
-					id = CS.12000
-				}
-			}
-			
-			## CHAIN EVENTS
-			
 			character_event = {
-				id = CS.11300
-				days = 91
-				}	
+				id = CS.12105
+				days = 4
+			}
+			character_event = {
+				id = CS.12210
+				days = 7
+			}
+		}
+		character_event = {
+				id = CS.12200
+				days = 11
+		}
 	}
+	
 }
 
-## CHAIN EVENT 3
 character_event = {
-
-	id = CS.11300
+	id = CS.12100
 	hide_window = yes
-	
+
 	is_triggered_only = yes
 
 	trigger = {
 		higher_real_tier_than = COUNT
-		}
-	
+	}
+
 	immediate = {
-		capital_scope = {
-		## First check if for some reason the capital does not have any flag
+		FROM = {
+			set_variable = { which = court_splendor_temp which = court_splendor }
+		set_variable = { which = minmax_levy which = min_levy }
+		divide_variable = { which = minmax_levy which = max_levy}
+		}
+
+		set_variable = { which = income_liege_temp value = 0}
+		set_variable = { which = levies_liege_temp value = 0}
+		set_variable = { which = levies_temp value = 0}
+		set_variable = { which = income_temp value = 0}
+		export_to_variable = { which = income_liege_temp value = yearly_income who = FROM}
+		export_to_variable = { which = levies_liege_temp value = realm_levies who = FROM}
+
+
+		export_to_variable = { which = levies_temp value = realm_levies}
+		 ## NEED TO CHECK IF THE WAR MODIFIER IS ON OR NOT
+
+		export_to_variable = { which = income_temp value = yearly_income}
+
+		set_variable = { which = debug_income which = income_temp }
+		set_variable = { which = court_splendor_temp which = court_splendor}
+		set_variable = { which = autonomy value = 2 }
+
+		divide_variable = { which = court_splendor_temp which = FROM }
+		multiply_variable = { which = court_splendor_temp value = 1.8 } ## Lets say 0.3
+		divide_variable = { which = income_temp which = income_liege_temp} ## Lets say 0.2
+		multiply_variable = { which = income_temp value = 1.2 }
+		divide_variable = { which = levies_temp which = levies_liege_temp} ## lets say 0.2
+		multiply_variable = { which = levies_temp value = 1.33 }
+		set_variable = { which = debug_rel_income which = income_temp }
+		change_variable = { which = autonomy which = court_splendor_temp }
+		change_variable = { which = autonomy which = income_temp }
+		change_variable = { which = autonomy which = levies_temp }
+		## High of ~6.4 Then distance modifier pushes it up more
+
+		## DISTANCE
+		FROM = {
+			capital_scope = {
+				ROOT = {
+					capital_scope = {
+						if = {
+							limit = {
+								distance = { who = PREVPREV value = 900 }
+							}
+							ROOT = { 
+								set_variable = { which = distance_modifier value = 2.5}
+							}
+						}
+						else_if = {
+							limit = {
+								distance = { who = PREVPREV value = 750 }
+							}
+							ROOT = { 
+								set_variable = { which = distance_modifier value = 2.2 }
+							}
+						}
+						else_if = {
+							limit = {
+								distance = { who = PREVPREV value = 600 }
+							}
+							ROOT = { 
+								set_variable = { which = distance_modifier value = 1.82 }
+							}
+						}
+						else_if = {
+							limit = {
+								distance = { who = PREVPREV value = 500 }
+							}
+							ROOT = { 
+								set_variable = { which = distance_modifier value = 1.67 }
+							}
+						}
+						else_if = {
+							limit = {
+								distance = { who = PREVPREV value = 400 }
+							}
+							ROOT = { 
+								set_variable = { which = distance_modifier value = 1.51 }
+							}
+						}
+						else_if = {
+							limit = {
+								distance = { who = PREVPREV value = 300 }
+							}
+							ROOT = { 
+								set_variable = { which = distance_modifier value = 1.37 }
+							}
+						}
+						else_if = {
+							limit = {
+								distance = { who = PREVPREV value = 200 }
+							}
+							ROOT = { 
+								set_variable = { which = distance_modifier value = 1.25 }
+							}
+						}
+						else = {
+							ROOT = {
+								set_variable = { which = distance_modifier value = 1 }
+							}
+						}
+					}
+				}
+			}
+		}
+
+		multiply_variable = { which = autonomy which = distance_modifier }
+
+		set_variable = { which = autonomy1 which = autonomy}
+
+		## Calculate Effect of centralization
+
+		## CONCLAVE SPLITS CENTRALIZATION INTO 2, SO LETS DO BOTH
 		if = {
 			limit = {
-				NOT = {
-						check_variable = { which = court_splendor value = 0.1}
-						}
+				FROM = { has_law = crown_authority_4 }
 			}
-			owner = {
-				if = {
-					limit = {
-						has_character_modifier = magnificent_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 110} ## Lower because changing capital should reduce splendor
-					##remove_character_modifier = magnificent_court
-					##remove_character_modifier = magnificent_court_maintenance
-					##add_character_modifier = { name = grand_court duration = -1}
-					}
+			multiply_variable = { which = autonomy value = 0.5 }
+			if = {
+				limit = {
+					check_variable = { which = autonomy1 value = 5 }
 				}
-				else_if = {
-					limit = {
-						has_character_modifier = grand_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 85} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = splendid_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 65} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = standard_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 45} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = acceptable_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 25} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else_if = {
-					limit = {
-						has_character_modifier = shabby_court
-						}
-				capital_scope = {
-					set_variable = { which = court_splendor value = 10} ## Lower because changing capital should reduce splendor
-					}
-				}
-				else = {
-					character_event = {
-					id = CS.10000
-					}
-				}
+				opinion = { modifier = too_much_authority_4 who = FROM days = 90 }
 			}
 		}
-							
-				
-			## Magnificent court
+		else_if = {
+			limit = {
+				FROM = { has_law = crown_authority_3 }
+			}
+			multiply_variable = { which = autonomy value = 0.67 }
 			if = {
 				limit = {
-				check_variable = { which = court_splendor value = 125 }
+					check_variable = { which = autonomy1 value = 2 }
 				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = magnificent_court
-								has_character_modifier = magnificent_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = magnificent_court duration = -1}
-						add_character_modifier = { name = magnificent_court_maintenance duration = -1}
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence7
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence7 duration = -1}
-						}
-				}
-					
-								
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = magnificent_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = grand_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = splendid_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 125 }}
-					}
-					set_province_flag = grand_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = magnificent_court_maintenance
-								}
-							remove_character_modifier = magnificent_court_maintenance
-							add_character_modifier = { name = grand_court_maintenance duration = -1}
-						}
-						remove_character_modifier = magnificent_court
-						add_character_modifier = { name = grand_court duration = -1}
-					}
-				}
-					
+				opinion = { modifier = too_much_authority_3 who = FROM days = 90 }
 			}
-			
-			## GRAND COURT
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = crown_authority_2 }
+			}
+			multiply_variable = { which = autonomy value = 0.78 }
 			if = {
 				limit = {
-				check_variable = { which = court_splendor value = 100 }
-				NOT = {
-				check_variable = { which = court_splendor value = 125 }
+					check_variable = { which = autonomy1 value = 2 }
 				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = grand_court
-								has_character_modifier = grand_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = grand_court duration = -1}
-						add_character_modifier = { name = grand_court_maintenance duration = -1}
-				
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence6
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence7
-							add_character_modifier = { name = decadence6 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = grand_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = splendid_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = standard_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 100 }}
-					}
-					set_province_flag = splendid_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = grand_court_maintenance
-								}
-							remove_character_modifier = grand_court_maintenance
-							add_character_modifier = { name = splendid_court_maintenance duration = -1}
-						}
-						remove_character_modifier = grand_court
-						add_character_modifier = { name = splendid_court duration = -1}
-					}
-				}	
+				opinion = { modifier = too_much_authority_2 who = FROM days = 90 }
 			}
-			
-			## SPLENDID COURT
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = crown_authority_1 }
+			}
+			multiply_variable = { which = autonomy value = 0.9 }
 			if = {
 				limit = {
-				check_variable = { which = court_splendor value = 75 }
-				NOT = {
-				check_variable = { which = court_splendor value = 100 }
+					check_variable = { which = autonomy1 value = 2 }
 				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = splendid_court
-								has_character_modifier = splendid_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = splendid_court duration = -1}
-						add_character_modifier = { name = splendid_court_maintenance duration = -1}
-					
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence5
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence5 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = splendid_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = standard_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = acceptable_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 75 }}
-					}
-					set_province_flag = standard_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = splendid_court_maintenance
-								}
-							remove_character_modifier = splendid_court_maintenance
-							add_character_modifier = { name = standard_court_maintenance duration = -1}
-						}
-						remove_character_modifier = splendid_court
-						add_character_modifier = { name = standard_court duration = -1}
-					}
-				}
-					
+				opinion = { modifier = too_much_authority_1 who = FROM days = 90 }
 			}
-			
-			### STANDARD COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 50 }
-				NOT = {
-				check_variable = { which = court_splendor value = 75 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = standard_court
-								has_character_modifier = standard_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = standard_court duration = -1}
-						add_character_modifier = { name = standard_court_maintenance duration = -1}
-						
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence4
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence4 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = standard_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = acceptable_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = shabby_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.5}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.75}
-				}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 50 }}
-					}
-					set_province_flag = acceptable_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = standard_court_maintenance
-								}
-							remove_character_modifier = standard_court_maintenance
-							add_character_modifier = { name = acceptable_court_maintenance duration = -1}
-						}
-						remove_character_modifier = standard_court
-						add_character_modifier = { name = acceptable_court duration = -1}
-					}
-				}
-					
+		}
+		else = {
+
+		}
+
+
+		if = {
+			limit = {
+				FROM = { has_law = administration_2 }
 			}
-			
-			## ACCEPTABLE COURT
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 30 }
-				NOT = {
-				check_variable = { which = court_splendor value = 50 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = acceptable_court
-								has_character_modifier = acceptable_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = acceptable_court duration = -1}
-						add_character_modifier = { name = acceptable_court_maintenance duration = -1}
-						
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence7
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence3 duration = -1}
-						}
-				}
-				if = {
-					limit = {
-						owner = {
-							has_character_modifier = acceptable_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else_if = {
-				limit = {
-						owner = {
-							has_character_modifier = shabby_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.3}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.5}
-					}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 30 }}
-					}
-					set_province_flag = shabby_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = acceptable_court_maintenance
-								}
-							remove_character_modifier = acceptable_court_maintenance
-							add_character_modifier = { name = shabby_court_maintenance duration = -1}
-						}
-						remove_character_modifier = acceptable_court
-						add_character_modifier = { name = shabby_court duration = -1}
-					}
-				}
-					
+			multiply_variable = { which = autonomy value = 0.62 }
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = administration_1 }
 			}
-			
-			### Shabby court
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 15 }
-				NOT = {
-				check_variable = { which = court_splendor value = 30 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = shabby_court
-								has_character_modifier = shabby_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = abysmal_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = abysmal_court_maintenance
-						add_character_modifier = { name = shabby_court duration = -1}
-						add_character_modifier = { name = shabby_court_maintenance duration = -1}
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence2
-							}
-							}
-							remove_character_modifier = decadence1
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence2 duration = -1}
-						}
-				}
-				if = {
-				limit = {
-						owner = {
-							has_character_modifier = shabby_court_maintenance
-						}
-					}
-					subtract_variable = { which = court_splendor value = 0.1}
-				}
-				else = {
-					subtract_variable = { which = court_splendor value = 0.3}
-					}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 15 }}
-					}
-					set_province_flag = abysmal_court
-					owner = {
-						if = {
-							limit = {
-								has_character_modifier = shabby_court_maintenance
-								}
-							remove_character_modifier = shabby_court_maintenance
-							add_character_modifier = { name = abysmal_court_maintenance duration = -1}
-						}
-						remove_character_modifier = shabby_court
-						add_character_modifier = { name = abysmal_court duration = -1}
-					}
-				}
-					
+			multiply_variable = { which = autonomy value = 0.8 }
+		}
+		else = {
+
+		}
+
+
+		calculate_autonomy_modifier = yes
+
+		## TAX ADJUSTMENT
+		## total income - income temp * tax policy 
+
+		set_variable = { which = tax_adjustment value = 0 }
+
+		if = {
+			limit = {
+				FROM = { has_law = feudal_slider_4 }
 			}
-			
-			### Abysmal Court Failsafe
-			if = {
-				limit = {
-				check_variable = { which = court_splendor value = 0 }
-				NOT = {
-				check_variable = { which = court_splendor value = 15 }
-				}
-				}
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-							OR = {
-								has_character_modifier = abysmal_court
-								has_character_modifier = abysmal_court_maintenance
-								}
-								}
-							}
-						remove_character_modifier = magnificent_court
-						remove_character_modifier = grand_court
-						remove_character_modifier = splendid_court
-						remove_character_modifier = standard_court
-						remove_character_modifier = acceptable_court
-						remove_character_modifier = shabby_court
-						remove_character_modifier = magnificent_court_maintenance
-						remove_character_modifier = grand_court_maintenance
-						remove_character_modifier = splendid_court_maintenance
-						remove_character_modifier = standard_court_maintenance
-						remove_character_modifier = acceptable_court_maintenance
-						remove_character_modifier = shabby_court_maintenance
-						add_character_modifier = { name = abysmal_court duration = -1}
-						add_character_modifier = { name = abysmal_court_maintenance duration = -1}
-					}
-					if = {
-							limit = {
-							religion_group = muslim
-							NOT = {
-							has_character_modifier = decadence1
-							}
-							}
-							remove_character_modifier = decadence2
-							remove_character_modifier = decadence7
-							remove_character_modifier = decadence3
-							remove_character_modifier = decadence4
-							remove_character_modifier = decadence5
-							remove_character_modifier = decadence6
-							add_character_modifier = { name = decadence1 duration = -1}
-						}
-				}
-				
-				if = {
-					limit = {
-						NOT = 
-						{check_variable = { which = court_splendor value = 1 }}
-					}
-					set_variable = { which = court_splendor value = 1 }
-				}
+			change_variable = { which = tax_adjustment value = 0.12 }
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = feudal_slider_3 }
 			}
-			
-			###Yay done!
-			
-			## Here we need a few more things. 
-			## First, the chain event. 3 months after, a similar event must fire again (different event), then again (same event), then last time (diff). 
-			## Second, we need to update vassal relative court splendors
-			
-			## ASSIGN RELATIVE COURT SPLENDORS FOR ALL VASSALS
-			
-			## HIDDEN GREATER INDEPENDENCE EVENT
-			
-			## DECLARE DEFACTO INDEPENDENCE EVENT
-			
-			## DECLARE FULL INDEPENDENCE EVENT
-			
-			## CHAIN EVENTS
-			
+			change_variable = { which = tax_adjustment value = 0.09}
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = feudal_slider_2 }
 			}
+			change_variable = { which = tax_adjustment value = 0.06 }
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = feudal_slider_1 }
+			}
+			change_variable = { which = tax_adjustment value = 0.03 }
+		}
+		else = {
+
+		}
+
+		if = {
+			limit = {
+				FROM = { has_law = feudal_obligations_4 }
+			}
+			change_variable = { which = tax_adjustment value = 0.18 }
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = feudal_obligations_3 }
+			}
+			change_variable = { which = tax_adjustment value = 0.135}
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = feudal_obligations_2 }
+			}
+			change_variable = { which = tax_adjustment value = 0.09 }
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = feudal_obligations_1 }
+			}
+			change_variable = { which = tax_adjustment value = 0.045 }
+		}
+		else = {
+
+		}
+
+
+		if = {
+			limit = {
+				FROM = { has_law = iqta_slider_4 }
+			}
+			set_character_flag = whatsgoingon1
+			change_variable = { which = tax_adjustment value = 0.14 }
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = iqta_slider_3 }
+			}
+			set_character_flag = whatsgoingon2
+			change_variable = { which = tax_adjustment value = 0.11}
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = iqta_slider_2 }
+			}
+			set_character_flag = whatsgoingon3
+			change_variable = { which = tax_adjustment value = 0.07 }
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = iqta_slider_1 }
+			}
+			set_character_flag = whatsgoingon4
+			change_variable = { which = tax_adjustment value = 0.035 }
+		}
+		else = {
+
+		}
+
+		if = {
+			limit = {
+				FROM = { has_law = iqta_obligations_4 }
+			}
+			set_character_flag = whatsgoingon5
+			change_variable = { which = tax_adjustment value = 0.210 }
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = iqta_obligations_3 }
+			}
+			set_character_flag = whatsgoingon6
+			change_variable = { which = tax_adjustment value = 0.157}
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = iqta_obligations_2 }
+			}
+			set_character_flag = whatsgoingon7
+			change_variable = { which = tax_adjustment value = 0.105 }
+		}
+		else_if = {
+			limit = {
+				FROM = { has_law = iqta_obligations_1 }
+			}
+			set_character_flag = whatsgoingon8
+			change_variable = { which = tax_adjustment value = 0.053 }
+		}
+		else = {
+
+		}
+
+		multiply_variable = { which = income_temp which = tax_adjustment} ## 8. 0.04
+		multiply_variable = { which = income_temp which = autonomy_modifier} ## 6. # 0.03
+
+		## This should be enough
+
+		if = {
+			limit = {
+				FROM = { ai = no }
+			}
+			log = "3: [Root.GetTitledName] has [Root.income_temp.GetValue]"
+		}
+
+		
+
+		FROM = {
+			change_variable = { which = income_temp which = ROOT }
+		}
+
+		if = {
+			limit = {
+				FROM = { ai = no }
+			}
+			log = "4: [From.GetTitledName] is currently [From.income_temp.GetValue]"
+		}
+
+		
+
+		## Say 500 is Liege tax
+		## 200 is vassal income
+		## income_temp = 0.4
+		## Tax adjustment is 10%
+		## Income_temp = 0.04
+		## So normally, 492 is the total liege tax, and 8 comes from this vassal
+		## Okay. Now with Autonomy modifier of say 25%
+		## Income_temp = 0.01
+		## Now, instead of 500, liege tax is.. 494 (only 2 comes from the vassal)
+		## What is the adjustment? 494/500 = 98.8% 
+		## 1.2% is the adjustment
+		## 40% * (change in amount paid)
+		## 40% * (income_temp-income_tempnew)
+		## 40% * 0.03 = 0.012 which is the adjustment
+
+		add_autonomy_to_disp = yes
+
+
+		## Now do the calculations...
+
+		## I have total vassal levies already
+		## So... 
+
+
+		
+	}
+}
+
+character_event = {
+	id = CS.12105
+
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		higher_real_tier_than = BARON
+	}
+
+	immediate = {
+		set_variable = { which = min_levy which = FROM}
+		set_variable = { which = max_levy which = FROM}
+
+		export_to_variable = { which = realm_levies1 value = realm_levies}
+		
+		determine_opinion_modifier = yes
+
+		set_variable = { which = levies_provided which = opinion_temp}
+		multiply_variable = { which = levies_provided which = max_levy}
+
+		set_variable = { which = levies_provided1 which = levies_provided}
+		divide_variable = { which = levies_provided1 which = min_levy }
+
+		if = {
+			limit = {
+				check_variable = { which = levies_provided1 value = 1} ## Then levyadjustment is bigger
+			}
+
+		}
+		else = {
+		 	set_variable = { which = levies_provided which = min_levy} ## okay...
+		}
+
+		multiply_variable = { which = levies_provided which = realm_levies1 }
+		## AND NOW BECAUSE THE GAME IS RETARDED
+
+		FROM = {
+			change_variable = { which = levies_provided which = ROOT}
 			
-			##LAUNCH EVENT FOR INDEPENDENT RULERS
-			## SCOPE TO THEIR VASSALS
-			## ASSIGN RELATIVE SPLENDOR TO EACH VASSAL
-			## NEED TO DO SOME CONTROL STUFF. TRICKY
-			## LAUNCH DEFACTO INDEPENDENCE EVENTS FROM THERE
-			any_independent_ruler = {
-				character_event = {
-					id = CS.12000
-				}
-			}	
+		}
+
+	}
+
+}
+
+character_event = {
+	id = CS.12210
+
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		higher_real_tier_than = COUNT
+		is_nomadic = no
+		is_tribal = no
+	}
+
+	immediate = {
+
+		FROM = {
+			set_variable = { which = vassal_levies which = levies_provided}
+		}
+
+		set_variable = { which = vassal_levies which = FROM }
+		if = {
+			limit = {
+				check_variable = { which = autonomy value = 4}
+			}
+			set_variable = { which = vassal_levies1 which = vassal_levies}
+			multiply_variable = { which = levies_provided value = 0.5 }
+			subtract_variable = { which = vassal_levies1 which = levies_provided}
+			set_variable = { which = debugsubtractcommand which = vassal_levies1}
+			divide_variable = { which = vassal_levies1 which = vassal_levies}
+			subtract_variable = { which = vassal_levies1 value = 1}
+			multiply_variable = { which = vassal_levies1 value = -1} ## This is the amount to adjust max levy by
+			set_variable = { which = vassal_levies2 which = vassal_levies1}
+			multiply_variable = { which = vassal_levies2 which = minmax_levy} ## amount min levy to be adjusted by
+
+			FROM = {
+			change_variable = { which = vassal_levies1 which = ROOT}
+			change_variable = { which = vassal_levies2 which = ROOT}
+			}
+		}
 	}
 }
 
 
+character_event = {
+	id = CS.12200
+
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { which = my_income value = 0}
+		if = {
+			limit = {
+				ai = no
+			}
+			log = "5: [Root.GetTitledName] is currently [Root.income_temp.GetValue]"
+		}
+		export_to_variable = { which = my_income value = monthly_income }
+		multiply_variable = { which = income_temp which = my_income }
+		if = {
+			limit = {
+				ai = no
+			}
+			log = "6: [Root.GetTitledName] is currently [Root.income_temp.GetValue]"
+		}
+		assign_income_modifier = yes
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_character_flag = called_levies}
+					war = no
+				}
+			}
+			change_laws_minmaxlevy = yes
+		}
+	}	
+}
+
+## AI ACCEPTS REQUEST
+character_event = {
+	id = CS.15200
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		top_liege = {
+			letter_event = { id = CS.15500 days = 1 random = 2} 
+			subtract_variable = { which = vassal_levies1 which = ROOT}
+			change_laws_minmaxlevy = yes
+		}
+	}
+}
 
 
+## CHARACTER RECEIVES REQUEST - FINISH LATER
 
-## Court maintenance
-## We can set character modifiers, but they should have some control over whether they want to spend on courts
-## But cant game the system either....
-## I guess a decision with a 6 month expiry time is fine
-## They can decrease maintenance, but can't spend more. Thats a separate decision which is pure cash, not a modifier
+## AI REJECTS REQUEST
+character_event = {
+	id = CS.15300
 
-## Decisions
-## Invest Money into court
-## Change court maintenance
+	hide_window = yes
+	is_triggered_only = yes
 
-## Chain Events
-## Check splendor of all vassals
-## Create new variable tracking the relative splendor
-## This new variable will lead to defacto indendence events. Lowering levies and stuff
-## 2 Levels of independence. Higher autonomy. Defacto independence. 
-## Usually happens during peacetime, but can happen during wartime
+	immediate = {
+		set_character_flag = gotthisfar
+		liege = {
+			letter_event = { id = CS.15501 days = 1 random = 2} 
+		}
+	}
+}
 
-## Need to have an event that removes capital scope from a province that is not the capital of a country
+letter_event = {
+	id = CS.15500
+	desc = EVTDESC_CS15500
+	is_triggered_only = yes
 
-## Random Events
+	immediate = {
+		opinion = { modifier = aided_in_war who = FROM years = 3 }
+		if = {
+			limit = {
+				reverse_has_opinion_modifier = { who = FROM modifier = called_into_war years = 5}
+			}
+			reverse_opinion = { modifier = called_into_war_again who = FROM years = 5 }
+		}
+		else = {
+			reverse_opinion = { modifier = called_into_war who = FROM years = 5 }
+		}
+	}
 
-## Ambassadors from neighboring country make fun of your court, or impressed
-## Bard tells stories about neighboring court 
-## Visit by neighboring king. Could be impressed, unimpressed
-## Visit by in laws, could be impressed, unimpressed
-## Vassal with better court mocks your court in front of all at feast
-## Wife visits the court of another ruler, envious
-## Wife visits court of another ruler, proud
-## Wife from better court upset at your courts quality
-## Chancellor recommends you attend the court of another character
-## Merchant caravan regularly stops by your court if its magnificent
-## These caravans will often have artifacts for great price
-## Scholars of another religion come to your court
-## Merchants of another religion come to your court
-## Mercenary leader pledges his allegiance to you
-## Church questions the opulence of your court (good intentions)
-## Same event, but jealous Pope
+	option = {
+		name = EVTOPTACS15500
+	}
+}
 
-
-
-## muslim specific Events:
-## Courtiers worry about size of your court and departure from muslimic values.
-## Spawns event chain
-## Could end with courtiers stripping away riches from your court
-## Or you doing it yourself
-## Or a massacre
-## Or a theological change. Decreasing morale
+letter_event = {
+	id = CS.15501
+	desc = EVTDESC_CS15501
+	is_triggered_only = yes
 
 
+	option = { ## INSULT THEM
+		name = EVTOPTACS15501
+		opinion = { modifier = refused_call_1 who = FROM years = 5 }
+		reverse_opinion = { modifier = insulted_me_CS who = FROM years = 5}
+	}
 
-## On action events
-## Sometimes during wartime a defacto independent kingdom can break off and leave. This gives you a casus belli against them
-## If capital is occupied, reduce court level. (On-Siege)
-## If capital is looted, reduce court level
+	option = { ## LET IT GO
+		name = EVTOPTBCS15501
+		opinion = { modifier = refused_call_2 who = FROM years = 5 }
+	}
+}
 
-## If ruler replaced... Hmm how would you do that - SOLVED
-## It might be useful to have a province modifier
-## Except that adds its own shit show...
-## Well if it stays with characters, its relatively easy to pass the...
-## Nevermind
-## These events fire for provinces. Then update for the owner of the provinces!
-## When these provinces are sacked, have an event lowering their splendor and set a flag
-## only fires the event if it is a capital of an Emperor, King, or Duke
-## This event chains. It fires once a year then chains 3 times
-## It also chains vassal independence events
-## It also chains other prestige related events
-##SOLVED
+## End war maintenance
 
-## If province is no longer capital of any country it should decay faster
+character_event = {
+	id = CS.15100
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		independent = yes
+		war = no
+		has_character_flag = called_levies
+	}
+	immediate = {
+		clr_character_flag = called_levies
+		any_vassal = {
+			clr_character_flag = accepted_request
+		}
+	}
+}
+
+## When capital sieged, decrease court splendor
+
+character_event = {
+	id = CS.18000
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		check_variable = { which = court_splendor value = 10}
+		FROM = { is_capital = yes}
+	}
+
+	immediate = {
+		capital_scope = {
+			random_list = {
+				10 = {
+					change_variable = { which = court_splendor value = -20}
+				}
+				10 = {
+					change_variable = { which = court_splendor value = -10}
+				}
+				10 = {
+					change_variable = { which = court_splendor value = -30}
+				}
+				10 = {
+					multiply_variable = { which = court_splendor value = 0.75}
+				}
+			}
+		}
+	}
+}
+
+## New Ruler Inherits Title with cap province
+
+character_event = {
+	id = CS.19000
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		higher_real_tier_than = COUNT
+		NOT = { has_character_flag = decay_active}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				capital_scope = {
+					check_variable = { which = court_splendor value = 0.1}
+				}
+			}
+			character_event = { id = CS.11000 days = 1}
+		}
+		else = {
+			character_event = { id = CS.10000 days = 1}
+		}
+	}
+}
+
+## Catch if ruler has no modifier (generated or something)
+
+character_event = {
+	id = CS.21000
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		higher_real_tier_than = COUNT
+		is_nomadic = no
+		is_tribal = no
+		NOT = { has_character_flag = maintenance_event }
+	}
+
+	immediate = {
+		set_character_flag = maintenance_event
+		if = {
+			limit = {
+				war = no
+				has_character_flag = accepted_request
+			}
+			clr_character_flag = accepted_request
+		}
+		if = {
+			limit = {
+				war = no
+				has_character_flag = called_levies
+			}
+			clr_character_flag = called_levies
+		}
+		if = {
+			limit = {
+				NOT = { has_character_flag = decay_active}
+			}
+			if = {
+					limit = {
+						ai = no
+					}
+					log = "7: This event is running for [Root.GetTitledName]"
+				}
+			if = {
+				limit = {
+					capital_scope = {
+					check_variable = { which = court_splendor value = 0.1}
+					}
+				}
+				character_event = { id = CS.11000 days = 1}
+			}
+			else = {
+				character_event = { id = CS.10000 days = 1}
+			}
+		}
+
+		character_event = { id = CS.21050 days = 30}
+	}
+}
+
+character_event = {
+	id = CS.21050
+
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		higher_real_tier_than = COUNT
+		NOT = { month = 10 }
+		is_nomadic = no
+		is_tribal = no
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				war = no
+				has_character_flag = accepted_request
+			}
+			clr_character_flag = accepted_request
+		}
+		if = {
+			limit = {
+				war = no
+				has_character_flag = called_levies
+			}
+			clr_character_flag = called_levies
+		}
+		if = {
+			limit = {
+				NOT = { has_character_flag = decay_active}
+			}
+			if = {
+					limit = {
+						ai = no
+					}
+					log = "8: This event is running for [Root.GetTitledName]"
+				}
+			if = {
+				limit = {
+					capital_scope = {
+					check_variable = { which = court_splendor value = 0.1}
+					}
+				}
+				
+				character_event = { id = CS.11000 days = 1}
+			}
+			else = {
+				character_event = { id = CS.10000 days = 1}
+			}
+		}
+
+		character_event = { id = CS.21050 days = 30}
+	}
+}
