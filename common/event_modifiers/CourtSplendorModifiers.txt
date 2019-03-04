@@ -1,0 +1,156 @@
+decisions = {
+	
+	decrease_maintenance = {
+		potential = {
+			ai = no
+			NAND = {
+				has_character_modifier = magnificent_court
+				has_character_modifier = standard_court_maintenance
+			}
+			NAND = {
+				has_character_modifier = grand_court
+				has_character_modifier = acceptable_court_maintenance
+			}
+			NAND = {
+				has_character_modifier = splendid_court
+				has_character_modifier = shabby_court_maintenance
+			}
+			NOT = { has_character_modifier = abysmal_court_maintenance }
+			}
+		allow = {
+			is_ill = no
+		}
+		effect = {
+			if = {
+				limit = {
+					has_character_modifier = magnificent_court_maintenance
+				}
+				remove_character_modifier = magnificent_court_maintenance
+				add_character_modifier = { name = grand_court_maintenance duration = -1 }
+			}
+			else_if = {
+				limit = {
+					has_character_modifier = grand_court_maintenance
+				}
+				remove_character_modifier = grand_court_maintenance
+				add_character_modifier = { name = splendid_court_maintenance duration = -1 }
+			}
+			else_if = {
+				limit = {
+					has_character_modifier = splendid_court_maintenance
+				}
+				remove_character_modifier = splendid_court_maintenance
+				add_character_modifier = { name = standard_court_maintenance duration = -1 }
+			}
+			else_if = {
+				limit = {
+					has_character_modifier = standard_court_maintenance
+				}
+				remove_character_modifier = standard_court_maintenance
+				add_character_modifier = { name = acceptable_court_maintenance duration = -1 }
+			}
+			else_if = {
+				limit = {
+					has_character_modifier = acceptable_court_maintenance
+				}
+				remove_character_modifier = acceptable_court_maintenance
+				add_character_modifier = { name = shabby_court_maintenance duration = -1 }
+			}
+			else_if = {
+				limit = {
+					has_character_modifier = shabby_court_maintenance
+				}
+				remove_character_modifier = shabby_court_maintenance
+				add_character_modifier = { name = abysmal_court_maintenance duration = -1 }
+			}
+			else = {
+			}
+		}
+	}
+	
+	Increase_Court_Maintenance = {
+		potential = {
+			ai = no
+			NAND = {
+				has_character_modifier = grand_court
+				has_character_modifier = grand_court_maintenance
+			}
+			NAND = {
+				has_character_modifier = splendid_court
+				has_character_modifier = splendid_court_maintenance
+			}
+			NAND = {
+				has_character_modifier = standard_court
+				has_character_modifier = standard_court_maintenance
+			}
+			NAND = {
+				has_character_modifier = acceptable_court
+				has_character_modifier = acceptable_court_maintenance
+			}
+			NAND = {
+				has_character_modifier = shabby_court
+				has_character_modifier = shabby_court_maintenance
+			}
+			NAND = {
+				has_character_modifier = abysmal_court
+				has_character_modifier = abysmal_court_maintenance
+			}
+			if = {
+				limit = {
+					has_character_modifier = splendid_court
+				}
+				NOT = { has_character_modifier = splendid_court_maintenance
+				}
+			}
+			NOT = { has_character_modifier = magnificent_court_maintenance }
+			}
+		allow = {
+			ill = no
+		}
+		effect = {
+			if = {
+				limit = {
+					has_character_modifier = grand_court_maintenance
+				}
+				remove_character_modifier = grand_court_maintenance
+				add_character_modifier = { which = magnificent_court_maintenance duration = -1}
+			}
+			if = {
+				limit = {
+					has_character_modifier = splendid_court_maintenance
+				}
+				remove_character_modifier = splendid_court_maintenance
+				add_character_modifier = { which = grand_court_maintenance duration = -1}
+			}
+			if = {
+				limit = {
+					has_character_modifier = standard_court_maintenance
+				}
+				remove_character_modifier = standard_court_maintenance
+				add_character_modifier = { which = splendid_court_maintenance duration = -1}
+			}
+			if = {
+				limit = {
+					has_character_modifier = acceptable_court_maintenance
+				}
+				remove_character_modifier = acceptable_court_maintenance
+				add_character_modifier = { which = standard_court_maintenance duration = -1}
+			}
+			if = {
+				limit = {
+					has_character_modifier = shabby_court_maintenance
+				}
+				remove_character_modifier = shabby_court_maintenance
+				add_character_modifier = { which = acceptable_court_maintenance duration = -1}
+			}
+			if = {
+				limit = {
+					has_character_modifier = abysmal_court_maintenance
+				}
+				remove_character_modifier = abysmal_court_maintenance
+				add_character_modifier = { which = shabby_court_maintenance duration = -1}
+			}
+		}
+	}
+}	
+			
