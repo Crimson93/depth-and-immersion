@@ -1,0 +1,500 @@
+evaluate_other_opponent = {
+	if = {
+		limit = {
+			event_target:player1 = ROOT
+
+			}
+		}
+	}
+}
+
+evaluate_poise_cost = {
+
+	## EVALUATE SKILL MULTIPLIER (SKILL WILL REDUCE POISE COST)
+	## NARROW BY ACTION
+	## NARROW BY WEAPON
+	## ASSIGN POISE COST
+
+	set_variable = { which = skill_poise_multiplier value = 1}
+
+	## Skill multiplier for poise
+	if = {
+		limit = {
+			NOT = { check_variable = { which = skill_level value = 2} }
+		}
+		multiply_variable = { which = skill_poise_multiplier value = 1.2}
+	}
+	else_if = {
+		limit = {
+			check_variable = { which = skill_level value = 2} 
+			NOT = { check_variable = { which = skill_level value = 3} }
+		}
+		multiply_variable = { which = skill_poise_multiplier value = 1}
+	}
+	else_if = {
+		limit = {
+			check_variable = { which = skill_level value = 3} 
+			NOT = { check_variable = { which = skill_level value = 4} }
+		}
+		multiply_variable = { which = skill_poise_multiplier value = 0.8}
+	}
+	else_if = {
+		limit = {
+			check_variable = { which = skill_level value = 4} 
+		}
+		multiply_variable = { which = skill_poise_multiplier value = 0.7}
+	}
+	else = {
+		multiply_variable = { which = skill_poise_multiplier value = 1.2}
+	}
+
+	set_variable = { which = PCSpoise which = PCS}
+	multiply_variable = { which = PCSpoise value = -0.0015} ## 200 PCS = -0.3
+	change_variable = { which = PCSpoise value = 1} ## 200 PCS = 0.7
+	multiply_variable = { which = skill_poise_multiplier which = PCSpoise}
+
+	## MOVEMENT
+	if = {
+		limit = {
+			has_character_flag = move_closer
+		}
+		set_variable = { which = poise_change value = 5}
+	}
+	if = {
+		limit = {
+			has_character_flag = charge_closer
+		}
+		set_variable = { which = poise_change value = 30 }
+	}
+
+	if = {
+		limit = {
+			has_character_flag = thrust
+		}
+		if = {
+			limit = {
+				has_character_flag = sword
+			}
+			set_variable = { which = poise_change value = 20}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = thrust
+		}
+		if = {
+			limit = {
+				has_character_flag = gsword
+			}
+			set_variable = { which = poise_change value = 26}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = thrust
+		}
+		if = {
+			limit = {
+				has_character_flag = spear
+			}
+			set_variable = { which = poise_change value = 16}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = thrust
+		}
+		if = {
+			limit = {
+				has_character_flag = halberd
+			}
+			set_variable = { which = poise_change value = 20}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = slash
+		}
+		if = {
+			limit = {
+				has_character_flag = sword
+			}
+			set_variable = { which = poise_change value = 16}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = slash
+		}
+		if = {
+			limit = {
+				has_character_flag = csword
+			}
+			set_variable = { which = poise_change value = 10}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = slash
+		}
+		if = {
+			limit = {
+				has_character_flag = gsword
+			}
+			set_variable = { which = poise_change value = 25}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = slash
+		}
+		if = {
+			limit = {
+				has_character_flag = axe
+			}
+			set_variable = { which = poise_change value = 20}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = slash
+		}
+		if = {
+			limit = {
+				has_character_flag = halberd
+			}
+			set_variable = { which = poise_change value = 26}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = bludgeon
+		}
+		if = {
+			limit = {
+				has_character_flag = mace
+			}
+			set_variable = { which = poise_change value = 18}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = bludgeon
+		}
+		if = {
+			limit = {
+				has_character_flag = warhammer
+			}
+			set_variable = { which = poise_change value = 22}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+	if = {
+		limit = {
+			has_character_flag = bludgeon
+		}
+		if = {
+			limit = {
+				has_character_flag = halberd
+			}
+			set_variable = { which = poise_change value = 24}
+			multiply_variable = { which = poise_change which = skill_poise_multiplier}
+			subtract_variable = { which = poise which = poise_change}
+		}
+	}
+
+	## SPECIAL ATTACKS
+
+}
+
+evaluate_parry_result = {
+	## Parry Chance - normally quite high. Around 50% Chance
+	## Calculate Chance
+	## Defender parry stat - PCS, weapon, weapon mastery, poise, roll
+	## Offender parryability stat - PCS, weapon, weapon mastery, poise, roll
+
+	## Compare the two stats to determine chance to parry. 
+	## If = then 50%
+	## So balance it around 50%
+
+	## IF SUCCESS
+	## Determine poise loss of defender. 
+	## Determine poise loss from defender counterattack for offender
+
+	## IF FAILURE
+	## Determine poise loss of defender
+	## Determine damage dealt after parry
+	## Determine poise damage dealt after parry
+
+	## THESE THINGS COULD HAPPEN IN THE FOLLOW UP EVENT! JUST PASS A FLAG WITH SUCCESS OR FAILURE
+
+
+
+}
+
+evaluate_block_result = {
+	## normally a high chance to block - 75%
+	## Balance it around 75%
+
+}
+
+evaluate_evade_result = {
+	## normally a 50% chance to evade
+}
+
+evaluate_damage = {
+	## Determine if critical
+
+	## DAMAGE: PCS, + Failed defensive option + Offensive Stance + poise - defensive stance + roll - armor reduction (armor pen)
+	## THEN OF COURSE THE ATTACK AND THE WEAPON
+
+	random_list = {
+		1 = {
+			set_variable = { which = damage_modifier value = 1.4 }
+		}
+		1 = {
+			set_variable = { which = damage_modifier value = 1.2 }
+		}
+		3 = {
+			set_variable = { which = damage_modifier value = 1.0 }
+		}
+		1 = {
+			set_variable = { which = damage_modifier value = 0.85 }
+		}
+		1 = {
+			set_variable = { which = damage_modifier value = 0.7 }
+		}
+	}
+
+	set_variable = { which = damage value = 0}
+	set_variable = { which = armor_penetration value = 0}
+	set_variable = { which = armor_penetration_adjust value = 0}
+
+	if = {
+		limit = {
+			has_character_flag = sword
+		}
+		if = {
+			limit = {
+				has_character_flag = slash
+			}
+			change_variable = { which = damage value = 36}
+			change_variable = { which = armor_penetration value = 150 }
+			
+			}
+		}
+	}
+
+	## RIGHT AT THE END
+	multiply_variable = { which = damage which = damage_modifier }
+	multiply_variable = { which = armor_penetration value = damage_modifier }
+
+	## Determine Critical Hit 
+
+
+				modifier = {
+					factor = 1.25
+					event_target:defender = {
+						NOT = { check_variable = { which = poise value = 50 } }
+					}
+				}
+				modifier = {
+					factor = 1.5
+					event_target:defender = {
+						NOT = { check_variable = { which = poise value = 35 } }
+					}
+				}
+				modifier = {
+					factor = 1.5
+					event_target:defender = {
+						NOT = { check_variable = { which = poise value = 20 } }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					event_target:defender = {
+						has_character_flag = plate_armor
+					}
+				}
+
+	if = {
+		limit = {
+			has_character_flag = shield
+			has_character_Flag = mace
+		}
+		multiply_variable = { which = damage value = 0.85 }
+		multiply_variable = { which = armor_penetration value = 0.85 }
+	}
+	if = {
+		limit = {
+			has_character_flag = shield
+			OR = {
+			has_character_flag = mace
+			has_character_flag = sword
+			has_character_flag = csword
+			}
+		}
+		multiply_variable = { which = damage value = 0.75 }
+		multiply_variable = { which = armor_penetration value = 0.75 }
+	}
+	if = {
+		limit = {
+			has_character_flag = shield
+			has_character_flag = spear
+		}
+		multiply_variable = { which = damage value = 0.70 }
+		multiply_variable = { which = armor_penetration value = 0.70 }
+	}
+
+
+	set_variable = { which = armor_penetration_adjust which = armor_penetration }
+
+	random_list = {
+		99 = {
+
+		}
+		1 = {
+			modifier = {
+				value = 5
+
+			}
+			modifier = {
+				value = 2
+				
+			}
+			modifier = {
+				value = 2
+				
+			}
+			modifier = {
+				value = 1.5
+				
+			}
+			modifier = {
+				value = 1.33
+				
+			}
+			modifier = {
+				value = 1.25
+				
+			}
+			modifier = {
+				value = 
+				
+			}
+			modifier = {
+				value = 5
+				
+			}
+
+		}
+	}
+
+	if = {
+		limit = {
+			## Is player 1
+		}
+		multiply_variable = { which = global_armor1_adj which = critical_hit_adj }
+		subtract_variable = { which = armor_penetration_adjust which = global_armor1_adj}
+
+	}
+	else = {
+		multiply_variable = { which = global_armor2_adj which = critical_hit_adj }
+		subtract_variable = { which = armor_penetration_adjust which = global_armor2_adj}
+	}
+
+	if = {
+		limit = {
+			check_variable = { which = armor_penetration_adjust value = 1 }
+		}
+		divide_variable = { which = armor_penetration_adjust which = armor_penetration}
+	}
+	else = {
+		set_variable = { which = damage value = 0 } ## NO DAMAGE
+	}
+	
+
+	
+	if = {
+		limit = {
+			has_character_flag = offensive_stance
+		}
+		multiply_variable = { which = damage value = 1.25}
+	}
+	
+	if = {
+		limit = {
+			has_character_flag = defensive_stance
+		}
+		multiply_variable = { which = damage value = 0.8 }
+	}
+
+	if = {
+		limit = {
+			has_character_flag = partial_block
+		}
+		multiply_variable = { which = damage value = 0.5 }
+	}
+	if = {
+		limit = {
+			has_character_flag = partial_parry
+		}
+		multiply_variable = { which = damage value = 0.65 }
+	}
+	if = {
+		limit = {
+			has_character_flag = partial_parry
+		}
+		multiply_variable = { which = damage value = 0.75 }
+	}
+	
+	## PCS 1.5, 1.25, 1, 0.85
+
+	if = {
+		limit ={
+			## is player 1
+		}
+		subtract_variable = { which = global_health1 which = damage }
+	}
+	else = {
+		subtract_variable = { which = global_health2 which = damage }
+	}
+
+}
+
+evaluate_poise_damage = {
+
+}
+
+evaluate_poise_recovery = {
+
+}
+
+evaluate_psychological_effect = {
+	## Check how often the opponent has retreated
+}
+
+evalaute_experience_gained = {
+
+}
